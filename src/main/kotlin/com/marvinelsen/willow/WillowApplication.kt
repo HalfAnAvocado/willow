@@ -16,7 +16,7 @@ class WillowApplication : Application() {
         stage.title = "Hello!"
         stage.scene = scene
         val cedictEntries =
-            CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("cedict.txt.gz")))
+            CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("cedict_1_0_ts_utf-8_mdbg.txt.gz")))
         print(cedictEntries[500])
         stage.show()
     }
