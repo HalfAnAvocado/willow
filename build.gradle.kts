@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
+    implementation(libs.sqlite)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
