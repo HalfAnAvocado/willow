@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     java
     application
@@ -16,19 +14,6 @@ repositories {
     mavenCentral()
 }
 
-application {
-    mainClass.set("com.marvinelsen.willowkotlin.HelloApplication")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "21"
-}
-
-javafx {
-    version = "21.0.1"
-    modules("javafx.controls", "javafx.fxml")
-}
-
 dependencies {
     implementation(libs.kaml)
     implementation(libs.slf4j.api)
@@ -39,12 +24,21 @@ dependencies {
     testImplementation(libs.kotest.assertions.core)
 }
 
-tasks.test {
-    useJUnitPlatform()
+application {
+    mainClass.set("com.marvinelsen.willowkotlin.HelloApplication")
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+kotlin {
+    jvmToolchain(21)
+}
+
+javafx {
+    version = "21.0.1"
+    modules("javafx.controls", "javafx.fxml")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 //detekt {
