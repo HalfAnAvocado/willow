@@ -20,6 +20,9 @@ dependencies {
     implementation(libs.kaml)
     implementation(libs.slf4j.api)
     implementation(libs.slf4j.nop)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
