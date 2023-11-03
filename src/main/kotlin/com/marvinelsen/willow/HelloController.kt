@@ -1,4 +1,4 @@
-package com.marvinelsen.willowkotlin
+package com.marvinelsen.willow
 
 import javafx.fxml.FXML
 import javafx.scene.control.Label

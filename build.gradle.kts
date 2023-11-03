@@ -25,7 +25,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.marvinelsen.willowkotlin.HelloApplication")
+    mainClass.set("com.marvinelsen.willow.WillowApplication")
 }
 
 kotlin {

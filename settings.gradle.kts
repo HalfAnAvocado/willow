@@ -1,1 +1,1 @@
-rootProject.name = "willow-kotlin"
+rootProject.name = "willow"
