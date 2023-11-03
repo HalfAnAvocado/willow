@@ -6,9 +6,7 @@ plugins {
     kotlin("jvm") version "1.9.20"
     kotlin("plugin.serialization") version "1.9.20"
     // alias(libs.plugins.detekt)
-    alias(libs.plugins.javamodularity)
     alias(libs.plugins.javafx)
-    alias(libs.plugins.jlink)
 }
 
 group = "com.marvinelsen"
@@ -19,7 +17,6 @@ repositories {
 }
 
 application {
-    mainModule.set("com.marvinelsen.willowkotlin")
     mainClass.set("com.marvinelsen.willowkotlin.HelloApplication")
 }
 
@@ -49,19 +46,6 @@ tasks.test {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
-
-
-//jlink {
-//    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
-//    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-//    launcher {
-//        name = 'app'
-//    }
-//}
-//
-//jlinkZip {
-//    group = "distribution"
-//}
 
 //detekt {
 //    buildUponDefaultConfig = true

@@ -8,7 +8,6 @@ kotest = "5.7.2"
 detekt = "1.23.3"
 javamodularity = "1.8.12"
 javafxplugin = "0.1.0"
-jlink = "3.0.1"
 
 [libraries]
 kaml = { group = "com.charleskorn.kaml", name = "kaml", version.ref = "kaml" }
@@ -22,6 +21,4 @@ kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core",
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-javamodularity = { id = "org.javamodularity.moduleplugin", version.ref = "javamodularity" }
 javafx = { id = "org.openjfx.javafxplugin", version.ref = "javafxplugin" }
-jlink = { id = "org.beryx.jlink", version.ref = "jlink" }
