@@ -39,7 +39,7 @@ kotlin {
 
 javafx {
     version = "21.0.1"
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.web")
 }
 
 tasks.test {
