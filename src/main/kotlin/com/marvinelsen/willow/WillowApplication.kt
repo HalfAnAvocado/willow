@@ -8,6 +8,7 @@ import java.util.zip.GZIPInputStream
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
+import javafx.scene.text.Font
 import javafx.stage.Stage
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -16,10 +17,17 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 
 class WillowApplication : Application() {
+    private val twKaiFont =  Font.loadFont(WillowApplication::class.java.getResource("fonts/tw-kai.ttf")!!.toExternalForm(), 12.0)
+    private val notoSansTcFont =  Font.loadFont(WillowApplication::class.java.getResource("fonts/notosanstc.otf")!!.toExternalForm(), 12.0)
+
     override fun start(stage: Stage) {
-        val fxmlLoader = FXMLLoader(WillowApplication::class.java.getResource("hello-view.fxml"))
-        val scene = Scene(fxmlLoader.load(), 320.0, 240.0)
-        stage.title = "Hello!"
+        stage.title = WINDOW_TITLE
+        stage.minWidth = WINDOW_MIN_WIDTH
+        stage.minHeight = WINDOW_MIN_HEIGHT
+
+        val fxmlLoader = FXMLLoader(WillowApplication::class.java.getResource("main-view.fxml"))
+        val scene = Scene(fxmlLoader.load(), 600.0, 400.0)
+        scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm());
         stage.scene = scene
 
         val cedictEntries =
@@ -33,10 +41,16 @@ class WillowApplication : Application() {
             // addLogger(StdOutSqlLogger)
             SchemaUtils.create(CedictTable)
 
-            cedictEntries.forEach { it.toEntity() }
+            // cedictEntries.forEach { it.toEntity() }
         }
 
         stage.show()
+    }
+
+    companion object {
+        private const val WINDOW_TITLE = "Willow"
+        private const val WINDOW_MIN_HEIGHT = 480.0
+        private const val WINDOW_MIN_WIDTH = 640.0
     }
 }
 

@@ -1,0 +1,20 @@
+.list-view-words {
+    -fx-selection-bar: #B8EEFF;
+    /*-fx-selection-bar-non-focused: green;*/
+}
+
+.list-view-word {
+    -fx-font: 20 "Noto Sans TC";
+}
+
+.moe-definition {
+    -fx-font: 16 "Noto Sans TC";
+}
+
+.headword {
+    -fx-font: 50 TW-Kai;
+}
+
+.pronunciation {
+    -fx-font: 18 TW-Kai;
+}
