@@ -24,6 +24,8 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.sqlite)
+    implementation(libs.ikonli.javafx)
+    implementation(libs.ikonli.material2)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)

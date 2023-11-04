@@ -4,6 +4,7 @@ slf4j = "2.0.9"
 kotest = "5.7.2"
 exposed = "0.44.1"
 sqlite = "3.43.2.2"
+ikonli = "12.2.0"
 
 # Plugin versions
 detekt = "1.23.3"
@@ -23,6 +24,9 @@ exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 sqlite = { group = "org.xerial", name = "sqlite-jdbc", version.ref = "sqlite" }
+
+ikonli-javafx = { group = "org.kordamp.ikonli", name = "ikonli-javafx", version.ref = "ikonli" }
+ikonli-material2 = { group = "org.kordamp.ikonli", name = "ikonli-material2-pack", version.ref = "ikonli" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
