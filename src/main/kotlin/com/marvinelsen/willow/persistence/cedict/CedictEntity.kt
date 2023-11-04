@@ -19,6 +19,6 @@ class CedictEntity(id: EntityID<Int>) : IntEntity(id) {
     var simplified by CedictTable.simplified
     var numberedPinyin by CedictTable.numberedPinyin
     var definitions: List<String> by CedictTable.definitions.transform(
-        { it.joinToString(separator = "/") },
-        { it.split("/") })
+        toColumn = { it.joinToString(separator = "/") },
+        toReal = { it.split("/") })
 }
