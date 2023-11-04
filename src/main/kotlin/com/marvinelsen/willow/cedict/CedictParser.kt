@@ -10,7 +10,11 @@ private val cedictEntryRegex =
 
 object CedictParser {
     fun parse(inputStream: InputStream) =
-        inputStream.bufferedReader().lineSequence().filter { !it.startsWith("#") }.map { it.toCedictEntry() }.toList()
+        inputStream.bufferedReader()
+            .lineSequence()
+            .filter { !it.startsWith("#") }
+            .map { it.toCedictEntry() }
+            .toList()
 }
 
 private fun String.toCedictEntry(): CedictEntry {
