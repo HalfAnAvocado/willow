@@ -13,5 +13,5 @@ fun CedictEntry.toEntity() = CedictEntity.new {
     traditional = this@toEntity.traditional
     simplified = this@toEntity.simplified
     numberedPinyin = this@toEntity.numberedPinyin
-    definitions = this@toEntity.definitions.joinToString(separator = "/")
+    definitions = this@toEntity.definitions
 }
