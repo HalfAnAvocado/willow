@@ -1,7 +1,7 @@
-package com.marvinelsen.willow
+package com.marvinelsen.willow.ui.controllers
 
-import com.marvinelsen.willow.persistence.cedict.CedictEntity
 import com.marvinelsen.willow.service.CedictService
+import com.marvinelsen.willow.service.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
@@ -27,7 +27,7 @@ class MainController {
     lateinit var labelHeadwordPronunciation: Label
     lateinit var textFlowHeadWord: TextFlow
     lateinit var textFieldSearch: TextField
-    lateinit var listViewDictionary: ListView<CedictEntity>
+    lateinit var listViewDictionary: ListView<Word>
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
@@ -63,7 +63,7 @@ class MainController {
 
     fun onMenuItemCopyPronunciationAction() {
         val clipboardContent = ClipboardContent()
-        clipboardContent.putString(listViewDictionary.selectionModel.selectedItem.numberedPinyin)
+        clipboardContent.putString(labelHeadwordPronunciation.text)
         systemClipboard.setContent(clipboardContent)
 
         setStatus("Copied pronunciation to clipboard.")
@@ -79,7 +79,7 @@ class MainController {
         listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
     }
 
-    private fun displayWord(word: CedictEntity?) {
+    private fun displayWord(word: Word?) {
         if (word == null) return
 
         textFlowHeadWord.children.clear()
@@ -99,7 +99,8 @@ class MainController {
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
-        labelHeadwordPronunciation.text = word.numberedPinyin
+        var defs = word.definitions
+        labelHeadwordPronunciation.text = defs.first().numberedPinyin
         webViewCedict.engine.loadContent(word.definitions.joinToString(separator = "<br>- "))
         titledPaneCedict.isVisible = true
         titledPaneCedict.isManaged = true

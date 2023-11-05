@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.cedict
+package com.marvinelsen.willow.serialization.cedict
 
 import java.io.InputStream
 
@@ -27,6 +27,6 @@ private fun String.toCedictEntry(): CedictEntry {
         simplified = simplified,
         numberedPinyin = numberedPinyin.lowercase(),
         numberedPinyinTaiwan = numberedPinyinTaiwan?.lowercase(),
-        definitions = definitions.split("/").filter { !it.contains("Taiwan pr. ") },
+        definitions = definitions.split("/").filter { !it.contains("Taiwan pr. ") }.joinToString(separator = "/"),
     )
 }

@@ -1,7 +1,6 @@
 package com.marvinelsen.willow.ui.cells
 
-import com.marvinelsen.willow.cedict.CedictEntry
-import com.marvinelsen.willow.persistence.cedict.CedictEntity
+import com.marvinelsen.willow.service.objects.Word
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
@@ -11,20 +10,20 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import javafx.util.Callback
 
-class WordCellFactory : Callback<ListView<CedictEntity?>, ListCell<CedictEntity?>> {
-    override fun call(listView: ListView<CedictEntity?>): ListCell<CedictEntity?> {
+class WordCellFactory : Callback<ListView<Word?>, ListCell<Word?>> {
+    override fun call(listView: ListView<Word?>): ListCell<Word?> {
         val wordCell = WordCell()
         wordCell.prefWidthProperty().bind(listView.widthProperty().subtract(16))
         return wordCell
     }
 }
 
-internal class WordCell : ListCell<CedictEntity?>() {
+internal class WordCell : ListCell<Word?>() {
     private val textFlowHeadWord = TextFlow()
     private val labelDefinition = Label()
     private val root = VBox(textFlowHeadWord, labelDefinition)
 
-    override fun updateItem(word: CedictEntity?, empty: Boolean) {
+    override fun updateItem(word: Word?, empty: Boolean) {
         super.updateItem(word, empty)
         if (empty || word == null) {
             text = null
@@ -38,7 +37,7 @@ internal class WordCell : ListCell<CedictEntity?>() {
                 characterText.styleClass.add("list-view-word")
                 textFlowHeadWord.children.add(characterText)
             }
-            labelDefinition.text = word.definitions.joinToString(separator = ", ")
+            labelDefinition.text = word.definitions.first().content
             text = null
             graphic = root
         }
