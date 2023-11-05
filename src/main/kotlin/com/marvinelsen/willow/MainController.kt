@@ -1,7 +1,7 @@
 package com.marvinelsen.willow
 
 import com.marvinelsen.willow.persistence.cedict.CedictEntity
-import com.marvinelsen.willow.persistence.cedict.CedictTable
+import com.marvinelsen.willow.service.CedictService
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
@@ -22,13 +22,14 @@ class MainController {
     fun initialize() {
         listViewDictionary.cellFactory = WordCellFactory()
 
-        listViewDictionary.items = search("柳")
+        listViewDictionary.items = FXCollections.observableArrayList()
+        listViewDictionary.items.addAll(CedictService.search("柳"))
         listViewDictionary.selectionModel.selectFirst()
-
 
         textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
             if (newValue.isNotBlank()) {
-                listViewDictionary.items = search(newValue)
+                listViewDictionary.items.clear()
+                listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
             }
         }
     }
@@ -43,7 +44,8 @@ class MainController {
     fun showSelectedWordContextMenu(actionEvent: ContextMenuEvent?) {}
 
     fun onTextFieldSearchAction(actionEvent: ActionEvent?) {
-        listViewDictionary.items = search(textFieldSearch.text)
+        listViewDictionary.items.clear()
+        listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
     }
 
     private fun search(query: String) = FXCollections.observableList(transaction {

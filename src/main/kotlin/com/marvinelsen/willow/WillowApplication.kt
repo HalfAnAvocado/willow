@@ -1,6 +1,7 @@
 package com.marvinelsen.willow
 
 import com.marvinelsen.willow.cedict.CedictParser
+import com.marvinelsen.willow.cedict.toEntity
 import com.marvinelsen.willow.persistence.cedict.CedictTable
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
@@ -24,6 +25,17 @@ class WillowApplication : Application() {
     init {
         Database.connect("jdbc:sqlite:data.db", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
+
+        val cedictEntries =
+            CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("cedict_1_0_ts_utf-8_mdbg.txt.gz")))
+        /*
+        transaction {
+            // addLogger(StdOutSqlLogger)
+            SchemaUtils.create(CedictTable)
+
+            cedictEntries.forEach { it.toEntity() }
+        }
+        */
     }
 
     override fun start(stage: Stage) {
@@ -35,17 +47,6 @@ class WillowApplication : Application() {
         val scene = Scene(fxmlLoader.load(), 600.0, 400.0)
         scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm());
         stage.scene = scene
-
-        val cedictEntries =
-            CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("cedict_1_0_ts_utf-8_mdbg.txt.gz")))
-        print(cedictEntries[500])
-
-        transaction {
-            // addLogger(StdOutSqlLogger)
-            SchemaUtils.create(CedictTable)
-
-            // cedictEntries.forEach { it.toEntity() }
-        }
 
         stage.show()
     }

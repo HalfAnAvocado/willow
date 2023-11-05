@@ -7,6 +7,7 @@ import java.io.InputStream
 // 皮實 皮实 [pi2 shi5] /(of things) durable/(of people) sturdy; tough/
 private val cedictEntryRegex =
     """^(?<traditional>\S+) (?<simplified>\S+) \[(?<pinyin>[a-zA-Z0-9:,· ]+)] /(?<definitions>.+)/$""".toRegex()
+private val taiwanPronunciationRegex = """Taiwan pr. \[(?<pinyin>\S+)]""".toRegex()
 
 object CedictParser {
     fun parse(inputStream: InputStream) =
@@ -20,10 +21,12 @@ object CedictParser {
 private fun String.toCedictEntry(): CedictEntry {
     val matchResult = cedictEntryRegex.matchEntire(this)!!
     val (traditional, simplified, numberedPinyin, definitions) = matchResult.destructured
+    val numberedPinyinTaiwan = taiwanPronunciationRegex.find(this)?.groups?.get("pinyin")?.value
     return CedictEntry(
         traditional = traditional,
         simplified = simplified,
         numberedPinyin = numberedPinyin.lowercase(),
-        definitions = definitions.split("/"),
+        numberedPinyinTaiwan = numberedPinyinTaiwan?.lowercase(),
+        definitions = definitions.split("/").filter { !it.contains("Taiwan pr. ") },
     )
 }
