@@ -2,6 +2,7 @@ package com.marvinelsen.willow
 
 import com.marvinelsen.willow.persistence.cedict.CedictEntity
 import com.marvinelsen.willow.persistence.cedict.CedictTable
+import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -15,7 +16,22 @@ class MainController {
     lateinit var textFieldSearch: TextField
 
     @FXML
-    lateinit var listViewDictionary: ListView<String>
+    lateinit var listViewDictionary: ListView<CedictEntity>
+
+    @FXML
+    fun initialize() {
+        listViewDictionary.cellFactory = WordCellFactory()
+
+        listViewDictionary.items = search("柳")
+        listViewDictionary.selectionModel.selectFirst()
+
+
+        textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
+            if (newValue.isNotBlank()) {
+                listViewDictionary.items = search(newValue)
+            }
+        }
+    }
 
     fun onMenuItemNewEntryAction(actionEvent: ActionEvent?) {}
     fun onMenuItemNewSentenceAction(actionEvent: ActionEvent?) {}
@@ -27,10 +43,10 @@ class MainController {
     fun showSelectedWordContextMenu(actionEvent: ContextMenuEvent?) {}
 
     fun onTextFieldSearchAction(actionEvent: ActionEvent?) {
-        val words = transaction {
-            CedictEntity.find { CedictTable.traditional like "${textFieldSearch.text}%" }.limit(100).toList()
-                .map { it.traditional }
-        }
-        listViewDictionary.items = FXCollections.observableList(words)
+        listViewDictionary.items = search(textFieldSearch.text)
     }
+
+    private fun search(query: String) = FXCollections.observableList(transaction {
+        CedictEntity.find { CedictTable.traditional like "$query%" }.toList()
+    })
 }
