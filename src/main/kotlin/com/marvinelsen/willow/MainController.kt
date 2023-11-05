@@ -61,7 +61,14 @@ class MainController {
         setStatus("Copied headword to clipboard.")
     }
 
-    fun onMenuItemCopyPronunciationAction() {}
+    fun onMenuItemCopyPronunciationAction() {
+        val clipboardContent = ClipboardContent()
+        clipboardContent.putString(listViewDictionary.selectionModel.selectedItem.numberedPinyin)
+        systemClipboard.setContent(clipboardContent)
+
+        setStatus("Copied pronunciation to clipboard.")
+    }
+
     fun onMenuItemAboutAction() {}
     fun showSelectedWordContextMenu() {}
 
