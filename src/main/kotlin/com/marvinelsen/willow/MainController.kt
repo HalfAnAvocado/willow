@@ -4,19 +4,20 @@ import com.marvinelsen.willow.persistence.cedict.CedictEntity
 import com.marvinelsen.willow.service.CedictService
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
-import javafx.event.ActionEvent
-import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.control.TitledPane
-import javafx.scene.input.ContextMenuEvent
+import javafx.scene.input.Clipboard
+import javafx.scene.input.ClipboardContent
 import javafx.scene.paint.Color
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import javafx.scene.web.WebView
 
+
 class MainController {
+    lateinit var labelStatus: Label
     lateinit var webViewCedict: WebView
     lateinit var titledPaneCedict: TitledPane
     lateinit var webViewMoe: WebView
@@ -27,6 +28,8 @@ class MainController {
     lateinit var textFlowHeadWord: TextFlow
     lateinit var textFieldSearch: TextField
     lateinit var listViewDictionary: ListView<CedictEntity>
+
+    private val systemClipboard = Clipboard.getSystemClipboard()
 
     fun initialize() {
         listViewDictionary.cellFactory = WordCellFactory()
@@ -39,28 +42,39 @@ class MainController {
         listViewDictionary.selectionModel.selectFirst()
 
         textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
-            if (newValue.isNotBlank()) {
-                listViewDictionary.items.clear()
-                listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
-            }
+            if (newValue.isBlank()) return@addListener
+            listViewDictionary.items.clear()
+            listViewDictionary.items.addAll(CedictService.search(newValue))
         }
     }
 
-    fun onMenuItemNewEntryAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemNewSentenceAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemSettingsAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemQuitAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemCopyHeadwordAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemCopyPronunciationAction(actionEvent: ActionEvent?) {}
-    fun onMenuItemAboutAction(actionEvent: ActionEvent?) {}
-    fun showSelectedWordContextMenu(actionEvent: ContextMenuEvent?) {}
+    fun onMenuItemNewEntryAction() {}
+    fun onMenuItemNewSentenceAction() {}
+    fun onMenuItemSettingsAction() {}
+    fun onMenuItemQuitAction() {}
 
-    fun onTextFieldSearchAction(actionEvent: ActionEvent?) {
+    fun onMenuItemCopyHeadwordAction() {
+        val clipboardContent = ClipboardContent()
+        clipboardContent.putString(listViewDictionary.selectionModel.selectedItem.traditional)
+        systemClipboard.setContent(clipboardContent)
+
+        setStatus("Copied headword to clipboard.")
+    }
+
+    fun onMenuItemCopyPronunciationAction() {}
+    fun onMenuItemAboutAction() {}
+    fun showSelectedWordContextMenu() {}
+
+    fun onTextFieldSearchAction() {
+        if (textFieldSearch.text.isBlank()) return
+
         listViewDictionary.items.clear()
         listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
     }
 
-    private fun displayWord(word: CedictEntity) {
+    private fun displayWord(word: CedictEntity?) {
+        if (word == null) return
+
         textFlowHeadWord.children.clear()
         webViewCedict.engine.loadContent("")
         titledPaneCedict.isVisible = false
@@ -83,5 +97,9 @@ class MainController {
         titledPaneCedict.isVisible = true
         titledPaneCedict.isManaged = true
 
+    }
+
+    private fun setStatus(status: String) {
+        labelStatus.text = status
     }
 }
