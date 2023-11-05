@@ -98,19 +98,13 @@
                     <ScrollPane fitToHeight="true" fitToWidth="true">
                         <VBox maxHeight="1.7976931348623157E308" minHeight="400.0">
                             <TitledPane fx:id="titledPaneUser" text="USER" VBox.vgrow="ALWAYS">
-                                <content>
-                                    <WebView fx:id="webViewUser" prefHeight="200.0" prefWidth="200.0"/>
-                                </content>
+                                <WebView fx:id="webViewUser" prefHeight="200.0" prefWidth="200.0"/>
                             </TitledPane>
                             <TitledPane fx:id="titledPaneMoe" text="MOE" VBox.vgrow="ALWAYS">
-                                <content>
-                                    <WebView fx:id="webViewMoe" prefHeight="200.0" prefWidth="200.0"/>
-                                </content>
+                                <WebView fx:id="webViewMoe" prefHeight="200.0" prefWidth="200.0"/>
                             </TitledPane>
                             <TitledPane fx:id="titledPaneCedict" text="CC-CEDICT" VBox.vgrow="ALWAYS">
-                                <content>
-                                    <WebView fx:id="webViewCedict" prefHeight="200.0" prefWidth="200.0"/>
-                                </content>
+                                <WebView fx:id="webViewCedict" prefHeight="200.0" prefWidth="200.0"/>
                             </TitledPane>
                         </VBox>
                     </ScrollPane>
