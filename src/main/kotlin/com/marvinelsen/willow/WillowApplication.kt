@@ -59,15 +59,7 @@ fun createDatabaseTables() {
     val cedictEntries =
         CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/cedict_1_0_ts_utf-8_mdbg.txt.gz")))
 
-    val moeEntries =
-        MoeParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/moedict.json.gz")))
-
-    val entry = moeEntries[2000]
-    println(entry.title)
-
-
     transaction {
-        // addLogger(StdOutSqlLogger)
         SchemaUtils.create(WordTable, DefinitionTable)
 
         cedictEntries.groupBy { it.traditional }.values.forEach {
@@ -83,6 +75,39 @@ fun createDatabaseTables() {
                     numberedPinyinTaiwan = cedictEntry.numberedPinyinTaiwan
                     content = cedictEntry.definitions
                     dictionary = Dictionary.CEDICT
+                }
+            }
+        }
+    }
+
+    val moeEntries =
+        MoeParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/moedict.json.gz")))
+
+    transaction {
+        moeEntries.filter { !it.title.startsWith("{") }.forEach { entry ->
+            val wordEntity = WordEntity.find { WordTable.traditional eq entry.title }.firstOrNull() ?: WordEntity.new {
+                traditional = entry.title
+            }
+
+            entry.heteronyms.filter { it.accentedPinyin != null }.forEach { heteronym ->
+                val pinyin = heteronym.accentedPinyin
+
+                heteronym.definitions.forEach { definition ->
+                    val definitionContent = listOfNotNull(
+                        definition.content,
+                        definition.examples.joinToString(prefix = "Examples: ", separator = "\n"),
+                        definition.quotes.joinToString(prefix = "Quotes: ", separator = "\n"),
+                        "Synonyms: ${definition.synonyms}".takeIf { definition.synonyms != null },
+                        "Antonyms: ${definition.antonyms}".takeIf { definition.antonyms != null },
+                        "See also: ${definition.links.joinToString(separator = ", ")}".takeIf { definition.links.isNotEmpty() },
+                    ).joinToString(separator = "\n")
+
+                    DefinitionEntity.new {
+                        word = wordEntity
+                        numberedPinyin = pinyin!!
+                        content = definitionContent
+                        dictionary = Dictionary.MOE
+                    }
                 }
             }
         }
