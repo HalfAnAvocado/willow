@@ -11,5 +11,7 @@ class WordEntity(id: EntityID<Int>) : IntEntity(id) {
 
     var traditional by WordTable.traditional
     var simplified by WordTable.simplified
+    var characterCount by WordTable.characterCount
+
     val definitions by DefinitionEntity referrersOn DefinitionTable.word
 }

@@ -66,6 +66,7 @@ fun createDatabaseTables() {
             val wordEntity = WordEntity.new {
                 traditional = it.first().traditional
                 simplified = it.first().simplified
+                characterCount = it.first().traditional.length
             }
 
             for (cedictEntry in it) {
@@ -87,6 +88,7 @@ fun createDatabaseTables() {
         moeEntries.filter { !it.title.startsWith("{") }.forEach { entry ->
             val wordEntity = WordEntity.find { WordTable.traditional eq entry.title }.firstOrNull() ?: WordEntity.new {
                 traditional = entry.title
+                characterCount = entry.title.length
             }
 
             entry.heteronyms.filter { it.accentedPinyin != null }.forEach { heteronym ->

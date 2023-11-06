@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object CedictService {
     fun search(query: String) = transaction {
         WordEntity.find { WordTable.traditional like "$query%" }
+            .sortedBy { it.characterCount }
             .with(WordEntity::definitions)
             .map { it.asWord() }
     }
