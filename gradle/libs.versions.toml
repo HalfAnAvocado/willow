@@ -1,5 +1,6 @@
 [versions]
 kaml = "0.55.0"
+json = "1.6.0"
 slf4j = "2.0.9"
 kotest = "5.7.2"
 exposed = "0.44.1"
@@ -12,6 +13,7 @@ javafxplugin = "0.1.0"
 
 [libraries]
 kaml = { group = "com.charleskorn.kaml", name = "kaml", version.ref = "kaml" }
+json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "json" }
 
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 slf4j-nop = { group = "org.slf4j", name = "slf4j-nop", version.ref = "slf4j" }

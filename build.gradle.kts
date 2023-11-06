@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation(libs.kaml)
+    implementation(libs.json)
     implementation(libs.slf4j.api)
     implementation(libs.slf4j.nop)
     implementation(libs.exposed.core)
