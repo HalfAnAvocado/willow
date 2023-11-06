@@ -25,7 +25,7 @@ data class MoeDefinition(
     @SerialName("example") val examples: List<String> = emptyList(),
     @SerialName("quote") val quotes: List<String> = emptyList(),
     val type: String? = null,
-    val link: List<String> = emptyList(),
+    @SerialName("link") val links: List<String> = emptyList(),
     val synonyms: String? = null,
     val antonyms: String? = null,
 )
