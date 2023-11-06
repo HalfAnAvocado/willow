@@ -108,13 +108,13 @@ class MainController {
 
         if (cedictDefinitions != null) {
             val content = buildString {
-                append("<ul>")
+                append("<ol>")
                 cedictDefinitions.forEach {
                     append("<li>")
                     append(it.content)
                     append("</li>")
                 }
-                append("</ul>")
+                append("</ol>")
             }
             webViewCedict.engine.loadContent(content)
             titledPaneCedict.isVisible = true
@@ -123,13 +123,13 @@ class MainController {
 
         if (moeDefinitions != null) {
             val content = buildString {
-                append("<ul>")
+                append("<ol>")
                 moeDefinitions.forEach {
                     append("<li>")
                     append(it.content.replace("\n", "<br>"))
                     append("</li>")
                 }
-                append("</ul>")
+                append("</ol>")
             }
             webViewMoe.engine.loadContent(content)
             titledPaneMoe.isVisible = true
