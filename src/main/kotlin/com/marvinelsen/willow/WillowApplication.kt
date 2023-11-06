@@ -1,9 +1,9 @@
 package com.marvinelsen.willow
 
-import com.marvinelsen.willow.persistence.cedict.DefinitionEntity
-import com.marvinelsen.willow.persistence.cedict.DefinitionTable
-import com.marvinelsen.willow.persistence.cedict.WordEntity
-import com.marvinelsen.willow.persistence.cedict.WordTable
+import com.marvinelsen.willow.persistence.entities.DefinitionEntity
+import com.marvinelsen.willow.persistence.entities.WordEntity
+import com.marvinelsen.willow.persistence.tables.DefinitionTable
+import com.marvinelsen.willow.persistence.tables.WordTable
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.moe.MoeParser
 import com.marvinelsen.willow.service.objects.Dictionary
@@ -18,7 +18,6 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-
 
 class WillowApplication : Application() {
     private val twKaiFont =
@@ -62,6 +61,10 @@ fun createDatabaseTables() {
 
     val moeEntries =
         MoeParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/moedict.json.gz")))
+
+    val entry = moeEntries[2000]
+    println(entry.title)
+
 
     transaction {
         // addLogger(StdOutSqlLogger)

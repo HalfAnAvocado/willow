@@ -1,6 +1,6 @@
 package com.marvinelsen.willow.service.objects
 
-import com.marvinelsen.willow.persistence.cedict.DefinitionEntity
+import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 
 data class Definition(
     val numberedPinyin: String,

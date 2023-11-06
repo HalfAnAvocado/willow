@@ -1,7 +1,7 @@
 package com.marvinelsen.willow.service
 
-import com.marvinelsen.willow.persistence.cedict.WordEntity
-import com.marvinelsen.willow.persistence.cedict.WordTable
+import com.marvinelsen.willow.persistence.entities.WordEntity
+import com.marvinelsen.willow.persistence.tables.WordTable
 import com.marvinelsen.willow.service.objects.asWord
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.transactions.transaction

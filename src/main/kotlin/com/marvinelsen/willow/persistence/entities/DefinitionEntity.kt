@@ -1,18 +1,9 @@
-package com.marvinelsen.willow.persistence.cedict
+package com.marvinelsen.willow.persistence.entities
 
-import com.marvinelsen.willow.service.objects.Dictionary
+import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IntIdTable
-
-object DefinitionTable : IntIdTable() {
-    val word = reference(name = "word", foreign = WordTable)
-    val content = text(name = "content")
-    val numberedPinyin = text(name = "numbered_pinyin")
-    val numberedPinyinTaiwan = text(name = "numbered_pinyin_taiwan").nullable()
-    val dictionary = enumeration<Dictionary>(name = "dictionary")
-}
 
 class DefinitionEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<DefinitionEntity>(DefinitionTable)
