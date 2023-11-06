@@ -1,6 +1,7 @@
 package com.marvinelsen.willow.ui.controllers
 
 import com.marvinelsen.willow.service.CedictService
+import com.marvinelsen.willow.service.objects.Dictionary
 import com.marvinelsen.willow.service.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
@@ -99,12 +100,41 @@ class MainController {
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
-        var defs = word.definitions
-        labelHeadwordPronunciation.text = defs.first().numberedPinyin
-        webViewCedict.engine.loadContent(word.definitions.joinToString(separator = "<br>- "))
-        titledPaneCedict.isVisible = true
-        titledPaneCedict.isManaged = true
+        val cedictDefinitions = word.definitions[Dictionary.CEDICT]
+        val moeDefinitions = word.definitions[Dictionary.MOE]
 
+        labelHeadwordPronunciation.text =
+            moeDefinitions?.first()?.numberedPinyin ?: cedictDefinitions!!.first().numberedPinyin
+
+        if (cedictDefinitions != null) {
+            val content = buildString {
+                append("<ul>")
+                cedictDefinitions.forEach {
+                    append("<li>")
+                    append(it.content)
+                    append("</li>")
+                }
+                append("</ul>")
+            }
+            webViewCedict.engine.loadContent(content)
+            titledPaneCedict.isVisible = true
+            titledPaneCedict.isManaged = true
+        }
+
+        if (moeDefinitions != null) {
+            val content = buildString {
+                append("<ul>")
+                moeDefinitions.forEach {
+                    append("<li>")
+                    append(it.content.replace("\n", "<br>"))
+                    append("</li>")
+                }
+                append("</ul>")
+            }
+            webViewMoe.engine.loadContent(content)
+            titledPaneMoe.isVisible = true
+            titledPaneMoe.isManaged = true
+        }
     }
 
     private fun setStatus(status: String) {

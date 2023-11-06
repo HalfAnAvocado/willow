@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.ui.cells
 
+import com.marvinelsen.willow.service.objects.Dictionary
 import com.marvinelsen.willow.service.objects.Word
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
@@ -37,7 +38,8 @@ internal class WordCell : ListCell<Word?>() {
                 characterText.styleClass.add("list-view-word")
                 textFlowHeadWord.children.add(characterText)
             }
-            labelDefinition.text = word.definitions.first().content
+            val dictionaryDefinitions = word.definitions[Dictionary.CEDICT] ?: word.definitions[Dictionary.MOE]!!
+            labelDefinition.text = dictionaryDefinitions.first().content
             text = null
             graphic = root
         }
