@@ -5,6 +5,7 @@ import com.marvinelsen.willow.persistence.cedict.DefinitionTable
 import com.marvinelsen.willow.persistence.cedict.WordEntity
 import com.marvinelsen.willow.persistence.cedict.WordTable
 import com.marvinelsen.willow.serialization.cedict.CedictParser
+import com.marvinelsen.willow.serialization.moe.MoeParser
 import com.marvinelsen.willow.service.objects.Dictionary
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
@@ -58,6 +59,10 @@ fun main() {
 fun createDatabaseTables() {
     val cedictEntries =
         CedictParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/cedict_1_0_ts_utf-8_mdbg.txt.gz")))
+
+    val moeEntries =
+        MoeParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/moedict.json.gz")))
+
     transaction {
         // addLogger(StdOutSqlLogger)
         SchemaUtils.create(WordTable, DefinitionTable)
