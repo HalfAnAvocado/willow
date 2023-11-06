@@ -109,10 +109,12 @@ class MainController {
         if (cedictDefinitions != null) {
             val content = buildString {
                 append("<ol>")
-                cedictDefinitions.forEach {
-                    append("<li>")
-                    append(it.content)
-                    append("</li>")
+                cedictDefinitions.forEach { definition ->
+                    definition.content.split("/").forEach {
+                        append("<li>")
+                        append(it)
+                        append("</li>")
+                    }
                 }
                 append("</ol>")
             }
