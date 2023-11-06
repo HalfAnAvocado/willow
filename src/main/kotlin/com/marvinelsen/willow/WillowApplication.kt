@@ -96,13 +96,16 @@ fun createDatabaseTables() {
 
                 heteronym.definitions.forEach { definition ->
                     val definitionContent = listOfNotNull(
-                        definition.content,
-                        definition.examples.joinToString(prefix = "Examples: ", separator = "\n"),
-                        definition.quotes.joinToString(prefix = "Quotes: ", separator = "\n"),
-                        "Synonyms: ${definition.synonyms}".takeIf { definition.synonyms != null },
-                        "Antonyms: ${definition.antonyms}".takeIf { definition.antonyms != null },
-                        "See also: ${definition.links.joinToString(separator = ", ")}".takeIf { definition.links.isNotEmpty() },
-                    ).joinToString(separator = "\n")
+                        definition.content + definition.examples.joinToString(separator = ""),
+                        definition.quotes.joinToString(
+                            prefix = "<quote>",
+                            separator = "</quote><quote>",
+                            postfix = "</quote>"
+                        ),
+                        "似：${definition.synonyms?.replace(",", "、")}".takeIf { definition.synonyms != null },
+                        "反：${definition.antonyms?.replace(",", "、")}".takeIf { definition.antonyms != null },
+                        definition.links.joinToString(separator = ", ").takeIf { definition.links.isNotEmpty() },
+                    ).joinToString(separator = "<br>")
 
                     DefinitionEntity.new {
                         word = wordEntity

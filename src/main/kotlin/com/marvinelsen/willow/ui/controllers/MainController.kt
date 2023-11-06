@@ -128,7 +128,7 @@ class MainController {
                 append("<ol>")
                 moeDefinitions.forEach {
                     append("<li>")
-                    append(it.content.replace("\n", "<br>"))
+                    append(it.content)
                     append("</li>")
                 }
                 append("</ol>")
