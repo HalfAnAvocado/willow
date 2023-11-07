@@ -18,6 +18,8 @@ import javafx.scene.web.WebView
 
 
 class MainController {
+    lateinit var listViewCharacters: ListView<Word>
+    lateinit var listViewWords: ListView<Word>
     lateinit var labelStatus: Label
     lateinit var webViewCedict: WebView
     lateinit var titledPaneCedict: TitledPane
@@ -34,8 +36,13 @@ class MainController {
 
     fun initialize() {
         listViewDictionary.cellFactory = WordCellFactory()
+        listViewWords.cellFactory = WordCellFactory()
+        listViewCharacters.cellFactory = WordCellFactory()
 
         listViewDictionary.items = FXCollections.observableArrayList()
+        listViewWords.items = FXCollections.observableArrayList()
+        listViewCharacters.items = FXCollections.observableArrayList()
+
         listViewDictionary.items.addAll(CedictService.search("柳"))
         listViewDictionary.selectionModel
             .selectedItemProperty()
@@ -46,6 +53,7 @@ class MainController {
             if (newValue.isBlank()) return@addListener
             listViewDictionary.items.clear()
             listViewDictionary.items.addAll(CedictService.search(newValue))
+            listViewDictionary.selectionModel.selectFirst()
         }
     }
 
@@ -137,6 +145,12 @@ class MainController {
             titledPaneMoe.isVisible = true
             titledPaneMoe.isManaged = true
         }
+
+        listViewCharacters.items.clear()
+        listViewCharacters.items.addAll(CedictService.findCharactersOf(word))
+
+        listViewWords.items.clear()
+        listViewWords.items.addAll(CedictService.findWordsContaining(word))
     }
 
     private fun setStatus(status: String) {

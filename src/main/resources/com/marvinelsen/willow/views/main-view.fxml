@@ -109,15 +109,20 @@
                         </VBox>
                     </ScrollPane>
                 </Tab>
+                <Tab closable="false" text="Sentences">
+                    <ScrollPane fitToHeight="true" fitToWidth="true">
+                        <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
+                        </ListView>
+                    </ScrollPane>
+                </Tab>
                 <Tab closable="false" text="Words">
                     <ScrollPane fitToHeight="true" fitToWidth="true">
                         <ListView fx:id="listViewWords" prefHeight="200.0" prefWidth="200.0"/>
                     </ScrollPane>
                 </Tab>
-                <Tab closable="false" text="Sentences">
+                <Tab closable="false" text="Characters">
                     <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
-                        </ListView>
+                        <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
                     </ScrollPane>
                 </Tab>
                 <Tab text="Notes">
@@ -127,11 +132,6 @@
                     </VBox>
                 </Tab>
                 <Tab closable="false" disable="true" text="Stroke"/>
-                <Tab closable="false" disable="true" text="Characters">
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
-                    </ScrollPane>
-                </Tab>
             </TabPane>
         </VBox>
     </SplitPane>
