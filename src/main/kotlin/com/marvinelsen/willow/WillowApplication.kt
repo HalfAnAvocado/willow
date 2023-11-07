@@ -26,7 +26,7 @@ class WillowApplication : Application() {
         Font.loadFont(WillowApplication::class.java.getResource("fonts/notosanstc.otf")!!.toExternalForm(), 12.0)
 
     init {
-        Database.connect("jdbc:sqlite:data.db", "org.sqlite.JDBC")
+        Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
         // createDatabaseTables()
     }
