@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.ui.controllers
 
+import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.service.CedictService
 import com.marvinelsen.willow.service.objects.Dictionary
 import com.marvinelsen.willow.service.objects.Word
@@ -8,7 +9,6 @@ import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
-import javafx.scene.control.TitledPane
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.paint.Color
@@ -18,15 +18,10 @@ import javafx.scene.web.WebView
 
 
 class MainController {
+    lateinit var webViewDefinitions: WebView
     lateinit var listViewCharacters: ListView<Word>
     lateinit var listViewWords: ListView<Word>
     lateinit var labelStatus: Label
-    lateinit var webViewCedict: WebView
-    lateinit var titledPaneCedict: TitledPane
-    lateinit var webViewMoe: WebView
-    lateinit var titledPaneMoe: TitledPane
-    lateinit var webViewUser: WebView
-    lateinit var titledPaneUser: TitledPane
     lateinit var labelHeadwordPronunciation: Label
     lateinit var textFlowHeadWord: TextFlow
     lateinit var textFieldSearch: TextField
@@ -55,6 +50,9 @@ class MainController {
             listViewDictionary.items.addAll(CedictService.search(newValue))
             listViewDictionary.selectionModel.selectFirst()
         }
+        webViewDefinitions.isContextMenuEnabled = false
+        webViewDefinitions.engine.userStyleSheetLocation =
+            WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
     }
 
     fun onMenuItemNewEntryAction() {}
@@ -92,15 +90,7 @@ class MainController {
         if (word == null) return
 
         textFlowHeadWord.children.clear()
-        webViewCedict.engine.loadContent("")
-        titledPaneCedict.isVisible = false
-        titledPaneUser.isManaged = false
-        webViewUser.engine.loadContent("")
-        titledPaneUser.isVisible = false
-        titledPaneUser.isManaged = false
-        webViewMoe.engine.loadContent("")
-        titledPaneMoe.isVisible = false
-        titledPaneMoe.isManaged = false
+        webViewDefinitions.engine.loadContent("")
         val characters = word.traditional.split("")
         for (i in characters.indices) {
             val characterText = Text(characters[i])
@@ -114,8 +104,10 @@ class MainController {
         labelHeadwordPronunciation.text =
             moeDefinitions?.first()?.numberedPinyin ?: cedictDefinitions!!.first().numberedPinyin
 
+        var cedictContent: String? = null
         if (cedictDefinitions != null) {
-            val content = buildString {
+            cedictContent = buildString {
+                append("<h1>CC-CEDICT</h1>")
                 append("<ol>")
                 cedictDefinitions.forEach { definition ->
                     definition.content.split("/").forEach {
@@ -126,13 +118,12 @@ class MainController {
                 }
                 append("</ol>")
             }
-            webViewCedict.engine.loadContent(content)
-            titledPaneCedict.isVisible = true
-            titledPaneCedict.isManaged = true
         }
 
+        var moeContent: String? = null
         if (moeDefinitions != null) {
-            val content = buildString {
+            moeContent = buildString {
+                append("<h1>MoE</h1>")
                 append("<ol>")
                 moeDefinitions.forEach {
                     append("<li>")
@@ -141,10 +132,8 @@ class MainController {
                 }
                 append("</ol>")
             }
-            webViewMoe.engine.loadContent(content)
-            titledPaneMoe.isVisible = true
-            titledPaneMoe.isManaged = true
         }
+        webViewDefinitions.engine.loadContent(listOfNotNull(cedictContent, moeContent).joinToString(separator = "<hr>"))
 
         listViewCharacters.items.clear()
         listViewCharacters.items.addAll(CedictService.findCharactersOf(word))

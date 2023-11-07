@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
@@ -7,8 +8,8 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.web.WebView?>
 <?import org.kordamp.ikonli.javafx.*?>
-<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" minWidth="500.0" prefHeight="400.0"
-      prefWidth="600.0" xmlns:fx="http://javafx.com/fxml"
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300.0" minWidth="500.0" prefHeight="729.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.marvinelsen.willow.ui.controllers.MainController">
     <MenuBar>
         <Menu text="_File">
@@ -95,19 +96,10 @@
             </FlowPane>
             <TabPane prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                 <Tab closable="false" text="Definition">
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <VBox maxHeight="1.7976931348623157E308" minHeight="400.0">
-                            <TitledPane fx:id="titledPaneUser" text="USER" VBox.vgrow="ALWAYS">
-                                <WebView fx:id="webViewUser" prefHeight="200.0" prefWidth="200.0"/>
-                            </TitledPane>
-                            <TitledPane fx:id="titledPaneMoe" text="MOE" VBox.vgrow="ALWAYS">
-                                <WebView fx:id="webViewMoe" prefHeight="200.0" prefWidth="200.0"/>
-                            </TitledPane>
-                            <TitledPane fx:id="titledPaneCedict" text="CC-CEDICT" VBox.vgrow="ALWAYS">
-                                <WebView fx:id="webViewCedict" prefHeight="200.0" prefWidth="200.0"/>
-                            </TitledPane>
-                        </VBox>
-                    </ScrollPane>
+                    <VBox>
+                        <WebView fx:id="webViewDefinitions" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0"
+                                 prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
+                    </VBox>
                 </Tab>
                 <Tab closable="false" text="Sentences">
                     <ScrollPane fitToHeight="true" fitToWidth="true">
