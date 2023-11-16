@@ -2,9 +2,13 @@ package com.marvinelsen.willow.ui.controllers
 
 import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.service.CedictService
+import com.marvinelsen.willow.ui.tasks.SearchTask
 import com.marvinelsen.willow.service.objects.Dictionary
 import com.marvinelsen.willow.service.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
+import com.marvinelsen.willow.ui.tasks.CharactersOfTask
+import com.marvinelsen.willow.ui.tasks.WordsContainingTask
+import java.util.concurrent.Executors
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -28,6 +32,8 @@ class MainController {
     lateinit var listViewDictionary: ListView<Word>
 
     private val systemClipboard = Clipboard.getSystemClipboard()
+
+    private val databaseExecutor = Executors.newFixedThreadPool(4)
 
     fun initialize() {
         listViewDictionary.cellFactory = WordCellFactory()
@@ -82,8 +88,12 @@ class MainController {
     fun onTextFieldSearchAction() {
         if (textFieldSearch.text.isBlank()) return
 
-        listViewDictionary.items.clear()
-        listViewDictionary.items.addAll(CedictService.search(textFieldSearch.text))
+        val searchTask = SearchTask(query = textFieldSearch.text)
+        searchTask.setOnSucceeded {
+            listViewDictionary.items.clear()
+            listViewDictionary.items.addAll(searchTask.value)
+        }
+        databaseExecutor.submit(searchTask)
     }
 
     private fun displayWord(word: Word?) {
@@ -135,11 +145,19 @@ class MainController {
         }
         webViewDefinitions.engine.loadContent(listOfNotNull(cedictContent, moeContent).joinToString(separator = "<hr>"))
 
-        listViewCharacters.items.clear()
-        listViewCharacters.items.addAll(CedictService.findCharactersOf(word))
+        val charactersOfTask = CharactersOfTask(word = word)
+        charactersOfTask.setOnSucceeded {
+            listViewCharacters.items.clear()
+            listViewCharacters.items.addAll(charactersOfTask.value)
+        }
 
-        listViewWords.items.clear()
-        listViewWords.items.addAll(CedictService.findWordsContaining(word))
+        val wordsContainingTask = WordsContainingTask(word = word)
+        wordsContainingTask.setOnSucceeded {
+            listViewWords.items.clear()
+            listViewWords.items.addAll(wordsContainingTask.value)
+        }
+        databaseExecutor.submit(charactersOfTask)
+        databaseExecutor.submit(wordsContainingTask)
     }
 
     private fun setStatus(status: String) {
