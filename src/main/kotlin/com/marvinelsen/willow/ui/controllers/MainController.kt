@@ -1,10 +1,10 @@
 package com.marvinelsen.willow.ui.controllers
 
 import com.marvinelsen.willow.WillowApplication
-import com.marvinelsen.willow.service.CedictService
+import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.ui.tasks.SearchTask
-import com.marvinelsen.willow.service.objects.Dictionary
-import com.marvinelsen.willow.service.objects.Word
+import com.marvinelsen.willow.dictionary.objects.SourceDictionary
+import com.marvinelsen.willow.dictionary.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import com.marvinelsen.willow.ui.tasks.CharactersOfTask
 import com.marvinelsen.willow.ui.tasks.WordsContainingTask
@@ -44,7 +44,7 @@ class MainController {
         listViewWords.items = FXCollections.observableArrayList()
         listViewCharacters.items = FXCollections.observableArrayList()
 
-        listViewDictionary.items.addAll(CedictService.search("柳"))
+        listViewDictionary.items.addAll(Dictionary.search("柳"))
         listViewDictionary.selectionModel
             .selectedItemProperty()
             .addListener { observableValue, entry, newEntry -> displayWord(newEntry) }
@@ -53,7 +53,7 @@ class MainController {
         textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
             if (newValue.isBlank()) return@addListener
             listViewDictionary.items.clear()
-            listViewDictionary.items.addAll(CedictService.search(newValue))
+            listViewDictionary.items.addAll(Dictionary.search(newValue))
             listViewDictionary.selectionModel.selectFirst()
         }
         webViewDefinitions.isContextMenuEnabled = false
@@ -108,8 +108,8 @@ class MainController {
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
-        val cedictDefinitions = word.definitions[Dictionary.CEDICT]
-        val moeDefinitions = word.definitions[Dictionary.MOE]
+        val cedictDefinitions = word.definitions[SourceDictionary.CEDICT]
+        val moeDefinitions = word.definitions[SourceDictionary.MOE]
 
         labelHeadwordPronunciation.text =
             moeDefinitions?.first()?.numberedPinyin ?: cedictDefinitions!!.first().numberedPinyin

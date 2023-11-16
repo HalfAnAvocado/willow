@@ -6,7 +6,7 @@ import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import com.marvinelsen.willow.persistence.tables.WordTable
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.moe.MoeParser
-import com.marvinelsen.willow.service.objects.Dictionary
+import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
@@ -77,7 +77,7 @@ fun createDatabaseTables() {
                     numberedPinyin = cedictEntry.numberedPinyin
                     numberedPinyinTaiwan = cedictEntry.numberedPinyinTaiwan
                     content = cedictEntry.definitions
-                    dictionary = Dictionary.CEDICT
+                    dictionary = SourceDictionary.CEDICT
                 }
             }
         }
@@ -113,7 +113,7 @@ fun createDatabaseTables() {
                         word = wordEntity
                         numberedPinyin = pinyin!!
                         content = definitionContent
-                        dictionary = Dictionary.MOE
+                        dictionary = SourceDictionary.MOE
                     }
                 }
             }

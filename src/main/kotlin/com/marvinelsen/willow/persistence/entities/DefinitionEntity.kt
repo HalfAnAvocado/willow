@@ -12,5 +12,5 @@ class DefinitionEntity(id: EntityID<Int>) : IntEntity(id) {
     var numberedPinyin by DefinitionTable.numberedPinyin
     var numberedPinyinTaiwan by DefinitionTable.numberedPinyinTaiwan
     var content by DefinitionTable.content
-    var dictionary by DefinitionTable.dictionary
+    var dictionary by DefinitionTable.sourceDictionary
 }
