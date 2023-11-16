@@ -10,6 +10,7 @@ ikonli = "12.2.0"
 # Plugin versions
 detekt = "1.23.3"
 javafxplugin = "0.1.0"
+badassruntime = "1.13.0"
 
 [libraries]
 kaml = { group = "com.charleskorn.kaml", name = "kaml", version.ref = "kaml" }
@@ -33,3 +34,4 @@ ikonli-material2 = { group = "org.kordamp.ikonli", name = "ikonli-material2-pack
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 javafx = { id = "org.openjfx.javafxplugin", version.ref = "javafxplugin" }
+badassruntime = { id = "org.beryx.runtime", version.ref = "badassruntime" }

@@ -48,12 +48,14 @@ class WillowApplication : Application() {
         private const val WINDOW_TITLE = "Willow"
         private const val WINDOW_MIN_HEIGHT = 480.0
         private const val WINDOW_MIN_WIDTH = 640.0
+
+        fun main() {
+            launch(WillowApplication::class.java)
+        }
     }
+
 }
 
-fun main() {
-    Application.launch(WillowApplication::class.java)
-}
 
 fun createDatabaseTables() {
     val cedictEntries =

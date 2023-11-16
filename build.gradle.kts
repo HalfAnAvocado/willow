@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.20"
     // alias(libs.plugins.detekt)
     alias(libs.plugins.javafx)
+    alias(libs.plugins.badassruntime)
 }
 
 group = "com.marvinelsen"
@@ -34,7 +35,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.marvinelsen.willow.WillowApplication")
+    mainClass.set("com.marvinelsen.willow.LauncherKt")
 }
 
 kotlin {
@@ -47,10 +48,15 @@ kotlin {
 javafx {
     version = "21.0.1"
     modules("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.web")
+    sdk = "/home/marvin/.jfx"
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+runtime {
+    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
 }
 
 //detekt {
