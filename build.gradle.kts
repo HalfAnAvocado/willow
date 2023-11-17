@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.sqlite)
     implementation(libs.ikonli.javafx)
     implementation(libs.ikonli.material2)
+    implementation(libs.apache.commons.csv)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)

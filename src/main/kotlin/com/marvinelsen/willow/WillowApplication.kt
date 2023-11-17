@@ -5,9 +5,10 @@ import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.WordEntity
 import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import com.marvinelsen.willow.persistence.tables.WordTable
-import com.marvinelsen.willow.util.PronunciationConverter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
+import com.marvinelsen.willow.serialization.lac.LacParser
 import com.marvinelsen.willow.serialization.moe.MoeParser
+import com.marvinelsen.willow.util.PronunciationConverter
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
@@ -29,7 +30,7 @@ class WillowApplication : Application() {
     init {
         Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-        createDatabaseTables()
+        // createDatabaseTables()
     }
 
     override fun start(stage: Stage) {
@@ -118,6 +119,26 @@ fun createDatabaseTables() {
                         dictionary = SourceDictionary.MOE
                     }
                 }
+            }
+        }
+    }
+
+    val lacEntries =
+        LacParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/lac.csv.gz")))
+
+    transaction {
+        lacEntries.forEach { entry ->
+            val wordEntity =
+                WordEntity.find { WordTable.traditional eq entry.headword }.firstOrNull() ?: WordEntity.new {
+                    traditional = entry.headword
+                    characterCount = entry.headword.length
+                }
+
+            DefinitionEntity.new {
+                word = wordEntity
+                this.zhuyin = entry.zhuyin
+                content = entry.definitions.joinToString(separator = "<br>")
+                dictionary = SourceDictionary.LAC
             }
         }
     }
