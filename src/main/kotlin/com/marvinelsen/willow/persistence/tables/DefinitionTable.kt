@@ -6,7 +6,6 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 object DefinitionTable : IntIdTable(name = "definitions") {
     val word = reference(name = "word", foreign = WordTable).index()
     val content = text(name = "content")
-    val numberedPinyin = text(name = "numbered_pinyin")
-    val numberedPinyinTaiwan = text(name = "numbered_pinyin_taiwan").nullable()
+    val zhuyin = text(name = "zhuyin")
     val sourceDictionary = enumeration<SourceDictionary>(name = "dictionary")
 }

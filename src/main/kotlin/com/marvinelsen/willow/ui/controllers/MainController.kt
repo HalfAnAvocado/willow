@@ -112,7 +112,7 @@ class MainController {
         val moeDefinitions = word.definitions[SourceDictionary.MOE]
 
         labelHeadwordPronunciation.text =
-            moeDefinitions?.first()?.numberedPinyin ?: cedictDefinitions!!.first().numberedPinyin
+            moeDefinitions?.first()?.zhuyin ?: cedictDefinitions!!.first().zhuyin
 
         var cedictContent: String? = null
         if (cedictDefinitions != null) {

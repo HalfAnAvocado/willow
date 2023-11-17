@@ -9,8 +9,7 @@ class DefinitionEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<DefinitionEntity>(DefinitionTable)
 
     var word by WordEntity referencedOn DefinitionTable.word
-    var numberedPinyin by DefinitionTable.numberedPinyin
-    var numberedPinyinTaiwan by DefinitionTable.numberedPinyinTaiwan
+    var zhuyin by DefinitionTable.zhuyin
     var content by DefinitionTable.content
     var dictionary by DefinitionTable.sourceDictionary
 }

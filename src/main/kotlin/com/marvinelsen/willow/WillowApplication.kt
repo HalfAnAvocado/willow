@@ -1,12 +1,13 @@
 package com.marvinelsen.willow
 
+import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.WordEntity
 import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import com.marvinelsen.willow.persistence.tables.WordTable
+import com.marvinelsen.willow.util.PronunciationConverter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.moe.MoeParser
-import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
@@ -28,7 +29,7 @@ class WillowApplication : Application() {
     init {
         Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
-        // createDatabaseTables()
+        createDatabaseTables()
     }
 
     override fun start(stage: Stage) {
@@ -74,8 +75,9 @@ fun createDatabaseTables() {
             for (cedictEntry in it) {
                 DefinitionEntity.new {
                     word = wordEntity
-                    numberedPinyin = cedictEntry.numberedPinyin
-                    numberedPinyinTaiwan = cedictEntry.numberedPinyinTaiwan
+                    zhuyin = PronunciationConverter.convertToZhuyin(
+                        cedictEntry.numberedPinyinTaiwan ?: cedictEntry.numberedPinyin
+                    )
                     content = cedictEntry.definitions
                     dictionary = SourceDictionary.CEDICT
                 }
@@ -93,8 +95,8 @@ fun createDatabaseTables() {
                 characterCount = entry.title.length
             }
 
-            entry.heteronyms.filter { it.accentedPinyin != null }.forEach { heteronym ->
-                val pinyin = heteronym.accentedPinyin
+            entry.heteronyms.filter { it.zhuyin != null }.forEach { heteronym ->
+                val zhuyin = heteronym.zhuyin
 
                 heteronym.definitions.forEach { definition ->
                     val definitionContent = listOfNotNull(
@@ -111,7 +113,7 @@ fun createDatabaseTables() {
 
                     DefinitionEntity.new {
                         word = wordEntity
-                        numberedPinyin = pinyin!!
+                        this.zhuyin = zhuyin!!
                         content = definitionContent
                         dictionary = SourceDictionary.MOE
                     }
