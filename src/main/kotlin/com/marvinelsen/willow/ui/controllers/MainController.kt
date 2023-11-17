@@ -2,11 +2,11 @@ package com.marvinelsen.willow.ui.controllers
 
 import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.Dictionary
-import com.marvinelsen.willow.ui.tasks.SearchTask
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.dictionary.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import com.marvinelsen.willow.ui.tasks.CharactersOfTask
+import com.marvinelsen.willow.ui.tasks.SearchTask
 import com.marvinelsen.willow.ui.tasks.WordsContainingTask
 import java.util.concurrent.Executors
 import javafx.collections.FXCollections
@@ -110,9 +110,10 @@ class MainController {
         }
         val cedictDefinitions = word.definitions[SourceDictionary.CEDICT]
         val moeDefinitions = word.definitions[SourceDictionary.MOE]
+        val lacDefinitions = word.definitions[SourceDictionary.LAC]
 
         labelHeadwordPronunciation.text =
-            moeDefinitions?.first()?.zhuyin ?: cedictDefinitions!!.first().zhuyin
+            lacDefinitions?.first()?.zhuyin ?: moeDefinitions?.first()?.zhuyin ?: cedictDefinitions!!.first().zhuyin
 
         var cedictContent: String? = null
         if (cedictDefinitions != null) {
@@ -143,7 +144,23 @@ class MainController {
                 append("</ol>")
             }
         }
-        webViewDefinitions.engine.loadContent(listOfNotNull(cedictContent, moeContent).joinToString(separator = "<hr>"))
+
+        var lacContent: String? = null
+        if (lacDefinitions != null) {
+            lacContent = buildString {
+                append("<h1>LAC</h1>")
+                append("<ol>")
+                lacDefinitions.forEach {
+                    append("<li>")
+                    append(it.content)
+                    append("</li>")
+                }
+                append("</ol>")
+            }
+        }
+        webViewDefinitions.engine.loadContent(
+            listOfNotNull(cedictContent, lacContent, moeContent).joinToString(separator = "<hr>")
+        )
 
         val charactersOfTask = CharactersOfTask(word = word)
         charactersOfTask.setOnSucceeded {
