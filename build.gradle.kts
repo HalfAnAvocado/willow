@@ -48,7 +48,6 @@ kotlin {
 javafx {
     version = "21.0.1"
     modules("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.web")
-    sdk = "/home/marvin/.jfx"
 }
 
 tasks.test {
