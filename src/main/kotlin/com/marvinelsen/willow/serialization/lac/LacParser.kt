@@ -16,5 +16,5 @@ private fun CSVRecord.toLacEntry(): LacEntry =
     LacEntry(
         headword = this[5],
         zhuyin = this[10],
-        definitions = (14..43).mapNotNull { this[it] }
+        definitions = (14..43).mapNotNull { this[it] }.filterNot { it.isBlank() }
     )
