@@ -157,7 +157,7 @@ class MainController {
             }
         }
         webViewDefinitions.engine.loadContent(
-            listOfNotNull(cedictContent, lacContent, moeContent).joinToString(separator = "<hr>")
+            listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
         )
 
         AsyncDictionary.findCharactersOf(word) {
