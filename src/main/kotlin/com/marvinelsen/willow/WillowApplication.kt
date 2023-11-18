@@ -12,6 +12,7 @@ import com.marvinelsen.willow.util.PronunciationConverter
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.text.Font
@@ -24,8 +25,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class WillowApplication : Application() {
     private val twKaiFont =
         Font.loadFont(WillowApplication::class.java.getResource("fonts/tw-kai.ttf")!!.toExternalForm(), 12.0)
-    private val notoSansTcFont =
-        Font.loadFont(WillowApplication::class.java.getResource("fonts/notosanstc.otf")!!.toExternalForm(), 12.0)
+    private val notoSansTcRegularFont =
+        Font.loadFont(WillowApplication::class.java.getResource("fonts/NotoSansCJKtc-Regular.otf")!!.toExternalForm(), 12.0)
+    private val notoSansTcBoldFont =
+        Font.loadFont(WillowApplication::class.java.getResource("fonts/NotoSansCJKtc-Bold.otf")!!.toExternalForm(), 12.0)
 
     init {
         Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON", "org.sqlite.JDBC")

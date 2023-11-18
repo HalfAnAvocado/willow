@@ -4,11 +4,20 @@
 }
 
 .list-view-word {
-    -fx-font: 20 "Noto Sans TC";
+    -fx-font: 20 "Noto Sans CJK TC";
+    -fx-font-weight: bold;
+}
+
+.list-view-definition {
+    -fx-font: 16 "Noto Sans CJK TC";
+}
+
+.list-view-pronunciation {
+    -fx-font: 12 "Noto Sans CJK TC";
 }
 
 .moe-definition {
-    -fx-font: 16 "Noto Sans TC";
+    -fx-font: 16 "Noto Sans CJK TC";
 }
 
 .headword {
