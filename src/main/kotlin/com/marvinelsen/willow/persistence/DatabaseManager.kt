@@ -6,6 +6,7 @@ import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.WordEntity
 import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import com.marvinelsen.willow.persistence.tables.WordTable
+import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.lac.LacParser
 import com.marvinelsen.willow.serialization.moe.MoeParser
@@ -43,7 +44,7 @@ object DatabaseManager {
                 val zhuyin = PronunciationConverter.convertToZhuyin(it.numberedPinyinTaiwan ?: it.numberedPinyin)
                 DefinitionEntity.new {
                     word = findOrCreateWordEntity(it.traditional, zhuyin)
-                    content = it.definitions
+                    content = CedictDefinitionFormatter.formatForDatabase(it)
                     dictionary = SourceDictionary.CEDICT
                 }
             }

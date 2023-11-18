@@ -5,5 +5,5 @@ data class CedictEntry(
     val simplified: String,
     val numberedPinyin: String,
     val numberedPinyinTaiwan: String? = null,
-    val definitions: String,
+    val definition: String,
 )

@@ -5,6 +5,7 @@ import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.dictionary.objects.Word
+import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
@@ -107,21 +108,7 @@ class MainController {
 
         labelHeadwordPronunciation.text = word.zhuyin
 
-        var cedictContent: String? = null
-        if (cedictDefinitions != null) {
-            cedictContent = buildString {
-                append("<h1>CC-CEDICT</h1>")
-                append("<ol>")
-                cedictDefinitions.forEach { definition ->
-                    definition.content.split("/").forEach {
-                        append("<li>")
-                        append(it)
-                        append("</li>")
-                    }
-                }
-                append("</ol>")
-            }
-        }
+        val cedictContent: String? = cedictDefinitions?.let { CedictDefinitionFormatter.formatForDisplay(it) }
 
         var moeContent: String? = null
         if (moeDefinitions != null) {
