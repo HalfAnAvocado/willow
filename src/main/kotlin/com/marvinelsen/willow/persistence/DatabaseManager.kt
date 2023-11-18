@@ -20,7 +20,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseManager {
     fun init() {
-        Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON", "org.sqlite.JDBC")
+        Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON&foreign_keys=ON", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     }
 
