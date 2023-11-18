@@ -4,6 +4,10 @@ import java.io.InputStream
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 
+const val TRADITIONAL_COLUMN_INDEX = 5
+const val ZHUYIN_COLUMN_INDEX = 10
+val DEFINITION_COLUMNS_INDICES = (14..43)
+
 object LacParser {
     fun parse(inputStream: InputStream) =
         CSVFormat.DEFAULT
@@ -13,17 +17,17 @@ object LacParser {
 }
 
 private fun CSVRecord.toLacEntry(): LacEntry {
-    val headword = this[5]
-    val zhuyin = this[10]
-    val definitions = (14..43)
+    val traditional = this[TRADITIONAL_COLUMN_INDEX]
+    val zhuyin = this[ZHUYIN_COLUMN_INDEX].replace("丨", "ㄧ")
+    val definitions = DEFINITION_COLUMNS_INDICES
         .mapNotNull { this[it] }
         .filterNot { it.isBlank() }
         .map {
-            it.replace("～", "<span class=\"headword\">${headword}</span>").split('\n').joinToString(separator = "") { "<li>${it.substringAfter('.')}</li>" }
+            it.replace("～", "<span class=\"headword\">${traditional}</span>").split('\n').joinToString(separator = "") { "<li>${it.substringAfter('.')}</li>" }
         }
 
     return LacEntry(
-        headword = headword,
+        traditional = traditional,
         zhuyin = zhuyin,
         definitions = definitions
     )

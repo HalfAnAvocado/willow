@@ -92,7 +92,7 @@ object DatabaseManager {
         transaction {
             lacEntries.forEach {
                 DefinitionEntity.new {
-                    word = findOrCreateWordEntity(it.headword)
+                    word = findOrCreateWordEntity(it.traditional)
                     this.zhuyin = it.zhuyin
                     content = it.definitions.joinToString(separator = "")
                     dictionary = SourceDictionary.LAC
