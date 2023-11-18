@@ -18,7 +18,10 @@ object PronunciationConverter {
         val pinyinSyllable = if (lastCharacter.isDigit())
             numberedPinyinSyllable.substring(0..<numberedPinyinSyllable.lastIndex) else numberedPinyinSyllable
 
-        return (pinyinToZhuyinMapping[pinyinSyllable] ?: pinyinSyllable) + (numberToToneMarkMapping[toneNumber] ?: "")
+        val zhuyinSyllable = pinyinToZhuyinMapping[pinyinSyllable] ?: pinyinSyllable
+        val toneMark = numberToToneMarkMapping[toneNumber] ?: ""
+
+        return if (toneNumber == 5) toneMark + zhuyinSyllable else zhuyinSyllable + toneMark
     }
 
     private fun parseTranscriptions(inputStream: InputStream) =
