@@ -1,14 +1,11 @@
 package com.marvinelsen.willow.ui.controllers
 
 import com.marvinelsen.willow.WillowApplication
+import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.dictionary.objects.Word
 import com.marvinelsen.willow.ui.cells.WordCellFactory
-import com.marvinelsen.willow.ui.tasks.CharactersOfTask
-import com.marvinelsen.willow.ui.tasks.SearchTask
-import com.marvinelsen.willow.ui.tasks.WordsContainingTask
-import java.util.concurrent.Executors
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -33,7 +30,6 @@ class MainController {
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
-    private val databaseExecutor = Executors.newFixedThreadPool(4)
 
     fun initialize() {
         listViewDictionary.cellFactory = WordCellFactory()
@@ -88,19 +84,21 @@ class MainController {
     fun onTextFieldSearchAction() {
         if (textFieldSearch.text.isBlank()) return
 
-        val searchTask = SearchTask(query = textFieldSearch.text)
-        searchTask.setOnSucceeded {
+        AsyncDictionary.search(textFieldSearch.text) {
             listViewDictionary.items.clear()
-            listViewDictionary.items.addAll(searchTask.value)
+            listViewDictionary.items.addAll(it)
         }
-        databaseExecutor.submit(searchTask)
     }
 
     private fun displayWord(word: Word?) {
+        textFlowHeadWord.children.clear()
+        labelHeadwordPronunciation.text = ""
+        webViewDefinitions.engine.loadContent("")
+        listViewCharacters.items.clear()
+        listViewWords.items.clear()
+
         if (word == null) return
 
-        textFlowHeadWord.children.clear()
-        webViewDefinitions.engine.loadContent("")
         val characters = word.traditional.split("")
         for (i in characters.indices) {
             val characterText = Text(characters[i])
@@ -162,19 +160,13 @@ class MainController {
             listOfNotNull(cedictContent, lacContent, moeContent).joinToString(separator = "<hr>")
         )
 
-        val charactersOfTask = CharactersOfTask(word = word)
-        charactersOfTask.setOnSucceeded {
-            listViewCharacters.items.clear()
-            listViewCharacters.items.addAll(charactersOfTask.value)
+        AsyncDictionary.findCharactersOf(word) {
+            listViewCharacters.items.addAll(it)
         }
 
-        val wordsContainingTask = WordsContainingTask(word = word)
-        wordsContainingTask.setOnSucceeded {
-            listViewWords.items.clear()
-            listViewWords.items.addAll(wordsContainingTask.value)
+        AsyncDictionary.findWordsContaining(word) {
+            listViewWords.items.addAll(it)
         }
-        databaseExecutor.submit(charactersOfTask)
-        databaseExecutor.submit(wordsContainingTask)
     }
 
     private fun setStatus(status: String) {

@@ -1,5 +1,6 @@
 package com.marvinelsen.willow
 
+import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.WordEntity
@@ -47,6 +48,10 @@ class WillowApplication : Application() {
         stage.scene = scene
 
         stage.show()
+    }
+
+    override fun stop() {
+        AsyncDictionary.shutdownExecutor()
     }
 
     companion object {
