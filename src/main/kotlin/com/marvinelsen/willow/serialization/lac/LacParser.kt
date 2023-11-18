@@ -26,13 +26,6 @@ private fun CSVRecord.toLacEntry(): LacEntry {
     val definitions = DEFINITION_COLUMNS_INDICES
         .mapNotNull { this[it] }
         .filterNot { it.isBlank() }
-        .map {
-            it.replace("～", "<span class=\"headword\">${traditional}</span>")
-                .replace("★", "【大陸】")
-                .replace("▲", "【臺灣】")
-                .split('\n')
-                .joinToString(separator = "") { "<li>${it.substringAfter('.')}</li>" }
-        }
 
     return LacEntry(
         traditional = traditional,

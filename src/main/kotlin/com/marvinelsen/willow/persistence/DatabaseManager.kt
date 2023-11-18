@@ -8,6 +8,7 @@ import com.marvinelsen.willow.persistence.tables.DefinitionTable
 import com.marvinelsen.willow.persistence.tables.WordTable
 import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
+import com.marvinelsen.willow.serialization.lac.LacDefinitionFormatter
 import com.marvinelsen.willow.serialization.lac.LacParser
 import com.marvinelsen.willow.serialization.moe.MoeDefinitionFormatter
 import com.marvinelsen.willow.serialization.moe.MoeParser
@@ -82,8 +83,8 @@ object DatabaseManager {
             lacEntries.forEach {
                 DefinitionEntity.new {
                     word = findOrCreateWordEntity(it.traditional, it.zhuyinTaiwan.ifBlank { it.zhuyinMainland })
-                    shortDefinition = it.definitions.joinToString(separator = "")
-                    htmlDefinition = it.definitions.joinToString(separator = "")
+                    shortDefinition = LacDefinitionFormatter.formatShortDefinition(it)
+                    htmlDefinition = LacDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.LAC
                 }
             }

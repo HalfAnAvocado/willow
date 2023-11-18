@@ -109,20 +109,8 @@ class MainController {
 
         val cedictContent: String? = cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
         val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<br>") { it.htmlDefinition }
+        val lacContent: String? = lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<br>") { it.htmlDefinition }
 
-        var lacContent: String? = null
-        if (lacDefinitions != null) {
-            lacContent = buildString {
-                append("<h1>LAC</h1>")
-                append("<ol>")
-                lacDefinitions.forEach {
-                    append("<ol>")
-                    append(it.htmlDefinition)
-                    append("</ol>")
-                }
-                append("</ol>")
-            }
-        }
         webViewDefinitions.engine.loadContent(
             listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
         )
