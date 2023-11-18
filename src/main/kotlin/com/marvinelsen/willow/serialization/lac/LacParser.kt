@@ -4,10 +4,10 @@ import java.io.InputStream
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 
-const val TRADITIONAL_COLUMN_INDEX = 5
-const val ZHUYIN_TAIWAN_COLUMN_INDEX = 10
-const val ZHUYIN_MAINLAND_COLUMN_INDEX = 12
-val DEFINITION_COLUMNS_INDICES = (14..43)
+private const val TRADITIONAL_COLUMN_INDEX = 5
+private const val ZHUYIN_TAIWAN_COLUMN_INDEX = 10
+private const val ZHUYIN_MAINLAND_COLUMN_INDEX = 12
+private val DEFINITION_COLUMNS_INDICES = (14..43)
 
 object LacParser {
     fun parse(inputStream: InputStream) =
