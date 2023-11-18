@@ -5,8 +5,6 @@ import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.dictionary.objects.Word
-import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
-import com.marvinelsen.willow.serialization.moe.MoeDefinitionFormatter
 import com.marvinelsen.willow.ui.cells.WordCellFactory
 import javafx.collections.FXCollections
 import javafx.scene.control.Label

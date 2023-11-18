@@ -26,6 +26,7 @@ object DatabaseManager {
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     }
 
+    @Suppress("Unused")
     fun createDatabase() {
         transaction {
             SchemaUtils.create(WordTable, DefinitionTable)

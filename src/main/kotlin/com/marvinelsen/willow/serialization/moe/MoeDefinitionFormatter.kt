@@ -1,7 +1,5 @@
 package com.marvinelsen.willow.serialization.moe
 
-import com.marvinelsen.willow.dictionary.objects.Definition
-
 object MoeDefinitionFormatter {
     fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = buildString {
         moeDefinitions.groupBy { it.type ?: "" }.entries.forEach { (type, definitions) ->
