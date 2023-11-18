@@ -10,7 +10,6 @@ class WordEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<WordEntity>(WordTable)
 
     var traditional by WordTable.traditional
-    var simplified by WordTable.simplified
     var characterCount by WordTable.characterCount
 
     val definitions by DefinitionEntity referrersOn DefinitionTable.word
