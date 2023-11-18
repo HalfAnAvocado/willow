@@ -1,11 +1,13 @@
 html {
     font-family: "Noto Sans CJK TC";
     border: 1px solid #B5B5B5;
+    padding: 16px;
 }
 
 h1 {
     font-weight: bold;
     font-size: 1.25em;
+    text-align: right;
 }
 
 ol {
