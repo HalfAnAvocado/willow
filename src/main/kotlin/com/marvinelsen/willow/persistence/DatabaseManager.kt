@@ -94,7 +94,7 @@ object DatabaseManager {
                 DefinitionEntity.new {
                     word = findOrCreateWordEntity(it.headword)
                     this.zhuyin = it.zhuyin
-                    content = it.definitions.joinToString(separator = "<br>")
+                    content = it.definitions.joinToString(separator = "")
                     dictionary = SourceDictionary.LAC
                 }
             }

@@ -144,9 +144,9 @@ class MainController {
                 append("<h1>LAC</h1>")
                 append("<ol>")
                 lacDefinitions.forEach {
-                    append("<li>")
+                    append("<ol>")
                     append(it.content)
-                    append("</li>")
+                    append("</ol>")
                 }
                 append("</ol>")
             }

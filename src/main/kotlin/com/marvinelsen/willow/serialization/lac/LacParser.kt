@@ -12,9 +12,19 @@ object LacParser {
             .map(CSVRecord::toLacEntry)
 }
 
-private fun CSVRecord.toLacEntry(): LacEntry =
-    LacEntry(
-        headword = this[5],
-        zhuyin = this[10],
-        definitions = (14..43).mapNotNull { this[it] }.filterNot { it.isBlank() }
+private fun CSVRecord.toLacEntry(): LacEntry {
+    val headword = this[5]
+    val zhuyin = this[10]
+    val definitions = (14..43)
+        .mapNotNull { this[it] }
+        .filterNot { it.isBlank() }
+        .map {
+            it.replace("～", "<span class=\"headword\">${headword}</span>").split('\n').joinToString(separator = "") { "<li>${it.substringAfter('.')}</li>" }
+        }
+
+    return LacEntry(
+        headword = headword,
+        zhuyin = zhuyin,
+        definitions = definitions
     )
+}

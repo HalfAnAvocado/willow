@@ -11,3 +11,8 @@ h1 {
 ol {
     padding-left: 24px;
 }
+
+.headword {
+    color: red;
+    font-style: bold;
+}
