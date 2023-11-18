@@ -1,7 +1,8 @@
 package com.marvinelsen.willow.dictionary
 
+import com.marvinelsen.willow.dictionary.objects.Definition
 import com.marvinelsen.willow.dictionary.objects.Word
-import com.marvinelsen.willow.dictionary.objects.asWord
+import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.WordEntity
 import com.marvinelsen.willow.persistence.tables.WordTable
 import org.jetbrains.exposed.dao.with
@@ -32,3 +33,13 @@ object Dictionary {
             .sortedBy { characterToOriginalIndexMapping[it.traditional] }
     }
 }
+
+private fun WordEntity.asWord() = Word(
+    traditional = traditional,
+    zhuyin = zhuyin,
+    definitions = definitions.map { it.asDefinition() }.groupBy { it.sourceDictionary })
+
+private fun DefinitionEntity.asDefinition() = Definition(
+    content = content,
+    sourceDictionary = dictionary,
+)
