@@ -9,6 +9,7 @@ import com.marvinelsen.willow.persistence.tables.WordTable
 import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.lac.LacParser
+import com.marvinelsen.willow.serialization.moe.MoeDefinitionFormatter
 import com.marvinelsen.willow.serialization.moe.MoeParser
 import com.marvinelsen.willow.util.PronunciationConverter
 import java.sql.Connection
@@ -60,24 +61,10 @@ object DatabaseManager {
                 entry.heteronyms.filter { it.zhuyin != null }.forEach { heteronym ->
                     val zhuyin = heteronym.zhuyin!!
 
-                    heteronym.definitions.forEach { definition ->
-                        val definitionContent = listOfNotNull(
-                            definition.content + definition.examples.joinToString(separator = ""),
-                            definition.quotes.joinToString(
-                                prefix = "<quote>",
-                                separator = "</quote><quote>",
-                                postfix = "</quote>"
-                            ),
-                            "似：${definition.synonyms?.replace(",", "、")}".takeIf { definition.synonyms != null },
-                            "反：${definition.antonyms?.replace(",", "、")}".takeIf { definition.antonyms != null },
-                            definition.links.joinToString(separator = ", ").takeIf { definition.links.isNotEmpty() },
-                        ).joinToString(separator = "<br>")
-
-                        DefinitionEntity.new {
-                            word = findOrCreateWordEntity(entry.title, zhuyin)
-                            content = definitionContent
-                            dictionary = SourceDictionary.MOE
-                        }
+                    DefinitionEntity.new {
+                        word = findOrCreateWordEntity(entry.title, zhuyin)
+                        content = MoeDefinitionFormatter.formatForDatabase(heteronym.definitions)
+                        dictionary = SourceDictionary.MOE
                     }
                 }
             }
@@ -100,9 +87,10 @@ object DatabaseManager {
     }
 
     private fun findOrCreateWordEntity(traditional: String, zhuyin: String) =
-        WordEntity.find { (WordTable.traditional eq traditional) and (WordTable.zhuyin eq zhuyin)}.firstOrNull() ?: WordEntity.new {
-            this.traditional = traditional
-            this.zhuyin = zhuyin
-            this.characterCount = traditional.length
-        }
+        WordEntity.find { (WordTable.traditional eq traditional) and (WordTable.zhuyin eq zhuyin) }.firstOrNull()
+            ?: WordEntity.new {
+                this.traditional = traditional
+                this.zhuyin = zhuyin
+                this.characterCount = traditional.length
+            }
 }
