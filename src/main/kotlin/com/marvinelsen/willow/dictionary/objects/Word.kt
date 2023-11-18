@@ -8,7 +8,7 @@ data class Word(
     val definitions: Map<SourceDictionary, List<Definition>>,
 ) {
     val preferredDefinitions: List<Definition> by lazy {
-        definitions[SourceDictionary.CEDICT] ?: definitions[SourceDictionary.LAC] ?: definitions[SourceDictionary.MOE]!!
+        definitions[SourceDictionary.LAC] ?: definitions[SourceDictionary.MOE] ?: definitions[SourceDictionary.CEDICT]!!
     }
 }
 
