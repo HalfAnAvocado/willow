@@ -50,7 +50,7 @@ internal class WordCell : ListCell<Word?>() {
 
             val definition = word.preferredDefinitions.first()
             labelPronunciation.text = word.zhuyin
-            labelDefinition.text = definition.content
+            labelDefinition.text = definition.shortDefinition
 
             graphic = root
         }

@@ -40,6 +40,7 @@ private fun WordEntity.asWord() = Word(
     definitions = definitions.map { it.asDefinition() }.groupBy { it.sourceDictionary })
 
 private fun DefinitionEntity.asDefinition() = Definition(
-    content = content,
+    shortDefinition = shortDefinition,
+    htmlDefinition = htmlDefinition,
     sourceDictionary = dictionary,
 )

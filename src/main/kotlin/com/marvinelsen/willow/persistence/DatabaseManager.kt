@@ -45,7 +45,8 @@ object DatabaseManager {
                 val zhuyin = PronunciationConverter.convertToZhuyin(it.numberedPinyinTaiwan ?: it.numberedPinyin)
                 DefinitionEntity.new {
                     word = findOrCreateWordEntity(it.traditional, zhuyin)
-                    content = CedictDefinitionFormatter.formatForDatabase(it)
+                    shortDefinition = CedictDefinitionFormatter.formatShortDefinition(it)
+                    htmlDefinition = CedictDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.CEDICT
                 }
             }
@@ -63,7 +64,8 @@ object DatabaseManager {
 
                     DefinitionEntity.new {
                         word = findOrCreateWordEntity(entry.title, zhuyin)
-                        content = MoeDefinitionFormatter.formatForDatabase(heteronym.definitions)
+                        shortDefinition = MoeDefinitionFormatter.formatShortDefinition(heteronym.definitions.first())
+                        htmlDefinition = MoeDefinitionFormatter.formatHtmlDefinition(heteronym.definitions)
                         dictionary = SourceDictionary.MOE
                     }
                 }
@@ -79,7 +81,8 @@ object DatabaseManager {
             lacEntries.forEach {
                 DefinitionEntity.new {
                     word = findOrCreateWordEntity(it.traditional, it.zhuyinTaiwan.ifBlank { it.zhuyinMainland })
-                    content = it.definitions.joinToString(separator = "")
+                    shortDefinition = it.definitions.joinToString(separator = "")
+                    htmlDefinition = it.definitions.joinToString(separator = "")
                     dictionary = SourceDictionary.LAC
                 }
             }

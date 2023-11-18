@@ -45,10 +45,10 @@ class MainController {
         listViewDictionary.items.addAll(Dictionary.search("柳"))
         listViewDictionary.selectionModel
             .selectedItemProperty()
-            .addListener { observableValue, entry, newEntry -> displayWord(newEntry) }
+            .addListener { _, _, newEntry -> displayWord(newEntry) }
         listViewDictionary.selectionModel.selectFirst()
 
-        textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
+        textFieldSearch.textProperty().addListener { _, _, newValue ->
             if (newValue.isBlank()) return@addListener
 
             AsyncDictionary.search(textFieldSearch.text) {
@@ -109,8 +109,8 @@ class MainController {
 
         labelHeadwordPronunciation.text = word.zhuyin
 
-        val cedictContent: String? = cedictDefinitions?.let { CedictDefinitionFormatter.formatForDisplay(it) }
-        val moeContent: String? = moeDefinitions?.let { MoeDefinitionFormatter.formatForDisplay(it) }
+        val cedictContent: String? = cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
+        val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<br>") { it.htmlDefinition }
 
         var lacContent: String? = null
         if (lacDefinitions != null) {
@@ -119,7 +119,7 @@ class MainController {
                 append("<ol>")
                 lacDefinitions.forEach {
                     append("<ol>")
-                    append(it.content)
+                    append(it.htmlDefinition)
                     append("</ol>")
                 }
                 append("</ol>")

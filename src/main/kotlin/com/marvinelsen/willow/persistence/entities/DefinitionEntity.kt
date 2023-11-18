@@ -9,6 +9,7 @@ class DefinitionEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<DefinitionEntity>(DefinitionTable)
 
     var word by WordEntity referencedOn DefinitionTable.word
-    var content by DefinitionTable.content
+    var shortDefinition by DefinitionTable.shortDefinition
+    var htmlDefinition by DefinitionTable.htmlDefinition
     var dictionary by DefinitionTable.sourceDictionary
 }

@@ -3,7 +3,7 @@ package com.marvinelsen.willow.serialization.moe
 import com.marvinelsen.willow.dictionary.objects.Definition
 
 object MoeDefinitionFormatter {
-    fun formatForDatabase(moeDefinitions: List<MoeDefinition>) = buildString {
+    fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = buildString {
         moeDefinitions.groupBy { it.type ?: "" }.entries.forEach { (type, definitions) ->
             if (type != "") {
                 append("<span class=\"type\">$type</span>")
@@ -22,12 +22,7 @@ object MoeDefinitionFormatter {
         }
     }
 
-    fun formatForDisplay(moeDefinitions: List<Definition>) = buildString {
-        append("<h1>MoE</h1>")
-        moeDefinitions.forEach { definition ->
-            append(definition.content)
-        }
-    }
+    fun formatShortDefinition(moeDefinition: MoeDefinition) = moeDefinition.content
 
     private fun formatDefinition(moeDefinition: MoeDefinition) = buildString {
         append("<span class=\"definition\">${moeDefinition.content}</span>")
