@@ -5,7 +5,8 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 
 const val TRADITIONAL_COLUMN_INDEX = 5
-const val ZHUYIN_COLUMN_INDEX = 10
+const val TAIWAN_ZHUYIN_COLUMN_INDEX = 10
+const val MAINLAND_ZHUYIN_COLUMN_INDEX = 12
 val DEFINITION_COLUMNS_INDICES = (14..43)
 
 object LacParser {
@@ -18,7 +19,7 @@ object LacParser {
 
 private fun CSVRecord.toLacEntry(): LacEntry {
     val traditional = this[TRADITIONAL_COLUMN_INDEX]
-    val zhuyin = this[ZHUYIN_COLUMN_INDEX].replace("丨", "ㄧ")
+    val zhuyin = (this[TAIWAN_ZHUYIN_COLUMN_INDEX].ifBlank { this[MAINLAND_ZHUYIN_COLUMN_INDEX] }).replace("丨", "ㄧ")
     val definitions = DEFINITION_COLUMNS_INDICES
         .mapNotNull { this[it] }
         .filterNot { it.isBlank() }
