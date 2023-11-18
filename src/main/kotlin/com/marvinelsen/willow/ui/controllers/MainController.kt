@@ -48,9 +48,13 @@ class MainController {
 
         textFieldSearch.textProperty().addListener { observable, oldValue, newValue ->
             if (newValue.isBlank()) return@addListener
-            listViewDictionary.items.clear()
-            listViewDictionary.items.addAll(Dictionary.search(newValue))
-            listViewDictionary.selectionModel.selectFirst()
+
+            AsyncDictionary.search(textFieldSearch.text) {
+                listViewDictionary.items.clear()
+                listViewDictionary.items.addAll(it)
+                listViewDictionary.selectionModel.selectFirst()
+                setStatus("Found ${it.size} matching entries.")
+            }
         }
         webViewDefinitions.isContextMenuEnabled = false
         webViewDefinitions.engine.userStyleSheetLocation =
@@ -80,15 +84,6 @@ class MainController {
 
     fun onMenuItemAboutAction() {}
     fun showSelectedWordContextMenu() {}
-
-    fun onTextFieldSearchAction() {
-        if (textFieldSearch.text.isBlank()) return
-
-        AsyncDictionary.search(textFieldSearch.text) {
-            listViewDictionary.items.clear()
-            listViewDictionary.items.addAll(it)
-        }
-    }
 
     private fun displayWord(word: Word?) {
         textFlowHeadWord.children.clear()
