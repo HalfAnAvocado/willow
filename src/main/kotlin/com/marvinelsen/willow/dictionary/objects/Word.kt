@@ -4,6 +4,7 @@ import com.marvinelsen.willow.persistence.entities.WordEntity
 
 data class Word(
     val traditional: String,
+    val zhuyin: String,
     val definitions: Map<SourceDictionary, List<Definition>>,
 ) {
     val preferredDefinitions: List<Definition> by lazy {
@@ -13,4 +14,5 @@ data class Word(
 
 fun WordEntity.asWord() = Word(
     traditional = traditional,
+    zhuyin = zhuyin,
     definitions = definitions.map { it.asDefinition() }.groupBy { it.sourceDictionary })

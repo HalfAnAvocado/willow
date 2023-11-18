@@ -49,7 +49,7 @@ internal class WordCell : ListCell<Word?>() {
             labelHeadword.text = word.traditional
 
             val definition = word.preferredDefinitions.first()
-            labelPronunciation.text = definition.zhuyin
+            labelPronunciation.text = word.zhuyin
             labelDefinition.text = definition.content
 
             graphic = root

@@ -105,8 +105,7 @@ class MainController {
         val moeDefinitions = word.definitions[SourceDictionary.MOE]
         val lacDefinitions = word.definitions[SourceDictionary.LAC]
 
-        labelHeadwordPronunciation.text =
-            lacDefinitions?.first()?.zhuyin ?: moeDefinitions?.first()?.zhuyin ?: cedictDefinitions!!.first().zhuyin
+        labelHeadwordPronunciation.text = word.zhuyin
 
         var cedictContent: String? = null
         if (cedictDefinitions != null) {

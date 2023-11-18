@@ -14,6 +14,7 @@ import java.sql.Connection
 import java.util.zip.GZIPInputStream
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -39,11 +40,9 @@ object DatabaseManager {
 
         transaction {
             cedictEntries.forEach {
+                val zhuyin = PronunciationConverter.convertToZhuyin(it.numberedPinyinTaiwan ?: it.numberedPinyin)
                 DefinitionEntity.new {
-                    word = findOrCreateWordEntity(it.traditional)
-                    zhuyin = PronunciationConverter.convertToZhuyin(
-                        it.numberedPinyinTaiwan ?: it.numberedPinyin
-                    )
+                    word = findOrCreateWordEntity(it.traditional, zhuyin)
                     content = it.definitions
                     dictionary = SourceDictionary.CEDICT
                 }
@@ -58,7 +57,7 @@ object DatabaseManager {
         transaction {
             moeEntries.filter { !it.title.startsWith("{") }.forEach { entry ->
                 entry.heteronyms.filter { it.zhuyin != null }.forEach { heteronym ->
-                    val zhuyin = heteronym.zhuyin
+                    val zhuyin = heteronym.zhuyin!!
 
                     heteronym.definitions.forEach { definition ->
                         val definitionContent = listOfNotNull(
@@ -74,8 +73,7 @@ object DatabaseManager {
                         ).joinToString(separator = "<br>")
 
                         DefinitionEntity.new {
-                            word = findOrCreateWordEntity(entry.title)
-                            this.zhuyin = zhuyin!!
+                            word = findOrCreateWordEntity(entry.title, zhuyin)
                             content = definitionContent
                             dictionary = SourceDictionary.MOE
                         }
@@ -92,8 +90,7 @@ object DatabaseManager {
         transaction {
             lacEntries.forEach {
                 DefinitionEntity.new {
-                    word = findOrCreateWordEntity(it.traditional)
-                    this.zhuyin = it.zhuyin
+                    word = findOrCreateWordEntity(it.traditional, it.zhuyin)
                     content = it.definitions.joinToString(separator = "")
                     dictionary = SourceDictionary.LAC
                 }
@@ -101,9 +98,10 @@ object DatabaseManager {
         }
     }
 
-    private fun findOrCreateWordEntity(traditional: String) =
-        WordEntity.find { WordTable.traditional eq traditional }.firstOrNull() ?: WordEntity.new {
+    private fun findOrCreateWordEntity(traditional: String, zhuyin: String) =
+        WordEntity.find { (WordTable.traditional eq traditional) and (WordTable.zhuyin eq zhuyin)}.firstOrNull() ?: WordEntity.new {
             this.traditional = traditional
-            characterCount = traditional.length
+            this.zhuyin = zhuyin
+            this.characterCount = traditional.length
         }
 }

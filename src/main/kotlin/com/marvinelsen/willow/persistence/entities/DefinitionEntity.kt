@@ -9,7 +9,6 @@ class DefinitionEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<DefinitionEntity>(DefinitionTable)
 
     var word by WordEntity referencedOn DefinitionTable.word
-    var zhuyin by DefinitionTable.zhuyin
     var content by DefinitionTable.content
     var dictionary by DefinitionTable.sourceDictionary
 }
