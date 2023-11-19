@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.serialization.cedict
 
+import com.marvinelsen.willow.serialization.common.Parser
 import java.io.InputStream
 
 // CC-CEDICT format: https://cc-cedict.org/wiki/format:syntax
@@ -9,12 +10,12 @@ private val cedictEntryRegex =
     """^(?<traditional>\S+) (?<simplified>\S+) \[(?<numberedPinyin>[a-zA-Z0-9:,· ]+)] /(?<definition>.+)/$""".toRegex()
 private val taiwanPronunciationRegex = """Taiwan pr. \[(?<numberedPinyin>\S+)]""".toRegex()
 
-object CedictParser {
-    fun parse(inputStream: InputStream) =
+object CedictParser : Parser<CedictEntry> {
+    override fun parse(inputStream: InputStream) =
         inputStream.bufferedReader()
             .lineSequence()
             .filter { !it.startsWith("#") }
-            .map { it.toCedictEntry() }
+            .map(String::toCedictEntry)
             .toList()
 }
 

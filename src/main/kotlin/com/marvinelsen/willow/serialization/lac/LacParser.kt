@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.serialization.lac
 
+import com.marvinelsen.willow.serialization.common.Parser
 import java.io.InputStream
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
@@ -9,8 +10,8 @@ private const val ZHUYIN_TAIWAN_COLUMN_INDEX = 10
 private const val ZHUYIN_MAINLAND_COLUMN_INDEX = 12
 private val DEFINITION_COLUMNS_INDICES = (14..43)
 
-object LacParser {
-    fun parse(inputStream: InputStream) =
+object LacParser : Parser<LacEntry> {
+    override fun parse(inputStream: InputStream) =
         CSVFormat.DEFAULT
             .parse(inputStream.bufferedReader())
             .drop(1)
