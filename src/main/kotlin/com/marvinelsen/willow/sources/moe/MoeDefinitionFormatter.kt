@@ -1,5 +1,6 @@
-package com.marvinelsen.willow.serialization.moe
+package com.marvinelsen.willow.sources.moe
 
+// TODO: Make this inherit DefinitionFormatter
 object MoeDefinitionFormatter {
     fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = buildString {
         moeDefinitions.groupBy { it.type ?: "" }.entries.forEach { (type, definitions) ->

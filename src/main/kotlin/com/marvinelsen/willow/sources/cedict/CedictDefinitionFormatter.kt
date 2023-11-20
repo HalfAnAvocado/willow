@@ -1,8 +1,10 @@
-package com.marvinelsen.willow.serialization.cedict
+package com.marvinelsen.willow.sources.cedict
 
-object CedictDefinitionFormatter {
-    fun formatHtmlDefinition(cedictEntry: CedictEntry) = buildString {
-        val definitions = cedictEntry.definition
+import com.marvinelsen.willow.sources.common.DefinitionFormatter
+
+object CedictDefinitionFormatter : DefinitionFormatter<CedictEntry> {
+    override fun formatHtmlDefinition(entry: CedictEntry) = buildString {
+        val definitions = entry.definition
             .split("/")
             .filterNot { it.contains("Taiwan pr. ") }
 
@@ -19,5 +21,5 @@ object CedictDefinitionFormatter {
         }
     }
 
-    fun formatShortDefinition(cedictEntry: CedictEntry) = cedictEntry.definition.replace("/", " / ")
+    override fun formatShortDefinition(entry: CedictEntry) = entry.definition.replace("/", " / ")
 }

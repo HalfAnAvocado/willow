@@ -1,6 +1,6 @@
-package com.marvinelsen.willow.serialization.lac
+package com.marvinelsen.willow.sources.lac
 
-import com.marvinelsen.willow.serialization.common.Parser
+import com.marvinelsen.willow.sources.common.Parser
 import java.io.InputStream
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord

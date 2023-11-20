@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.serialization.moe
+package com.marvinelsen.willow.sources.moe
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

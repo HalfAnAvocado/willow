@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.serialization.lac
+package com.marvinelsen.willow.sources.lac
 
 data class LacEntry(
     val traditional: String,

@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.persistence.tables
+package com.marvinelsen.willow.dictionary.database.tables
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 

@@ -3,9 +3,9 @@ package com.marvinelsen.willow.dictionary
 import com.huaban.analysis.jieba.JiebaSegmenter
 import com.marvinelsen.willow.dictionary.objects.Definition
 import com.marvinelsen.willow.dictionary.objects.Entry
-import com.marvinelsen.willow.persistence.entities.DefinitionEntity
-import com.marvinelsen.willow.persistence.entities.EntryEntity
-import com.marvinelsen.willow.persistence.tables.EntryTable
+import com.marvinelsen.willow.dictionary.database.entities.DefinitionEntity
+import com.marvinelsen.willow.dictionary.database.entities.EntryEntity
+import com.marvinelsen.willow.dictionary.database.tables.EntryTable
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction

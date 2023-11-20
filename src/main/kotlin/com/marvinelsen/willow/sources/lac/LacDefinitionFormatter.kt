@@ -1,22 +1,24 @@
-package com.marvinelsen.willow.serialization.lac
+package com.marvinelsen.willow.sources.lac
 
-object LacDefinitionFormatter {
-    fun formatHtmlDefinition(lacEntry: LacEntry) = buildString {
-        if (lacEntry.definitions.size == 1) {
-            append(formatDefinition(lacEntry.definitions.first(), lacEntry.traditional))
+import com.marvinelsen.willow.sources.common.DefinitionFormatter
+
+object LacDefinitionFormatter : DefinitionFormatter<LacEntry> {
+    override fun formatHtmlDefinition(entry: LacEntry) = buildString {
+        if (entry.definitions.size == 1) {
+            append(formatDefinition(entry.definitions.first(), entry.traditional))
         } else {
             append("<ol>")
-            lacEntry.definitions.forEach { definition ->
+            entry.definitions.forEach { definition ->
                 append("<li>")
-                append(formatDefinition(definition, lacEntry.traditional))
+                append(formatDefinition(definition, entry.traditional))
                 append("</li>")
             }
             append("</ol>")
         }
     }
 
-    fun formatShortDefinition(lacEntry: LacEntry) =
-        lacEntry.definitions.first()
+    override fun formatShortDefinition(entry: LacEntry) =
+        entry.definitions.first()
             .substringAfter('.')
             .substringBefore("[例]")
             .replace("★", "【大陸】")

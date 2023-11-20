@@ -1,6 +1,6 @@
-package com.marvinelsen.willow.serialization.cedict
+package com.marvinelsen.willow.sources.cedict
 
-import com.marvinelsen.willow.serialization.common.Parser
+import com.marvinelsen.willow.sources.common.Parser
 import java.io.InputStream
 
 // CC-CEDICT format: https://cc-cedict.org/wiki/format:syntax

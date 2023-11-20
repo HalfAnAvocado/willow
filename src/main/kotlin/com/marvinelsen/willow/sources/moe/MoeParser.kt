@@ -1,6 +1,6 @@
-package com.marvinelsen.willow.serialization.moe
+package com.marvinelsen.willow.sources.moe
 
-import com.marvinelsen.willow.serialization.common.Parser
+import com.marvinelsen.willow.sources.common.Parser
 import java.io.InputStream
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json

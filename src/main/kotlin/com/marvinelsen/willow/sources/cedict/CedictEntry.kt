@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.serialization.cedict
+package com.marvinelsen.willow.sources.cedict
 
 data class CedictEntry(
     val traditional: String,

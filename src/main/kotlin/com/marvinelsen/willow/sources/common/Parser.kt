@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.serialization.common
+package com.marvinelsen.willow.sources.common
 
 import java.io.InputStream
 
