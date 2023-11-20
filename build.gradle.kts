@@ -15,6 +15,9 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://www.jitpack.io")
+    }
 }
 
 dependencies {
@@ -29,6 +32,7 @@ dependencies {
     implementation(libs.ikonli.javafx)
     implementation(libs.ikonli.material2)
     implementation(libs.apache.commons.csv)
+    implementation(libs.jieba)
 
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
