@@ -16,7 +16,11 @@ object LacDefinitionFormatter {
     }
 
     fun formatShortDefinition(lacEntry: LacEntry) =
-        lacEntry.definitions.first().substringAfter('.').substringBefore("[例]")
+        lacEntry.definitions.first()
+            .substringAfter('.')
+            .substringBefore("[例]")
+            .replace("★", "【大陸】")
+            .replace("▲", "【臺灣】")
 
     private fun formatDefinition(definition: String, traditional: String) = buildString {
         val formattedDefinition = definition.substringAfter('.')
@@ -25,6 +29,7 @@ object LacDefinitionFormatter {
             .replace("▲", "【臺灣】")
 
         val examples = if (formattedDefinition.indexOf("[例]") > -1) formattedDefinition.substringAfter("[例]")
+            .replace("。", "")
             .split("｜") else null
 
         append("<span class=\"definition\">${formattedDefinition.substringBefore("[例]")}</span>")
