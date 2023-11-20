@@ -24,7 +24,7 @@ class WillowApplication : Application() {
 
     init {
         DatabaseManager.init()
-        // DatabaseManager.createDatabase()
+        DatabaseManager.createDatabaseIfNotExist()
     }
 
     override fun start(stage: Stage) {

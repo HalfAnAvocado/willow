@@ -15,6 +15,11 @@ import com.marvinelsen.willow.serialization.moe.MoeParser
 import com.marvinelsen.willow.util.PronunciationConverter
 import java.sql.Connection
 import java.util.zip.GZIPInputStream
+import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
+import kotlin.io.path.createParentDirectories
+import kotlin.io.path.div
+import kotlin.io.path.exists
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.and
@@ -22,13 +27,21 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseManager {
+    private val homeDirectory = Path(System.getProperty("user.home"))
+    private val dataDirectory =
+        Path(System.getenv().getOrDefault("XDG_DATA_HOME", homeDirectory.resolve(".local/share").toString()))
+    private val databaseFile = dataDirectory / "willow/dictionary.db"
+
     fun init() {
-        Database.connect("jdbc:sqlite:data.db?case_sensitive_like=ON&foreign_keys=ON", "org.sqlite.JDBC")
+        Database.connect("jdbc:sqlite:${databaseFile.absolutePathString()}?case_sensitive_like=ON&foreign_keys=ON", "org.sqlite.JDBC")
         TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE
     }
 
-    @Suppress("Unused")
-    fun createDatabase() {
+    fun createDatabaseIfNotExist() {
+        if (databaseFile.exists()) return
+
+        databaseFile.createParentDirectories()
+
         transaction {
             SchemaUtils.create(WordTable, DefinitionTable)
         }
