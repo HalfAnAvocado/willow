@@ -4,8 +4,9 @@ import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object DefinitionTable : IntIdTable("definition") {
-    val word = reference(name = "word", foreign = WordTable, fkName = "fk_definition_word").index("idx_definition_word")
+    val entry =
+        reference(name = "entry", foreign = EntryTable, fkName = "fk_definition_entry").index("idx_definition_entry")
     val shortDefinition = text("short_definition")
     val htmlDefinition = text("html_definition")
-    val sourceDictionary = enumeration<SourceDictionary>("dictionary")
+    val sourceDictionary = enumeration<SourceDictionary>("source_dictionary")
 }

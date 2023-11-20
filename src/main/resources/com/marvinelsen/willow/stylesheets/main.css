@@ -1,9 +1,9 @@
-.list-view-words {
+.list-view-entries {
     -fx-selection-bar: #B8EEFF;
     /*-fx-selection-bar-non-focused: green;*/
 }
 
-.list-view-word {
+.list-view-entry {
     -fx-font: 20 "Noto Sans CJK TC";
     -fx-font-weight: bold;
 }

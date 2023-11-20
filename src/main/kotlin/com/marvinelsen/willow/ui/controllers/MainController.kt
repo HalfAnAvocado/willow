@@ -4,8 +4,8 @@ import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
-import com.marvinelsen.willow.dictionary.objects.Word
-import com.marvinelsen.willow.ui.cells.WordCellFactory
+import com.marvinelsen.willow.dictionary.objects.Entry
+import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -20,30 +20,30 @@ import javafx.scene.web.WebView
 
 class MainController {
     lateinit var webViewDefinitions: WebView
-    lateinit var listViewCharacters: ListView<Word>
-    lateinit var listViewWords: ListView<Word>
+    lateinit var listViewCharacters: ListView<Entry>
+    lateinit var listViewEntries: ListView<Entry>
     lateinit var labelStatus: Label
     lateinit var labelHeadwordPronunciation: Label
     lateinit var textFlowHeadWord: TextFlow
     lateinit var textFieldSearch: TextField
-    lateinit var listViewDictionary: ListView<Word>
+    lateinit var listViewDictionary: ListView<Entry>
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
 
     fun initialize() {
-        listViewDictionary.cellFactory = WordCellFactory()
-        listViewWords.cellFactory = WordCellFactory()
-        listViewCharacters.cellFactory = WordCellFactory()
+        listViewDictionary.cellFactory = EntryCellFactory()
+        listViewEntries.cellFactory = EntryCellFactory()
+        listViewCharacters.cellFactory = EntryCellFactory()
 
         listViewDictionary.items = FXCollections.observableArrayList()
-        listViewWords.items = FXCollections.observableArrayList()
+        listViewEntries.items = FXCollections.observableArrayList()
         listViewCharacters.items = FXCollections.observableArrayList()
 
         listViewDictionary.items.addAll(Dictionary.search("柳"))
         listViewDictionary.selectionModel
             .selectedItemProperty()
-            .addListener { _, _, newEntry -> displayWord(newEntry) }
+            .addListener { _, _, newEntry -> displayEntryDefinitions(newEntry) }
         listViewDictionary.selectionModel.selectFirst()
 
         textFieldSearch.textProperty().addListener { _, _, newValue ->
@@ -85,27 +85,27 @@ class MainController {
     fun onMenuItemAboutAction() {}
     fun showSelectedWordContextMenu() {}
 
-    private fun displayWord(word: Word?) {
+    private fun displayEntryDefinitions(entry: Entry?) {
         textFlowHeadWord.children.clear()
         labelHeadwordPronunciation.text = ""
         webViewDefinitions.engine.loadContent("")
         listViewCharacters.items.clear()
-        listViewWords.items.clear()
+        listViewEntries.items.clear()
 
-        if (word == null) return
+        if (entry == null) return
 
-        val characters = word.traditional.split("")
+        val characters = entry.traditional.split("")
         for (i in characters.indices) {
             val characterText = Text(characters[i])
             characterText.fill = Color.web("#000")
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
-        val cedictDefinitions = word.definitions[SourceDictionary.CEDICT]
-        val moeDefinitions = word.definitions[SourceDictionary.MOE]
-        val lacDefinitions = word.definitions[SourceDictionary.LAC]
+        val cedictDefinitions = entry.definitions[SourceDictionary.CEDICT]
+        val moeDefinitions = entry.definitions[SourceDictionary.MOE]
+        val lacDefinitions = entry.definitions[SourceDictionary.LAC]
 
-        labelHeadwordPronunciation.text = word.zhuyin
+        labelHeadwordPronunciation.text = entry.zhuyin
 
         val cedictContent: String? = cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
         val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<hr>") { it.htmlDefinition }
@@ -115,12 +115,12 @@ class MainController {
             listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
         )
 
-        AsyncDictionary.findCharactersOf(word) {
+        AsyncDictionary.findCharactersOf(entry) {
             listViewCharacters.items.addAll(it)
         }
 
-        AsyncDictionary.findWordsContaining(word) {
-            listViewWords.items.addAll(it)
+        AsyncDictionary.findEntriesContaining(entry) {
+            listViewEntries.items.addAll(it)
         }
     }
 

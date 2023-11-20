@@ -78,7 +78,7 @@
         <TextField fx:id="textFieldSearch" promptText="Search 中文…" HBox.hgrow="ALWAYS"/>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0" styleClass="list-view-words"/>
+        <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0" styleClass="list-view-entries"/>
         <VBox>
             <FlowPane fx:id="flowPaneSelectedWord" hgap="8.0" onContextMenuRequested="#showSelectedWordContextMenu"
                       prefHeight="38.0" prefWidth="412.0" rowValignment="BASELINE" vgap="8.0" VBox.vgrow="NEVER">
@@ -107,7 +107,7 @@
                 </Tab>
                 <Tab closable="false" text="Words">
                     <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewWords" prefHeight="200.0" prefWidth="200.0"/>
+                        <ListView fx:id="listViewEntries" prefHeight="200.0" prefWidth="200.0"/>
                     </ScrollPane>
                 </Tab>
                 <Tab closable="false" text="Characters">

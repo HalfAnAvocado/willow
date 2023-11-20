@@ -1,6 +1,6 @@
 package com.marvinelsen.willow.ui.cells
 
-import com.marvinelsen.willow.dictionary.objects.Word
+import com.marvinelsen.willow.dictionary.objects.Entry
 import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
@@ -9,17 +9,17 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.VBox
 import javafx.util.Callback
 
-class WordCellFactory : Callback<ListView<Word?>, ListCell<Word?>> {
-    override fun call(listView: ListView<Word?>): ListCell<Word?> {
-        val wordCell = WordCell()
-        wordCell.prefWidthProperty().bind(listView.widthProperty().subtract(16))
-        return wordCell
+class EntryCellFactory : Callback<ListView<Entry?>, ListCell<Entry?>> {
+    override fun call(listView: ListView<Entry?>): ListCell<Entry?> {
+        val entryCell = EntryCell()
+        entryCell.prefWidthProperty().bind(listView.widthProperty().subtract(16))
+        return entryCell
     }
 }
 
-internal class WordCell : ListCell<Word?>() {
+internal class EntryCell : ListCell<Entry?>() {
     private val labelHeadword = Label().apply {
-        styleClass.add("list-view-word")
+        styleClass.add("list-view-entry")
     }
 
     private val labelDefinition = Label().apply {
@@ -41,15 +41,15 @@ internal class WordCell : ListCell<Word?>() {
         text = null
     }
 
-    override fun updateItem(word: Word?, empty: Boolean) {
-        super.updateItem(word, empty)
-        if (empty || word == null) {
+    override fun updateItem(entry: Entry?, empty: Boolean) {
+        super.updateItem(entry, empty)
+        if (empty || entry == null) {
             graphic = null
         } else {
-            labelHeadword.text = word.traditional
+            labelHeadword.text = entry.traditional
 
-            val definition = word.preferredDefinitions.first()
-            labelPronunciation.text = word.zhuyin
+            val definition = entry.preferredDefinitions.first()
+            labelPronunciation.text = entry.zhuyin
             labelDefinition.text = definition.shortDefinition
 
             graphic = root

@@ -3,9 +3,9 @@ package com.marvinelsen.willow.persistence
 import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.objects.SourceDictionary
 import com.marvinelsen.willow.persistence.entities.DefinitionEntity
-import com.marvinelsen.willow.persistence.entities.WordEntity
+import com.marvinelsen.willow.persistence.entities.EntryEntity
 import com.marvinelsen.willow.persistence.tables.DefinitionTable
-import com.marvinelsen.willow.persistence.tables.WordTable
+import com.marvinelsen.willow.persistence.tables.EntryTable
 import com.marvinelsen.willow.serialization.cedict.CedictDefinitionFormatter
 import com.marvinelsen.willow.serialization.cedict.CedictParser
 import com.marvinelsen.willow.serialization.lac.LacDefinitionFormatter
@@ -43,7 +43,7 @@ object DatabaseManager {
         databaseFile.createParentDirectories()
 
         transaction {
-            SchemaUtils.create(WordTable, DefinitionTable)
+            SchemaUtils.create(EntryTable, DefinitionTable)
         }
 
         importCedict()
@@ -59,7 +59,7 @@ object DatabaseManager {
             cedictEntries.forEach {
                 val zhuyin = PronunciationConverter.convertToZhuyin(it.numberedPinyinTaiwan ?: it.numberedPinyin)
                 DefinitionEntity.new {
-                    word = findOrCreateWordEntity(it.traditional, zhuyin)
+                    entry = findOrCreateEntryEntity(it.traditional, zhuyin)
                     shortDefinition = CedictDefinitionFormatter.formatShortDefinition(it)
                     htmlDefinition = CedictDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.CEDICT
@@ -78,7 +78,7 @@ object DatabaseManager {
                     val zhuyin = heteronym.zhuyin!!
 
                     DefinitionEntity.new {
-                        word = findOrCreateWordEntity(entry.title, zhuyin)
+                        this.entry = findOrCreateEntryEntity(entry.title, zhuyin)
                         shortDefinition = MoeDefinitionFormatter.formatShortDefinition(heteronym.definitions.first())
                         htmlDefinition = MoeDefinitionFormatter.formatHtmlDefinition(heteronym.definitions)
                         dictionary = SourceDictionary.MOE
@@ -95,7 +95,7 @@ object DatabaseManager {
         transaction {
             lacEntries.forEach {
                 DefinitionEntity.new {
-                    word = findOrCreateWordEntity(it.traditional, it.zhuyinTaiwan.ifBlank { it.zhuyinMainland })
+                    entry = findOrCreateEntryEntity(it.traditional, it.zhuyinTaiwan.ifBlank { it.zhuyinMainland })
                     shortDefinition = LacDefinitionFormatter.formatShortDefinition(it)
                     htmlDefinition = LacDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.LAC
@@ -104,9 +104,9 @@ object DatabaseManager {
         }
     }
 
-    private fun findOrCreateWordEntity(traditional: String, zhuyin: String) =
-        WordEntity.find { (WordTable.traditional eq traditional) and (WordTable.zhuyin eq zhuyin) }.firstOrNull()
-            ?: WordEntity.new {
+    private fun findOrCreateEntryEntity(traditional: String, zhuyin: String) =
+        EntryEntity.find { (EntryTable.traditional eq traditional) and (EntryTable.zhuyin eq zhuyin) }.firstOrNull()
+            ?: EntryEntity.new {
                 this.traditional = traditional
                 this.zhuyin = zhuyin
                 this.characterCount = traditional.length

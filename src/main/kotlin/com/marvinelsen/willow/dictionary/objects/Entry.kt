@@ -1,6 +1,6 @@
 package com.marvinelsen.willow.dictionary.objects
 
-data class Word(
+data class Entry(
     val traditional: String,
     val zhuyin: String,
     val definitions: Map<SourceDictionary, List<Definition>>,
