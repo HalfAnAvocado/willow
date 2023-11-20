@@ -7,6 +7,7 @@ import com.marvinelsen.willow.persistence.entities.DefinitionEntity
 import com.marvinelsen.willow.persistence.entities.EntryEntity
 import com.marvinelsen.willow.persistence.tables.EntryTable
 import org.jetbrains.exposed.dao.with
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Dictionary {
@@ -33,14 +34,14 @@ object Dictionary {
             .map { it.asEntry() }
     }
 
-    fun findCharactersOf(entry: Entry) = transaction {
-        val characters = entry.traditional.split("")
-        val characterToOriginalIndexMapping = characters.withIndex().associate { (index, it) -> it to index }
-
-        EntryEntity.find { EntryTable.traditional inList entry.traditional.split("") }
-            .with(EntryEntity::definitions)
-            .map { it.asEntry() }
-            .sortedBy { characterToOriginalIndexMapping[it.traditional] }
+    fun findCharactersOf(entry: Entry): List<Entry> {
+        val characterToEntryMap = transaction {
+            EntryEntity.find { (EntryTable.traditional inList entry.characters) and (EntryTable.zhuyin inList entry.zhuyinSyllables) }
+                .with(EntryEntity::definitions)
+                .map { it.asEntry() }
+                .associateBy { it.traditional }
+        }
+        return entry.characters.mapNotNull { characterToEntryMap[it] }
     }
 }
 

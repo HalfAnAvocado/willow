@@ -4,13 +4,15 @@ import com.marvinelsen.willow.WillowApplication
 import java.io.InputStream
 
 object PronunciationConverter {
+    const val ZHUYIN_SEPARATOR = "　"
+
     private val numberToToneMarkMapping = mapOf(1 to "", 2 to "ˊ", 3 to "ˇ", 4 to "ˋ", 5 to "˙")
     private val pinyinToZhuyinMapping =
         parseTranscriptions(WillowApplication::class.java.getResourceAsStream("data/pinyin_zhuyin_transcriptions.tsv")!!)
 
     fun convertToZhuyin(numberedPinyin: String) =
         numberedPinyin.split(" ")
-            .joinToString(separator = "　", transform = PronunciationConverter::convertSyllableToZhuyin)
+            .joinToString(separator = ZHUYIN_SEPARATOR, transform = PronunciationConverter::convertSyllableToZhuyin)
 
     private fun convertSyllableToZhuyin(numberedPinyinSyllable: String): String {
         val lastCharacter = numberedPinyinSyllable.last()
