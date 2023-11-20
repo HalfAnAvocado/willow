@@ -108,8 +108,8 @@ class MainController {
         labelHeadwordPronunciation.text = word.zhuyin
 
         val cedictContent: String? = cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
-        val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<br>") { it.htmlDefinition }
-        val lacContent: String? = lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<br>") { it.htmlDefinition }
+        val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<hr>") { it.htmlDefinition }
+        val lacContent: String? = lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<hr>") { it.htmlDefinition }
 
         webViewDefinitions.engine.loadContent(
             listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
