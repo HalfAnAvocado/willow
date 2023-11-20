@@ -116,10 +116,12 @@ class MainController {
         )
 
         AsyncDictionary.findCharactersOf(entry) {
+            listViewCharacters.items.clear()
             listViewCharacters.items.addAll(it)
         }
 
         AsyncDictionary.findEntriesContaining(entry) {
+            listViewEntries.items.clear()
             listViewEntries.items.addAll(it)
         }
     }
