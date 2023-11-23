@@ -6,6 +6,8 @@
     An offline, open-source Traditional Chinese dictionary software for advanced learners with a focus on Taiwanese Mandarin.
 </h4>
 
+<img src="https://github.com/HalfAnAvocado/willow/blob/9bfb0346b97d23d17fe210d88df442f2bb14ae3f/assets/screenshot.png" alt="Screenshot">
+
 ## 🤔 Why Willow?
 
 TODO
