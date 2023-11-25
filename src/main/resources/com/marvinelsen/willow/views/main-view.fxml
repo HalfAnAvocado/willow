@@ -13,14 +13,6 @@
       fx:controller="com.marvinelsen.willow.ui.controllers.MainController">
     <MenuBar>
         <Menu text="_File">
-            <MenuItem onAction="#onMenuItemNewEntryAction" text="_New Entry...">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
-                </accelerator>
-                <graphic>
-                    <FontIcon iconLiteral="mdomz-note_add"/>
-                </graphic>
-            </MenuItem>
             <MenuItem onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
@@ -44,10 +36,24 @@
                 </accelerator>
             </MenuItem>
         </Menu>
-        <Menu text="_Edit">
+        <Menu text="_Entry">
+            <MenuItem onAction="#onMenuItemNewEntryAction" text="_New Entry...">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                </accelerator>
+                <graphic>
+                    <FontIcon iconLiteral="mdomz-note_add"/>
+                </graphic>
+            </MenuItem>
+            <MenuItem onAction="#onMenuItemNewAnkiFlashcardAction" text="New _Anki Flashcard...">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                </accelerator>
+            </MenuItem>
+            <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem onAction="#onMenuItemCopyHeadwordAction" text="Copy _Headword">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdal-content_copy"/>
@@ -75,7 +81,11 @@
             <Insets bottom="8.0" left="12.0" right="12.0" top="8.0"/>
         </padding>
         <Label fx:id="labelSearch" mnemonicParsing="true" text="_Search:"/>
-        <TextField fx:id="textFieldSearch" promptText="Search 中文…" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="textFieldSearch" promptText="Search 中文…" HBox.hgrow="ALWAYS">
+            <tooltip>
+                <Tooltip text="Search Chinese..."/>
+            </tooltip>
+        </TextField>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0" styleClass="list-view-entries"/>

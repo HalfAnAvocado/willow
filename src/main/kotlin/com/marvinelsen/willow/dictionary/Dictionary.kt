@@ -11,18 +11,22 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object Dictionary {
     private val segmenter = JiebaSegmenter()
     fun search(query: String) = transaction {
+/*
         val segments = segmenter.process(query, JiebaSegmenter.SegMode.SEARCH)
 
         if (segments.size == 1) {
+*/
             EntryEntity.find { EntryTable.traditional like "$query%" }
                 .sortedBy { it.characterCount }
                 .with(EntryEntity::definitions)
                 .map { it.toEntry() }
+/*
         } else {
             EntryEntity.find { EntryTable.traditional inList segments.map { it.word.token } }
                 .with(EntryEntity::definitions)
                 .map { it.toEntry() }
         }
+*/
     }
 
     fun findEntriesContaining(entry: Entry) = transaction {

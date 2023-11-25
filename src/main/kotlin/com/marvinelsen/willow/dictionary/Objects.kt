@@ -12,6 +12,7 @@ data class Entry(
     val preferredDefinitions: List<Definition> by lazy {
         definitions[SourceDictionary.LAC] ?: definitions[SourceDictionary.MOE] ?: definitions[SourceDictionary.CEDICT]!!
     }
+    val availableDefinitionSources = definitions.keys
 }
 
 data class Definition(
