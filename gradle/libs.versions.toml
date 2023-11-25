@@ -8,6 +8,7 @@ sqlite = "3.43.2.2"
 ikonli = "12.2.0"
 commons-csv = "1.10.0"
 jieba = "1.0.0"
+ktor = "2.3.6"
 
 # Plugin versions
 detekt = "1.23.3"
@@ -36,6 +37,11 @@ ikonli-material2 = { group = "org.kordamp.ikonli", name = "ikonli-material2-pack
 apache-commons-csv = { group = "org.apache.commons", name = "commons-csv", version.ref = "commons-csv" }
 
 jieba = { group = "com.github.huaban", name = "jieba-analysis", version.ref = "jieba" }
+
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-java = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

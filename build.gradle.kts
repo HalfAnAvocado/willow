@@ -34,6 +34,11 @@ dependencies {
     implementation(libs.apache.commons.csv)
     implementation(libs.jieba)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.java)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.framework.datatest)
     testImplementation(libs.kotest.assertions.core)
