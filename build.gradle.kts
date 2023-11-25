@@ -23,15 +23,19 @@ repositories {
 dependencies {
     implementation(libs.kaml)
     implementation(libs.json)
+    implementation(libs.apache.commons.csv)
+
     implementation(libs.slf4j.api)
     implementation(libs.slf4j.nop)
+
+    implementation(libs.sqlite)
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
-    implementation(libs.sqlite)
+
     implementation(libs.ikonli.javafx)
     implementation(libs.ikonli.material2)
-    implementation(libs.apache.commons.csv)
+
     implementation(libs.jieba)
 
     implementation(libs.ktor.client.core)
