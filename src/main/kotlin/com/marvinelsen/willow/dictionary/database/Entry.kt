@@ -1,10 +1,15 @@
-package com.marvinelsen.willow.dictionary.database.entities
+package com.marvinelsen.willow.dictionary.database
 
-import com.marvinelsen.willow.dictionary.database.tables.DefinitionTable
-import com.marvinelsen.willow.dictionary.database.tables.EntryTable
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
+
+object EntryTable : IntIdTable("entry") {
+    val traditional = text("traditional").index("idx_entry_traditional")
+    val zhuyin = text("zhuyin").index("idx_entry_zhuyin")
+    val characterCount = integer("character_count")
+}
 
 class EntryEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<EntryEntity>(EntryTable)

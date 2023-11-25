@@ -3,8 +3,8 @@ package com.marvinelsen.willow.ui.controllers
 import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Dictionary
-import com.marvinelsen.willow.dictionary.objects.SourceDictionary
-import com.marvinelsen.willow.dictionary.objects.Entry
+import com.marvinelsen.willow.dictionary.Entry
+import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
@@ -107,9 +107,12 @@ class MainController {
 
         labelHeadwordPronunciation.text = entry.zhuyin
 
-        val cedictContent: String? = cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
-        val moeContent: String? = moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<hr>") { it.htmlDefinition }
-        val lacContent: String? = lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<hr>") { it.htmlDefinition }
+        val cedictContent: String? =
+            cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
+        val moeContent: String? =
+            moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<hr>") { it.htmlDefinition }
+        val lacContent: String? =
+            lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<hr>") { it.htmlDefinition }
 
         webViewDefinitions.engine.loadContent(
             listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")

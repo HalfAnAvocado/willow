@@ -1,8 +1,8 @@
 package com.marvinelsen.willow.sources.lac
 
+import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.dictionary.database.DatabaseManager
-import com.marvinelsen.willow.dictionary.database.entities.DefinitionEntity
-import com.marvinelsen.willow.dictionary.objects.SourceDictionary
+import com.marvinelsen.willow.dictionary.database.DefinitionEntity
 import com.marvinelsen.willow.sources.common.DatabaseImporter
 import org.jetbrains.exposed.sql.transactions.transaction
 

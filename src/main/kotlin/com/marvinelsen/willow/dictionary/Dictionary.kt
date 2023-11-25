@@ -1,11 +1,9 @@
 package com.marvinelsen.willow.dictionary
 
 import com.huaban.analysis.jieba.JiebaSegmenter
-import com.marvinelsen.willow.dictionary.objects.Definition
-import com.marvinelsen.willow.dictionary.objects.Entry
-import com.marvinelsen.willow.dictionary.database.entities.DefinitionEntity
-import com.marvinelsen.willow.dictionary.database.entities.EntryEntity
-import com.marvinelsen.willow.dictionary.database.tables.EntryTable
+import com.marvinelsen.willow.dictionary.database.DefinitionEntity
+import com.marvinelsen.willow.dictionary.database.EntryEntity
+import com.marvinelsen.willow.dictionary.database.EntryTable
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -19,11 +17,11 @@ object Dictionary {
             EntryEntity.find { EntryTable.traditional like "$query%" }
                 .sortedBy { it.characterCount }
                 .with(EntryEntity::definitions)
-                .map { it.asEntry() }
+                .map { it.toEntry() }
         } else {
             EntryEntity.find { EntryTable.traditional inList segments.map { it.word.token } }
                 .with(EntryEntity::definitions)
-                .map { it.asEntry() }
+                .map { it.toEntry() }
         }
     }
 
@@ -31,26 +29,26 @@ object Dictionary {
         EntryEntity.find { EntryTable.traditional like "%${entry.traditional}%" }
             .sortedBy { it.characterCount }
             .with(EntryEntity::definitions)
-            .map { it.asEntry() }
+            .map { it.toEntry() }
     }
 
     fun findCharactersOf(entry: Entry): List<Entry> {
         val characterToEntryMap = transaction {
             EntryEntity.find { (EntryTable.traditional inList entry.characters) and (EntryTable.zhuyin inList entry.zhuyinSyllables) }
                 .with(EntryEntity::definitions)
-                .map { it.asEntry() }
+                .map { it.toEntry() }
                 .associateBy { it.traditional }
         }
         return entry.characters.mapNotNull { characterToEntryMap[it] }
     }
 }
 
-private fun EntryEntity.asEntry() = Entry(
+private fun EntryEntity.toEntry() = Entry(
     traditional = traditional,
     zhuyin = zhuyin,
-    definitions = definitions.map { it.asDefinition() }.groupBy { it.sourceDictionary })
+    definitions = definitions.map { it.toDefinition() }.groupBy { it.sourceDictionary })
 
-private fun DefinitionEntity.asDefinition() = Definition(
+private fun DefinitionEntity.toDefinition() = Definition(
     shortDefinition = shortDefinition,
     htmlDefinition = htmlDefinition,
     sourceDictionary = dictionary,

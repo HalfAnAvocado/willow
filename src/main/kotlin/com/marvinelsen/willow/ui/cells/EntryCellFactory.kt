@@ -1,6 +1,6 @@
 package com.marvinelsen.willow.ui.cells
 
-import com.marvinelsen.willow.dictionary.objects.Entry
+import com.marvinelsen.willow.dictionary.Entry
 import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell

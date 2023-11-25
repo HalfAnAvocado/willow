@@ -1,4 +1,4 @@
-package com.marvinelsen.willow.dictionary.objects
+package com.marvinelsen.willow.dictionary
 
 import com.marvinelsen.willow.util.PronunciationConverter
 
@@ -12,4 +12,14 @@ data class Entry(
     val preferredDefinitions: List<Definition> by lazy {
         definitions[SourceDictionary.LAC] ?: definitions[SourceDictionary.MOE] ?: definitions[SourceDictionary.CEDICT]!!
     }
+}
+
+data class Definition(
+    val shortDefinition: String,
+    val htmlDefinition: String,
+    val sourceDictionary: SourceDictionary,
+)
+
+enum class SourceDictionary {
+    CEDICT, MOE, LAC
 }

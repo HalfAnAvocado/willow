@@ -1,8 +1,5 @@
 package com.marvinelsen.willow.dictionary.database
 
-import com.marvinelsen.willow.dictionary.database.entities.EntryEntity
-import com.marvinelsen.willow.dictionary.database.tables.DefinitionTable
-import com.marvinelsen.willow.dictionary.database.tables.EntryTable
 import com.marvinelsen.willow.sources.cedict.CedictDatabaseImporter
 import com.marvinelsen.willow.sources.cedict.CedictEntry
 import com.marvinelsen.willow.sources.lac.LacDatabaseImporter

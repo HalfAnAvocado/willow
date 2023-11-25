@@ -1,6 +1,5 @@
 package com.marvinelsen.willow.dictionary
 
-import com.marvinelsen.willow.dictionary.objects.Entry
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import javafx.concurrent.Task
