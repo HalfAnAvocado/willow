@@ -30,6 +30,7 @@ class AddAnkiFlashcard(owner: Window?, val entry: Entry) : Dialog<AnkiFlashcardD
         textFieldHeadword.text = entry.traditional
         textFieldZhuyin.text = entry.zhuyin
         comboBoxDefinitionSourceDictionary.items = FXCollections.observableArrayList(entry.availableDefinitionSources)
+        comboBoxDefinitionSourceDictionary.selectionModel.selectFirst()
 
         initOwner(owner)
         initModality(Modality.APPLICATION_MODAL)
