@@ -72,7 +72,10 @@ class MainController {
     fun onMenuItemNewEntryAction() {}
     fun onMenuItemNewSentenceAction() {}
     fun onMenuItemSettingsAction() {}
-    fun onMenuItemQuitAction() {}
+
+    fun onMenuItemQuitAction() {
+        Platform.exit()
+    }
 
     fun onMenuItemCopyHeadwordAction() {
         val clipboardContent = ClipboardContent()
