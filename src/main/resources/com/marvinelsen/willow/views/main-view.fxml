@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
@@ -13,15 +13,6 @@
       fx:controller="com.marvinelsen.willow.ui.controllers.MainController">
     <MenuBar>
         <Menu text="_File">
-            <MenuItem onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
-                </accelerator>
-                <graphic>
-                    <FontIcon iconLiteral="mdomz-post_add"/>
-                </graphic>
-            </MenuItem>
-            <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem disable="true" onAction="#onMenuItemSettingsAction" text="_Settings">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
@@ -37,7 +28,7 @@
             </MenuItem>
         </Menu>
         <Menu text="_Entry">
-            <MenuItem onAction="#onMenuItemNewEntryAction" text="_New Entry...">
+            <MenuItem disable="true" onAction="#onMenuItemNewEntryAction" text="_New Entry...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -45,13 +36,21 @@
                     <FontIcon iconLiteral="mdomz-note_add"/>
                 </graphic>
             </MenuItem>
-            <MenuItem onAction="#onMenuItemNewAnkiFlashcardAction" text="New _Anki Flashcard...">
+            <MenuItem disable="true" onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                </accelerator>
+                <graphic>
+                    <FontIcon iconLiteral="mdomz-post_add"/>
+                </graphic>
+            </MenuItem>
+            <MenuItem fx:id="menuItemNewAnkiFlashcard" onAction="#onMenuItemNewAnkiFlashcardAction" text="New _Anki Flashcard...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem onAction="#onMenuItemCopyHeadwordAction" text="Copy _Headword">
+            <MenuItem fx:id="menuItemCopyHeadword" onAction="#onMenuItemCopyHeadwordAction" text="Copy _Headword">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -59,7 +58,7 @@
                     <FontIcon iconLiteral="mdal-content_copy"/>
                 </graphic>
             </MenuItem>
-            <MenuItem onAction="#onMenuItemCopyPronunciationAction" text="Copy _Pronunciation">
+            <MenuItem fx:id="menuItemCopyZhuyin" onAction="#onMenuItemCopyZhuyinAction" text="Copy _Zhuyin">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -69,7 +68,7 @@
             </MenuItem>
         </Menu>
         <Menu text="_Help">
-            <MenuItem onAction="#onMenuItemAboutAction" text="_About">
+            <MenuItem disable="true" onAction="#onMenuItemAboutAction" text="_About">
                 <graphic>
                     <FontIcon iconLiteral="mdoal-info"/>
                 </graphic>
@@ -88,8 +87,15 @@
         </TextField>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0">
-        </ListView>
+        <StackPane alignment="TOP_CENTER">
+            <ListView fx:id="listViewEntries" minHeight="300.0" minWidth="150.0">
+            </ListView>
+            <Label fx:id="labelNoEntriesFound" text="No entries found" textAlignment="CENTER" wrapText="true">
+                <padding>
+                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                </padding>
+            </Label>
+        </StackPane>
         <VBox>
             <FlowPane fx:id="flowPaneSelectedWord" hgap="8.0" onContextMenuRequested="#showSelectedWordContextMenu"
                       prefHeight="38.0" prefWidth="412.0" rowValignment="BASELINE" vgap="8.0" VBox.vgrow="NEVER">
@@ -110,23 +116,47 @@
                                  prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
                     </VBox>
                 </Tab>
-                <Tab closable="false" text="Sentences">
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
-                        </ListView>
-                    </ScrollPane>
+                <Tab closable="false" text="Characters">
+                    <StackPane alignment="TOP_CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                            <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
+                        </ScrollPane>
+                        <Label fx:id="labelNoCharactersFound" text="No characters found" textAlignment="CENTER"
+                               wrapText="true">
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                            </padding>
+                        </Label>
+                    </StackPane>
                 </Tab>
                 <Tab closable="false" text="Words">
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewEntries" prefHeight="200.0" prefWidth="200.0"/>
-                    </ScrollPane>
+                    <StackPane alignment="TOP_CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                            <ListView fx:id="listViewWordsContainingEntries" prefHeight="200.0" prefWidth="200.0"/>
+                        </ScrollPane>
+                        <Label fx:id="labelNoWordsContainingFound" text="No words containing found"
+                               textAlignment="CENTER" wrapText="true">
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                            </padding>
+                        </Label>
+                    </StackPane>
                 </Tab>
-                <Tab closable="false" text="Characters">
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                        <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
-                    </ScrollPane>
+                <Tab closable="false" disable="true" text="Sentences">
+                    <StackPane alignment="TOP_CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                            <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
+                            </ListView>
+                        </ScrollPane>
+                        <Label fx:id="labelNoSentencesFound" text="No sentences found" textAlignment="CENTER"
+                               wrapText="true">
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                            </padding>
+                        </Label>
+                    </StackPane>
                 </Tab>
-                <Tab text="Notes">
+                <Tab disable="true" text="Notes">
                     <VBox>
                         <TextArea fx:id="textAreaNotes" promptText="Take some notes..." wrapText="true"
                                   VBox.vgrow="ALWAYS"/>

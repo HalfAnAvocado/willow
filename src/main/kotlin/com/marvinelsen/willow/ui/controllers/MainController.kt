@@ -10,10 +10,14 @@ import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.dialogs.AddAnkiFlashcard
+import javafx.application.Platform
+import javafx.beans.binding.Bindings
+import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.MenuItem
 import javafx.scene.control.TextField
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
@@ -27,46 +31,79 @@ import kotlinx.coroutines.runBlocking
 
 class MainController {
     lateinit var root: VBox
-    lateinit var webViewDefinitions: WebView
-    lateinit var listViewCharacters: ListView<Entry>
-    lateinit var listViewEntries: ListView<Entry>
-    lateinit var labelStatus: Label
-    lateinit var labelHeadwordPronunciation: Label
-    lateinit var textFlowHeadWord: TextFlow
+
+    lateinit var menuItemCopyZhuyin: MenuItem
+    lateinit var menuItemNewAnkiFlashcard: MenuItem
+    lateinit var menuItemCopyHeadword: MenuItem
+
     lateinit var textFieldSearch: TextField
-    lateinit var listViewDictionary: ListView<Entry>
+
+    lateinit var listViewEntries: ListView<Entry>
+    lateinit var listViewCharacters: ListView<Entry>
+    lateinit var listViewWordsContainingEntries: ListView<Entry>
+    lateinit var listViewSentences: ListView<String>
+
+    lateinit var labelNoEntriesFound: Label
+    lateinit var labelNoCharactersFound: Label
+    lateinit var labelNoWordsContainingFound: Label
+    lateinit var labelNoSentencesFound: Label
+
+    lateinit var webViewDefinitions: WebView
+    lateinit var labelStatus: Label
+
+    lateinit var textFlowHeadWord: TextFlow
+    lateinit var labelHeadwordPronunciation: Label
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
+    private val selectedEntryProperty: SimpleObjectProperty<Entry?> = SimpleObjectProperty(null)
+    private val isEntrySelectedBinding = selectedEntryProperty.isNotNull
 
     fun initialize() {
-        listViewDictionary.cellFactory = EntryCellFactory()
-        listViewEntries.cellFactory = EntryCellFactory()
-        listViewCharacters.cellFactory = EntryCellFactory()
+        listViewEntries.apply {
+            cellFactory = EntryCellFactory()
+            items = FXCollections.observableArrayList(Dictionary.search("柳"))
+            selectionModel.selectedItemProperty().addListener { _, _, newEntry -> displayEntryDefinitions(newEntry) }
+            selectionModel.selectFirst()
+        }
 
-        listViewDictionary.items = FXCollections.observableArrayList()
-        listViewEntries.items = FXCollections.observableArrayList()
-        listViewCharacters.items = FXCollections.observableArrayList()
+        listViewWordsContainingEntries.apply {
+            cellFactory = EntryCellFactory()
+            items = FXCollections.observableArrayList()
+        }
 
-        listViewDictionary.items.addAll(Dictionary.search("柳"))
-        listViewDictionary.selectionModel
-            .selectedItemProperty()
-            .addListener { _, _, newEntry -> displayEntryDefinitions(newEntry) }
-        listViewDictionary.selectionModel.selectFirst()
+        listViewCharacters.apply {
+            cellFactory = EntryCellFactory()
+            items = FXCollections.observableArrayList()
+        }
 
         textFieldSearch.textProperty().addListener { _, _, newValue ->
             if (newValue.isBlank()) return@addListener
 
             AsyncDictionary.search(textFieldSearch.text) {
-                listViewDictionary.items.clear()
-                listViewDictionary.items.addAll(it)
-                listViewDictionary.selectionModel.selectFirst()
+                with(listViewEntries) {
+                    items.clear()
+                    items.addAll(it)
+                    selectionModel.selectFirst()
+                }
                 setStatus("Found ${it.size} matching entries.")
             }
         }
-        webViewDefinitions.isContextMenuEnabled = false
-        webViewDefinitions.engine.userStyleSheetLocation =
-            WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
+
+        labelNoCharactersFound.visibleProperty().bind(Bindings.isEmpty(listViewCharacters.items))
+        labelNoEntriesFound.visibleProperty().bind(Bindings.isEmpty(listViewEntries.items))
+        labelNoWordsContainingFound.visibleProperty().bind(Bindings.isEmpty(listViewWordsContainingEntries.items))
+        labelNoSentencesFound.visibleProperty().bind(Bindings.isEmpty(listViewSentences.items))
+
+        menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemNewAnkiFlashcard.disableProperty().bind(isEntrySelectedBinding.not())
+
+        webViewDefinitions.apply {
+            isContextMenuEnabled = false
+            engine.userStyleSheetLocation =
+                WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
+        }
     }
 
     fun onMenuItemNewEntryAction() {}
@@ -78,16 +115,20 @@ class MainController {
     }
 
     fun onMenuItemCopyHeadwordAction() {
+        if (!isEntrySelectedBinding.value) return
+
         val clipboardContent = ClipboardContent()
-        clipboardContent.putString(listViewDictionary.selectionModel.selectedItem.traditional)
+        clipboardContent.putString(selectedEntryProperty.value!!.traditional)
         systemClipboard.setContent(clipboardContent)
 
         setStatus("Copied headword to clipboard.")
     }
 
-    fun onMenuItemCopyPronunciationAction() {
+    fun onMenuItemCopyZhuyinAction() {
+        if (!isEntrySelectedBinding.value) return
+
         val clipboardContent = ClipboardContent()
-        clipboardContent.putString(labelHeadwordPronunciation.text)
+        clipboardContent.putString(selectedEntryProperty.value!!.zhuyin)
         systemClipboard.setContent(clipboardContent)
 
         setStatus("Copied pronunciation to clipboard.")
@@ -101,7 +142,9 @@ class MainController {
         labelHeadwordPronunciation.text = ""
         webViewDefinitions.engine.loadContent("")
         listViewCharacters.items.clear()
-        listViewEntries.items.clear()
+        listViewWordsContainingEntries.items.clear()
+
+        selectedEntryProperty.value = entry
 
         if (entry == null) return
 
@@ -130,13 +173,17 @@ class MainController {
         )
 
         AsyncDictionary.findCharactersOf(entry) {
-            listViewCharacters.items.clear()
-            listViewCharacters.items.addAll(it)
+            listViewCharacters.apply {
+                items.clear()
+                items.addAll(it)
+            }
         }
 
         AsyncDictionary.findEntriesContaining(entry) {
-            listViewEntries.items.clear()
-            listViewEntries.items.addAll(it)
+            listViewWordsContainingEntries.apply {
+                items.clear()
+                items.addAll(it)
+            }
         }
     }
 
@@ -145,9 +192,9 @@ class MainController {
     }
 
     fun onMenuItemNewAnkiFlashcardAction(actionEvent: ActionEvent) {
-        val selectedEntry = listViewDictionary.selectionModel.selectedItem ?: return
+        if (!isEntrySelectedBinding.value) return
 
-        AddAnkiFlashcard(root.scene.window, selectedEntry).showAndWait().ifPresent {
+        AddAnkiFlashcard(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
             runBlocking {
                 val ankiConfig = AnkiConfig(
                     ankiConnectUrl = "http://127.0.0.1:8765",
@@ -161,7 +208,7 @@ class MainController {
                     )
                 )
                 val anki = Anki(ankiConfig)
-                anki.addNoteFor(selectedEntry, it.definitionSourceDictionary, it.exampleSentence)
+                anki.addNoteFor(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
             }
         }
     }
