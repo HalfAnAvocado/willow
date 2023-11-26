@@ -13,18 +13,12 @@ import javafx.scene.text.Font
 import javafx.stage.Stage
 
 class WillowApplication : Application() {
+    private val interFont =
+        Font.loadFont(WillowApplication::class.java.getResource("fonts/InterVariable.ttf")!!.toExternalForm(), 12.0)
     private val twKaiFont =
         Font.loadFont(WillowApplication::class.java.getResource("fonts/tw-kai.ttf")!!.toExternalForm(), 12.0)
-    private val notoSansTcRegularFont =
-        Font.loadFont(
-            WillowApplication::class.java.getResource("fonts/NotoSansCJKtc-Regular.otf")!!.toExternalForm(),
-            12.0
-        )
-    private val notoSansTcBoldFont =
-        Font.loadFont(
-            WillowApplication::class.java.getResource("fonts/NotoSansCJKtc-Bold.otf")!!.toExternalForm(),
-            12.0
-        )
+    private val notoSansCjk =
+        Font.loadFont(WillowApplication::class.java.getResource("fonts/NotoSansTC-VF.ttf")!!.toExternalForm(), 12.0)
 
     init {
         DatabaseManager.init()

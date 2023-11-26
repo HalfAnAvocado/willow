@@ -81,14 +81,15 @@
             <Insets bottom="8.0" left="12.0" right="12.0" top="8.0"/>
         </padding>
         <Label fx:id="labelSearch" mnemonicParsing="true" text="_Search:"/>
-        <TextField fx:id="textFieldSearch" promptText="Search 中文…" HBox.hgrow="ALWAYS">
+        <TextField fx:id="textFieldSearch" promptText="Search 中文…" styleClass="chinese" HBox.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="Search Chinese..."/>
             </tooltip>
         </TextField>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0" styleClass="list-view-entries"/>
+        <ListView fx:id="listViewDictionary" minHeight="300.0" minWidth="150.0">
+        </ListView>
         <VBox>
             <FlowPane fx:id="flowPaneSelectedWord" hgap="8.0" onContextMenuRequested="#showSelectedWordContextMenu"
                       prefHeight="38.0" prefWidth="412.0" rowValignment="BASELINE" vgap="8.0" VBox.vgrow="NEVER">

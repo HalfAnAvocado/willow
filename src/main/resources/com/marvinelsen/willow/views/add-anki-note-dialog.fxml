@@ -19,11 +19,13 @@
     </padding>
     <Label text="Headword:"/>
     <Label text="Example Sentence:" GridPane.rowIndex="3"/>
-    <TextArea fx:id="textAreaExampleSentence" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <TextArea fx:id="textAreaExampleSentence" wrapText="true" styleClass="chinese" GridPane.columnIndex="1"
+              GridPane.rowIndex="3"/>
     <Label text="Zhuyin:" GridPane.rowIndex="1"/>
-    <TextField fx:id="textFieldZhuyin" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <TextField fx:id="textFieldZhuyin" editable="false" styleClass="chinese" GridPane.columnIndex="1"
+               GridPane.rowIndex="1"/>
     <Label text="Definition:" GridPane.rowIndex="2"/>
-    <TextField fx:id="textFieldHeadword" editable="false" GridPane.columnIndex="1"/>
+    <TextField fx:id="textFieldHeadword" editable="false" styleClass="chinese" GridPane.columnIndex="1"/>
     <ComboBox fx:id="comboBoxDefinitionSourceDictionary" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
               GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"/>
 </GridPane>

@@ -1,23 +1,32 @@
-.list-view-entries {
+.root {
+    -fx-font-family: "Inter";
+}
+
+.chinese {
+    -fx-font-family: "Noto Sans CJK TC";
+}
+
+.list-view {
     -fx-selection-bar: #B8EEFF;
+    -fx-font-family: "Noto Sans CJK TC";
     /*-fx-selection-bar-non-focused: green;*/
 }
 
 .list-view-entry {
-    -fx-font: 20 "Noto Sans CJK TC";
+    -fx-font-size: 20;
     -fx-font-weight: bold;
 }
 
 .list-view-definition {
-    -fx-font: 16 "Noto Sans CJK TC";
+    -fx-font-size: 16;
 }
 
 .list-view-pronunciation {
-    -fx-font: 12 "Noto Sans CJK TC";
+    -fx-font-size: 12;
 }
 
 .moe-definition {
-    -fx-font: 16 "Noto Sans CJK TC";
+    -fx-font-size: 16;
 }
 
 .headword {
