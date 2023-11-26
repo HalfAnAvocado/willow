@@ -27,7 +27,7 @@ private fun String.toCedictEntry(): CedictEntry {
     return CedictEntry(
         traditional = traditional,
         simplified = simplified,
-        numberedPinyin = numberedPinyin.lowercase(),
+        numberedPinyin = numberedPinyin.lowercase().replace(" ,", ""),
         numberedPinyinTaiwan = numberedPinyinTaiwan?.lowercase(),
         definition = definition,
     )

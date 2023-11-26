@@ -11,7 +11,7 @@ object MoeDatabaseImporter : DatabaseImporter<MoeEntry> {
         transaction {
             entries.filter { !it.title.startsWith("{") }.forEach { entry ->
                 entry.heteronyms.filter { it.zhuyin != null }.forEach { heteronym ->
-                    val zhuyin = heteronym.zhuyin!!
+                    val zhuyin = heteronym.zhuyin!!.replace("""（.*）""".toRegex(), "")
 
                     DefinitionEntity.new {
                         this.entry = DatabaseManager.findOrCreateEntryEntity(entry.title, zhuyin)
