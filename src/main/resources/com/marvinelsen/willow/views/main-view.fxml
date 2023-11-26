@@ -44,7 +44,8 @@
                     <FontIcon iconLiteral="mdomz-post_add"/>
                 </graphic>
             </MenuItem>
-            <MenuItem fx:id="menuItemNewAnkiFlashcard" onAction="#onMenuItemNewAnkiFlashcardAction" text="New _Anki Flashcard...">
+            <MenuItem fx:id="menuItemNewAnkiFlashcard" onAction="#onMenuItemNewAnkiFlashcardAction"
+                      text="New _Anki Flashcard...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>
@@ -79,8 +80,18 @@
         <padding>
             <Insets bottom="8.0" left="12.0" right="12.0" top="8.0"/>
         </padding>
-        <Label fx:id="labelSearch" mnemonicParsing="true" text="_Search:"/>
-        <TextField fx:id="textFieldSearch" promptText="Search 中文…" styleClass="chinese" HBox.hgrow="ALWAYS">
+        <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#onButtonBackAction">
+            <graphic>
+                <FontIcon iconLiteral="mdal-arrow_back"/>
+            </graphic>
+        </Button>
+        <Button fx:id="buttonNext" mnemonicParsing="false" onAction="#onButtonNextAction">
+            <graphic>
+                <FontIcon iconLiteral="mdal-arrow_forward"/>
+            </graphic>
+        </Button>
+        <TextField fx:id="textFieldSearch" onAction="#textFieldSearchOnAction" promptText="Search 中文…"
+                   styleClass="chinese" HBox.hgrow="ALWAYS">
             <tooltip>
                 <Tooltip text="Search Chinese..."/>
             </tooltip>
@@ -109,7 +120,8 @@
                     </font>
                 </Label>
             </FlowPane>
-            <TabPane prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            <TabPane fx:id="tabPaneEntryView" prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE"
+                     VBox.vgrow="ALWAYS">
                 <Tab closable="false" text="Definition">
                     <VBox>
                         <WebView fx:id="webViewDefinitions" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0"
