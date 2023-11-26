@@ -30,7 +30,7 @@ object Dictionary {
     }
 
     fun findEntriesContaining(entry: Entry) = transaction {
-        EntryEntity.find { EntryTable.traditional like "%${entry.traditional}%" }
+        EntryEntity.find { EntryTable.traditional like "_%${entry.traditional}%" }
             .sortedBy { it.characterCount }
             .with(EntryEntity::definitions)
             .map { it.toEntry() }
