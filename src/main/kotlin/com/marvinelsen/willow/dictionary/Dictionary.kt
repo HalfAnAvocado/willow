@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Dictionary {
-    private val segmenter = JiebaSegmenter()
+    // private val segmenter = JiebaSegmenter()
     fun search(query: String) = transaction {
 /*
         val segments = segmenter.process(query, JiebaSegmenter.SegMode.SEARCH)
