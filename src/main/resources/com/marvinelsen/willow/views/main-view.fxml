@@ -154,7 +154,7 @@
                         </Label>
                     </StackPane>
                 </Tab>
-                <Tab closable="false" disable="true" text="Sentences">
+                <Tab closable="false" disable="false" text="Sentences">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">

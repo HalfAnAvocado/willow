@@ -6,6 +6,8 @@ import com.marvinelsen.willow.sources.lac.LacDatabaseImporter
 import com.marvinelsen.willow.sources.lac.LacEntry
 import com.marvinelsen.willow.sources.moe.MoeDatabaseImporter
 import com.marvinelsen.willow.sources.moe.MoeEntry
+import com.marvinelsen.willow.sources.tatoeba.TatoebaDatabaseImporter
+import com.marvinelsen.willow.sources.tatoeba.TatoebaSentence
 import java.sql.Connection
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
@@ -39,14 +41,16 @@ object DatabaseManager {
         cedictEntries: List<CedictEntry>,
         moeEntries: List<MoeEntry>,
         lacEntries: List<LacEntry>,
+        tatoebaSentences: List<TatoebaSentence>,
     ) {
         transaction {
-            SchemaUtils.create(EntryTable, DefinitionTable)
+            SchemaUtils.create(EntryTable, DefinitionTable, SentenceTable)
         }
 
         CedictDatabaseImporter.import(cedictEntries)
         MoeDatabaseImporter.import(moeEntries)
         LacDatabaseImporter.import(lacEntries)
+        TatoebaDatabaseImporter.import(tatoebaSentences)
     }
 
     fun findOrCreateEntryEntity(traditional: String, zhuyin: String) =

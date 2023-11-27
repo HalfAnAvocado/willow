@@ -5,6 +5,7 @@ import com.marvinelsen.willow.dictionary.database.DatabaseManager
 import com.marvinelsen.willow.sources.cedict.CedictParser
 import com.marvinelsen.willow.sources.lac.LacParser
 import com.marvinelsen.willow.sources.moe.MoeParser
+import com.marvinelsen.willow.sources.tatoeba.TatoebaParser
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
@@ -30,8 +31,12 @@ class WillowApplication : Application() {
                 MoeParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/moedict.json.gz")))
             val lacEntries =
                 LacParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/lac.csv.gz")))
+            val tatoebaSentences =
+                TatoebaParser.parse(GZIPInputStream(WillowApplication::class.java.getResourceAsStream("data/cmn_sentences_tw.tsv.gz")))
 
-            DatabaseManager.createDatabase(cedictEntries, moeEntries, lacEntries)
+            DatabaseManager.createDatabase(
+                cedictEntries, moeEntries, lacEntries, tatoebaSentences
+            )
         }
     }
 

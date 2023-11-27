@@ -6,8 +6,10 @@ import com.marvinelsen.willow.config.AnkiConfig
 import com.marvinelsen.willow.config.FieldMapping
 import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.Entry
+import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
+import com.marvinelsen.willow.ui.cells.SentenceCellFactory
 import com.marvinelsen.willow.ui.dialogs.AddAnkiFlashcard
 import com.marvinelsen.willow.ui.undo.SearchCommand
 import com.marvinelsen.willow.ui.undo.UndoManager
@@ -46,7 +48,7 @@ class MainController {
     lateinit var listViewEntries: ListView<Entry>
     lateinit var listViewCharacters: ListView<Entry>
     lateinit var listViewWordsContainingEntries: ListView<Entry>
-    lateinit var listViewSentences: ListView<String>
+    lateinit var listViewSentences: ListView<Sentence>
 
     lateinit var labelNoEntriesFound: Label
     lateinit var labelNoCharactersFound: Label
@@ -121,6 +123,11 @@ class MainController {
                     )
                 )
             }
+        }
+
+        listViewSentences.apply {
+            cellFactory = SentenceCellFactory()
+            items = FXCollections.observableArrayList()
         }
 
         labelNoCharactersFound.visibleProperty().bind(Bindings.isEmpty(listViewCharacters.items))
@@ -214,6 +221,13 @@ class MainController {
 
         AsyncDictionary.findEntriesContaining(entry) {
             listViewWordsContainingEntries.apply {
+                items.clear()
+                items.addAll(it)
+            }
+        }
+
+        AsyncDictionary.findSentencesFor(entry) {
+            listViewSentences.apply {
                 items.clear()
                 items.addAll(it)
             }

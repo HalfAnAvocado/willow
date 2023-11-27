@@ -64,6 +64,10 @@ To the following third-party code, data, and files in the repository different l
 
 [重編國語辭典修訂本](https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/respub/index.html) made available by the [中華民國教育部](https://www.edu.tw/) is licensed under a [Creative Commons Attribution-NoDerivs 3.0 Taiwan License](https://creativecommons.org/licenses/by-nd/3.0/tw/deed.en).
 
+### Tatoeba
+
+[Tatoeba example sentences](https://tatoeba.org/en/downloads) are licensed under a [Creative Commons Attribution 2.0 France License](https://creativecommons.org/licenses/by/2.0/fr/).
+
 ### Inter
 
 [Inter](https://rsms.me/inter/) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL).

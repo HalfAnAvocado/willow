@@ -1,9 +1,10 @@
 package com.marvinelsen.willow.dictionary
 
-import com.huaban.analysis.jieba.JiebaSegmenter
 import com.marvinelsen.willow.dictionary.database.DefinitionEntity
 import com.marvinelsen.willow.dictionary.database.EntryEntity
 import com.marvinelsen.willow.dictionary.database.EntryTable
+import com.marvinelsen.willow.dictionary.database.SentenceEntity
+import com.marvinelsen.willow.dictionary.database.SentenceTable
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -16,17 +17,17 @@ object Dictionary {
 
         if (segments.size == 1) {
 */
-            EntryEntity.find { EntryTable.traditional like "$query%" }
-                .sortedBy { it.characterCount }
-                .with(EntryEntity::definitions)
-                .map { it.toEntry() }
-/*
-        } else {
-            EntryEntity.find { EntryTable.traditional inList segments.map { it.word.token } }
-                .with(EntryEntity::definitions)
-                .map { it.toEntry() }
-        }
-*/
+        EntryEntity.find { EntryTable.traditional like "$query%" }
+            .sortedBy { it.characterCount }
+            .with(EntryEntity::definitions)
+            .map { it.toEntry() }
+        /*
+                } else {
+                    EntryEntity.find { EntryTable.traditional inList segments.map { it.word.token } }
+                        .with(EntryEntity::definitions)
+                        .map { it.toEntry() }
+                }
+        */
     }
 
     fun findEntriesContaining(entry: Entry) = transaction {
@@ -45,6 +46,12 @@ object Dictionary {
         }
         return entry.characters.mapNotNull { characterToEntryMap[it] }
     }
+
+    fun findSentencesFor(entry: Entry) = transaction {
+        SentenceEntity.find { SentenceTable.traditional like "%${entry.traditional}%" }
+            .sortedBy { it.characterCount }
+            .map { it.toSentence() }
+    }
 }
 
 private fun EntryEntity.toEntry() = Entry(
@@ -57,3 +64,5 @@ private fun DefinitionEntity.toDefinition() = Definition(
     htmlDefinition = htmlDefinition,
     sourceDictionary = dictionary,
 )
+
+private fun SentenceEntity.toSentence() = Sentence(traditional = traditional)

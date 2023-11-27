@@ -22,6 +22,12 @@ object AsyncDictionary {
             override fun call() = Dictionary.findCharactersOf(entry)
         }.apply { setOnSucceeded { onSucceeded(value) } })
 
+
+    fun findSentencesFor(entry: Entry, onSucceeded: (List<Sentence>) -> Unit): Future<*> =
+        databaseExecutor.submit(object : Task<List<Sentence>>() {
+            override fun call() = Dictionary.findSentencesFor(entry)
+        }.apply { setOnSucceeded { onSucceeded(value) } })
+
     fun shutdownExecutor() {
         databaseExecutor.shutdown()
     }

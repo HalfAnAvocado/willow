@@ -21,6 +21,14 @@ data class Definition(
     val sourceDictionary: SourceDictionary,
 )
 
+data class Sentence(
+    val traditional: String,
+)
+
 enum class SourceDictionary {
-    CEDICT, MOE, LAC
+    USER, LAC, MOE, CEDICT
+}
+
+enum class SentenceSource {
+    USER, TATOEBA
 }
