@@ -10,7 +10,7 @@ import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
-import com.marvinelsen.willow.ui.dialogs.AddAnkiFlashcard
+import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
 import com.marvinelsen.willow.ui.undo.SearchCommand
 import com.marvinelsen.willow.ui.undo.UndoManager
 import javafx.application.Platform
@@ -40,7 +40,7 @@ class MainController {
     lateinit var root: VBox
 
     lateinit var menuItemCopyZhuyin: MenuItem
-    lateinit var menuItemNewAnkiFlashcard: MenuItem
+    lateinit var menuItemCreateAnkiNote: MenuItem
     lateinit var menuItemCopyHeadword: MenuItem
 
     lateinit var buttonNext: Button
@@ -96,14 +96,14 @@ class MainController {
     fun onMenuItemCreateAnkiNoteWithSentence(sentence: Sentence?) {
         if (sentence == null) return
 
-        AddAnkiFlashcard(
+        CreateAnkiNoteDialog(
             owner = root.scene.window,
             entry = selectedEntryProperty.value!!,
             exampleSentence = sentence.traditional
         ).showAndWait().ifPresent {
             runBlocking {
                 val anki = Anki(ankiConfig)
-                anki.addNoteFor(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
+                anki.createNote(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
             }
         }
     }
@@ -177,7 +177,7 @@ class MainController {
 
         menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
         menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemNewAnkiFlashcard.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
 
         webViewDefinitions.apply {
             isContextMenuEnabled = false
@@ -283,13 +283,17 @@ class MainController {
     }
 
 
-    fun onMenuItemNewAnkiFlashcardAction(actionEvent: ActionEvent) {
+    fun onMenuItemCreateAnkiNote(actionEvent: ActionEvent) {
         if (!isEntrySelectedBinding.value) return
 
-        AddAnkiFlashcard(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
+        CreateAnkiNoteDialog(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
             runBlocking {
                 val anki = Anki(ankiConfig)
-                anki.addNoteFor(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
+                anki.createNote(
+                    entry = selectedEntryProperty.value!!,
+                    definitionSource = it.definitionSourceDictionary,
+                    exampleSentence = it.exampleSentence
+                )
             }
         }
     }

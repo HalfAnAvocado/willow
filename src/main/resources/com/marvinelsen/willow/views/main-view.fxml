@@ -36,16 +36,17 @@
                     <FontIcon iconLiteral="mdomz-note_add"/>
                 </graphic>
             </MenuItem>
-            <MenuItem disable="true" onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
+            <MenuItem onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdomz-post_add"/>
                 </graphic>
             </MenuItem>
-            <MenuItem fx:id="menuItemNewAnkiFlashcard" onAction="#onMenuItemNewAnkiFlashcardAction"
-                      text="New _Anki Flashcard...">
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem fx:id="menuItemCreateAnkiNote" onAction="#onMenuItemCreateAnkiNote"
+                      text="Create _Anki Note...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>

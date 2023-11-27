@@ -16,14 +16,15 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddAnkiFlashcard(owner: Window?, val entry: Entry, exampleSentence: String = "") : Dialog<AnkiFlashcardDialogResult?>() {
+class CreateAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: String = "") :
+    Dialog<CreateAnkiNoteDialogResult?>() {
     lateinit var textFieldHeadword: TextField
     lateinit var textFieldZhuyin: TextField
     lateinit var comboBoxDefinitionSourceDictionary: ComboBox<SourceDictionary>
     lateinit var textAreaExampleSentence: TextArea
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/add-anki-note-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/create-anki-note-dialog.fxml"))
         loader.setController(this)
         val root: GridPane = loader.load()
 
@@ -36,8 +37,8 @@ class AddAnkiFlashcard(owner: Window?, val entry: Entry, exampleSentence: String
         initOwner(owner)
         initModality(Modality.APPLICATION_MODAL)
 
-        title = "Add New Anki Flashcard"
-        headerText = "Add a note to Anki"
+        title = "Anki Note Creation"
+        headerText = "Create a new Anki note..."
         isResizable = true
 
         dialogPane.content = root
@@ -51,13 +52,13 @@ class AddAnkiFlashcard(owner: Window?, val entry: Entry, exampleSentence: String
     }
 
     private fun returnResult(buttonType: ButtonType) =
-        if (ButtonType.OK == buttonType) AnkiFlashcardDialogResult(
+        if (ButtonType.OK == buttonType) CreateAnkiNoteDialogResult(
             definitionSourceDictionary = comboBoxDefinitionSourceDictionary.selectionModel.selectedItem,
             exampleSentence = textAreaExampleSentence.text
         ) else null
 }
 
-data class AnkiFlashcardDialogResult(
+data class CreateAnkiNoteDialogResult(
     val definitionSourceDictionary: SourceDictionary,
     val exampleSentence: String,
 )

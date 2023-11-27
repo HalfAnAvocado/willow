@@ -25,7 +25,7 @@ class Anki(private val config: AnkiConfig) {
         }
     }
 
-    suspend fun addNoteFor(entry: Entry, definitionSource: SourceDictionary, exampleSentence: String = "") {
+    suspend fun createNote(entry: Entry, definitionSource: SourceDictionary, exampleSentence: String = "") {
         val request = AddNoteRequest(
             params = AddNoteParams(
                 Note(
