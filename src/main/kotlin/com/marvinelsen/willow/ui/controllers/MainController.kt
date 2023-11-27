@@ -19,6 +19,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.scene.control.Button
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
@@ -33,6 +34,7 @@ import javafx.scene.text.TextFlow
 import javafx.scene.web.WebView
 import kotlinx.coroutines.runBlocking
 
+private class SentenceContextMenu(val sentence: Sentence) : ContextMenu() {}
 
 class MainController {
     lateinit var root: VBox
@@ -69,6 +71,42 @@ class MainController {
     private val isEntrySelectedBinding = selectedEntryProperty.isNotNull
 
     private var previousSearch: String = ""
+
+    private val ankiConfig = AnkiConfig(
+        ankiConnectUrl = "http://127.0.0.1:8765",
+        deckName = "華語::閱讀",
+        modelName = "中文",
+        fields = FieldMapping(
+            traditional = "單詞",
+            zhuyin = "注音",
+            definition = "中文釋義",
+            exampleSentence = "例句"
+        )
+    )
+
+    fun onMenuItemCopySentence(sentence: Sentence?) {
+        if (sentence == null) return
+
+        val clipboardContent = ClipboardContent()
+        clipboardContent.putString(sentence.traditional)
+        systemClipboard.setContent(clipboardContent)
+        setStatus("Copied sentence to clipboard.")
+    }
+
+    fun onMenuItemCreateAnkiNoteWithSentence(sentence: Sentence?) {
+        if (sentence == null) return
+
+        AddAnkiFlashcard(
+            owner = root.scene.window,
+            entry = selectedEntryProperty.value!!,
+            exampleSentence = sentence.traditional
+        ).showAndWait().ifPresent {
+            runBlocking {
+                val anki = Anki(ankiConfig)
+                anki.addNoteFor(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
+            }
+        }
+    }
 
     fun initialize() {
         selectedEntryProperty.addListener { _, _, newValue ->
@@ -128,7 +166,7 @@ class MainController {
         }
 
         listViewSentences.apply {
-            cellFactory = SentenceCellFactory()
+            cellFactory = SentenceCellFactory(this@MainController)
             items = FXCollections.observableArrayList()
         }
 
@@ -244,22 +282,12 @@ class MainController {
         selectedEntryProperty.value = entry
     }
 
+
     fun onMenuItemNewAnkiFlashcardAction(actionEvent: ActionEvent) {
         if (!isEntrySelectedBinding.value) return
 
         AddAnkiFlashcard(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
             runBlocking {
-                val ankiConfig = AnkiConfig(
-                    ankiConnectUrl = "http://127.0.0.1:8765",
-                    deckName = "華語::閱讀",
-                    modelName = "中文",
-                    fields = FieldMapping(
-                        traditional = "單詞",
-                        zhuyin = "注音",
-                        definition = "中文釋義",
-                        exampleSentence = "例句"
-                    )
-                )
                 val anki = Anki(ankiConfig)
                 anki.addNoteFor(selectedEntryProperty.value!!, it.definitionSourceDictionary, it.exampleSentence)
             }

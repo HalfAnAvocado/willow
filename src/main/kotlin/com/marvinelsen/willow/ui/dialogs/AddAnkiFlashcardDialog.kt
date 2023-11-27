@@ -16,7 +16,7 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddAnkiFlashcard(owner: Window?, val entry: Entry) : Dialog<AnkiFlashcardDialogResult?>() {
+class AddAnkiFlashcard(owner: Window?, val entry: Entry, exampleSentence: String = "") : Dialog<AnkiFlashcardDialogResult?>() {
     lateinit var textFieldHeadword: TextField
     lateinit var textFieldZhuyin: TextField
     lateinit var comboBoxDefinitionSourceDictionary: ComboBox<SourceDictionary>
@@ -31,6 +31,7 @@ class AddAnkiFlashcard(owner: Window?, val entry: Entry) : Dialog<AnkiFlashcardD
         textFieldZhuyin.text = entry.zhuyin
         comboBoxDefinitionSourceDictionary.items = FXCollections.observableArrayList(entry.availableDefinitionSources)
         comboBoxDefinitionSourceDictionary.selectionModel.selectFirst()
+        textAreaExampleSentence.text = exampleSentence
 
         initOwner(owner)
         initModality(Modality.APPLICATION_MODAL)
