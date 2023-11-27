@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.dictionary
 
+import com.marvinelsen.willow.dictionary.database.SentenceEntity
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import javafx.concurrent.Task
@@ -27,6 +28,11 @@ object AsyncDictionary {
         databaseExecutor.submit(object : Task<List<Sentence>>() {
             override fun call() = Dictionary.findSentencesFor(entry)
         }.apply { setOnSucceeded { onSucceeded(value) } })
+
+    fun addUserSentence(sentence: Sentence): Future<*> =
+        databaseExecutor.submit(object : Task<SentenceEntity>() {
+            override fun call() = Dictionary.addUserSentence(sentence)
+        })
 
     fun shutdownExecutor() {
         databaseExecutor.shutdown()

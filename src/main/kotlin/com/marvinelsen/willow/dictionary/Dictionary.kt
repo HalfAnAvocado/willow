@@ -49,8 +49,16 @@ object Dictionary {
 
     fun findSentencesFor(entry: Entry) = transaction {
         SentenceEntity.find { SentenceTable.traditional like "%${entry.traditional}%" }
-            .sortedBy { it.characterCount }
+            .sortedWith(compareBy({ it.sentenceSource }, { it.characterCount }))
             .map { it.toSentence() }
+    }
+
+    fun addUserSentence(sentence: Sentence) = transaction {
+        SentenceEntity.new {
+            traditional = sentence.traditional
+            characterCount = sentence.traditional.length
+            sentenceSource = SentenceSource.USER
+        }
     }
 }
 

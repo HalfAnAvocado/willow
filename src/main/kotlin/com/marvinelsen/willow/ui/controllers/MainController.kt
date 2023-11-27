@@ -10,6 +10,7 @@ import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
+import com.marvinelsen.willow.ui.dialogs.AddSentenceDialog
 import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
 import com.marvinelsen.willow.ui.undo.SearchCommand
 import com.marvinelsen.willow.ui.undo.UndoManager
@@ -19,7 +20,6 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.scene.control.Button
-import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
@@ -33,8 +33,6 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import javafx.scene.web.WebView
 import kotlinx.coroutines.runBlocking
-
-private class SentenceContextMenu(val sentence: Sentence) : ContextMenu() {}
 
 class MainController {
     lateinit var root: VBox
@@ -190,7 +188,21 @@ class MainController {
     }
 
     fun onMenuItemNewEntryAction() {}
-    fun onMenuItemNewSentenceAction() {}
+    fun onMenuItemNewSentenceAction() {
+        AddSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
+            AsyncDictionary.addUserSentence(it.sentence)
+            setStatus("New sentence added to dictionary.")
+            if (selectedEntryProperty.value != null) {
+                AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
+                    listViewSentences.apply {
+                        items.clear()
+                        items.addAll(it)
+                    }
+                }
+            }
+        }
+    }
+
     fun onMenuItemSettingsAction() {}
 
     fun onMenuItemQuitAction() {

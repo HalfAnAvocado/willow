@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.*?>
+<GridPane hgap="12.0" vgap="8.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="140.0" prefWidth="140.0"/>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints valignment="TOP" vgrow="ALWAYS"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+    </padding>
+    <Label text="Chinese Sentence:"/>
+    <TextArea fx:id="textAreaChineseSentence" styleClass="chinese" prefHeight="20.0"
+              promptText="我覺得Willow是最好的詞典！" wrapText="true" GridPane.columnIndex="1"/>
+</GridPane>
