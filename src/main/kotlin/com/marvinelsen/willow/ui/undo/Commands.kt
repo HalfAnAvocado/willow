@@ -9,12 +9,16 @@ class SearchCommand(
     private val newSearchQuery: String,
 ) : Command {
     override fun execute() {
-        mainController.textFieldSearch.text = newSearchQuery
         mainController.search(newSearchQuery)
     }
 
     override fun undo() {
         mainController.textFieldSearch.text = oldSearchQuery
         mainController.search(oldSearchQuery, oldSelectionIndex)
+    }
+
+    override fun redo() {
+        mainController.textFieldSearch.text = newSearchQuery
+        mainController.search(newSearchQuery)
     }
 }

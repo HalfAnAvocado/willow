@@ -103,6 +103,7 @@ class MainController {
                             newEntry.traditional
                         )
                     )
+                    textFieldSearch.text = newEntry.traditional
                 }
         }
 
@@ -122,6 +123,7 @@ class MainController {
                         newEntry.traditional
                     )
                 )
+                textFieldSearch.text = newEntry.traditional
             }
         }
 
