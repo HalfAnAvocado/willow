@@ -25,6 +25,10 @@
     -fx-font-size: 12;
 }
 
+.list-view-sentence-cell {
+    -fx-font-size: 16;
+}
+
 .moe-definition {
     -fx-font-size: 16;
 }

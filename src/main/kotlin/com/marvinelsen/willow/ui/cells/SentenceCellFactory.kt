@@ -24,7 +24,8 @@ internal class SentenceCell(controller: MainController) : ListCell<Sentence?>() 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     private val labelTraditional = Label().apply {
-        styleClass.add("list-view-sentence")
+        styleClass.add("chinese")
+        styleClass.add("list-view-sentence-cell")
     }
     private val root = VBox(labelTraditional)
 
