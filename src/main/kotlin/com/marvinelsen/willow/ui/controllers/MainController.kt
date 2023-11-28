@@ -19,6 +19,8 @@ import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
+import javafx.event.EventHandler
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -27,6 +29,11 @@ import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination
+import javafx.scene.input.MouseButton
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Text
@@ -69,6 +76,8 @@ class MainController {
     private val isEntrySelectedBinding = selectedEntryProperty.isNotNull
 
     private var previousSearch: String = ""
+
+    lateinit var buttonSearch: Button
 
     private val ankiConfig = AnkiConfig(
         ankiConnectUrl = "http://127.0.0.1:8765",
@@ -336,7 +345,7 @@ class MainController {
         }
     }
 
-    fun textFieldSearchOnAction(actionEvent: ActionEvent) {
+    fun textFieldSearchOnAction() {
         UndoManager.execute(
             SearchCommand(
                 this@MainController,
@@ -345,5 +354,40 @@ class MainController {
                 textFieldSearch.text
             )
         )
+    }
+
+    fun onButtonSearchAction() {
+        UndoManager.execute(
+            SearchCommand(
+                this@MainController,
+                listViewEntries.selectionModel.selectedIndex,
+                previousSearch,
+                textFieldSearch.text
+            )
+        )
+    }
+
+    fun setupKeyboardShortcuts(scene: Scene) {
+        scene.accelerators.apply {
+            put(KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN), Runnable { textFieldSearch.requestFocus() })
+            put(KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), Runnable { buttonBack.fire() })
+            put(KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), Runnable { buttonNext.fire() })
+        }
+
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, EventHandler {
+            when (it.button) {
+                MouseButton.FORWARD -> {
+                    buttonNext.fire()
+                    it.consume()
+                }
+
+                MouseButton.BACK -> {
+                    buttonBack.fire()
+                    it.consume()
+                }
+
+                else -> {}
+            }
+        })
     }
 }

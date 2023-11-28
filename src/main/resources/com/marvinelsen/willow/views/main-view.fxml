@@ -45,8 +45,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem fx:id="menuItemCreateAnkiNote" onAction="#onMenuItemCreateAnkiNote"
-                      text="Create _Anki Note...">
+            <MenuItem fx:id="menuItemCreateAnkiNote" onAction="#onMenuItemCreateAnkiNote" text="Create _Anki Note...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>
@@ -81,22 +80,39 @@
         <padding>
             <Insets bottom="8.0" left="12.0" right="12.0" top="8.0"/>
         </padding>
-        <Button fx:id="buttonBack" mnemonicParsing="false" onAction="#onButtonBackAction">
+        <Button fx:id="buttonBack" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                onAction="#onButtonBackAction">
             <graphic>
-                <FontIcon iconLiteral="mdal-arrow_back"/>
+                <FontIcon iconLiteral="mdal-arrow_back" iconSize="16"/>
             </graphic>
-        </Button>
-        <Button fx:id="buttonNext" mnemonicParsing="false" onAction="#onButtonNextAction">
-            <graphic>
-                <FontIcon iconLiteral="mdal-arrow_forward"/>
-            </graphic>
-        </Button>
-        <TextField fx:id="textFieldSearch" onAction="#textFieldSearchOnAction" promptText="Search 中文…"
-                   styleClass="chinese" HBox.hgrow="ALWAYS">
             <tooltip>
-                <Tooltip text="Search Chinese..."/>
+                <Tooltip text="Go back one search (Alt+Left Arrow)"/>
+            </tooltip>
+        </Button>
+        <Button fx:id="buttonNext" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                onAction="#onButtonNextAction">
+            <graphic>
+                <FontIcon iconLiteral="mdal-arrow_forward" iconSize="16"/>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Go forward one search (Alt+Right Arrow)"/>
+            </tooltip>
+        </Button>
+        <TextField fx:id="textFieldSearch" onAction="#textFieldSearchOnAction"
+                   promptText="Search dictionary for Chinese word…" styleClass="chinese" HBox.hgrow="ALWAYS">
+            <tooltip>
+                <Tooltip text="Search dictionary for Chinese word (Ctrl+F)"/>
             </tooltip>
         </TextField>
+        <Button fx:id="buttonSearch" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                onAction="#onButtonSearchAction">
+            <graphic>
+                <FontIcon iconLiteral="mdmz-search" iconSize="16"/>
+            </graphic>
+            <tooltip>
+                <Tooltip text="Search dictionary"/>
+            </tooltip>
+        </Button>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <StackPane alignment="TOP_CENTER">
@@ -129,12 +145,13 @@
                                  prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
                     </VBox>
                 </Tab>
-                <Tab closable="false" text="Characters">
+                <Tab closable="false" disable="false" text="Sentences">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
-                            <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
+                            <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
+                            </ListView>
                         </ScrollPane>
-                        <Label fx:id="labelNoCharactersFound" text="No characters found" textAlignment="CENTER"
+                        <Label fx:id="labelNoSentencesFound" text="No sentences found" textAlignment="CENTER"
                                wrapText="true">
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
@@ -155,25 +172,18 @@
                         </Label>
                     </StackPane>
                 </Tab>
-                <Tab closable="false" disable="false" text="Sentences">
+                <Tab closable="false" text="Characters">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
-                            <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
-                            </ListView>
+                            <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
                         </ScrollPane>
-                        <Label fx:id="labelNoSentencesFound" text="No sentences found" textAlignment="CENTER"
+                        <Label fx:id="labelNoCharactersFound" text="No characters found" textAlignment="CENTER"
                                wrapText="true">
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                             </padding>
                         </Label>
                     </StackPane>
-                </Tab>
-                <Tab disable="true" text="Notes">
-                    <VBox>
-                        <TextArea fx:id="textAreaNotes" promptText="Take some notes..." wrapText="true"
-                                  VBox.vgrow="ALWAYS"/>
-                    </VBox>
                 </Tab>
                 <Tab closable="false" disable="true" text="Stroke"/>
             </TabPane>

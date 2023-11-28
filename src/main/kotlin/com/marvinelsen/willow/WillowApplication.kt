@@ -6,10 +6,12 @@ import com.marvinelsen.willow.sources.cedict.CedictParser
 import com.marvinelsen.willow.sources.lac.LacParser
 import com.marvinelsen.willow.sources.moe.MoeParser
 import com.marvinelsen.willow.sources.tatoeba.TatoebaParser
+import com.marvinelsen.willow.ui.controllers.MainController
 import java.util.zip.GZIPInputStream
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
+import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.stage.Stage
 
@@ -45,11 +47,17 @@ class WillowApplication : Application() {
         stage.minWidth = WINDOW_MIN_WIDTH
         stage.minHeight = WINDOW_MIN_HEIGHT
 
-        val fxmlLoader = FXMLLoader(WillowApplication::class.java.getResource("views/main-view.fxml"))
-        val scene = Scene(fxmlLoader.load(), 600.0, 400.0)
-        scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm());
-        stage.scene = scene
+        val fxmlLoader = FXMLLoader()
+        val root = fxmlLoader.load(WillowApplication::class.java.getResourceAsStream("views/main-view.fxml")) as VBox
 
+        val controller = fxmlLoader.getController<MainController>()
+
+        val scene = Scene(root, 600.0, 400.0)
+        scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm());
+
+        controller.setupKeyboardShortcuts(scene)
+
+        stage.scene = scene
         stage.show()
     }
 
