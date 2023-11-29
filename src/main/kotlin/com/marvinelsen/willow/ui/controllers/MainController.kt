@@ -122,40 +122,32 @@ class MainController {
 
         listViewEntries.apply {
             cellFactory = EntryCellFactory()
-            items = FXCollections.observableArrayList()
             selectionModel.selectedItemProperty()
-                .addListener { _, _, newEntry ->
-                    tabPaneEntryView.selectionModel.selectFirst()
-
-                    selectEntry(newEntry)
-                }
+                .addListener { _, _, newEntry -> tabPaneEntryView.selectionModel.selectFirst(); selectEntry(newEntry) }
         }
 
         listViewWordsContainingEntries.apply {
             cellFactory = EntryCellFactory()
-            items = FXCollections.observableArrayList()
-            selectionModel.selectedItemProperty()
-                .addListener { _, _, newEntry ->
-                    if (newEntry == null) return@addListener
+            selectionModel.selectedItemProperty().addListener { _, _, newEntry ->
+                if (newEntry == null) return@addListener
 
-                    tabPaneEntryView.selectionModel.selectFirst()
+                tabPaneEntryView.selectionModel.selectFirst()
 
-                    UndoManager.execute(
-                        SearchCommand(
-                            this@MainController,
-                            listViewEntries.selectionModel.selectedIndex,
-                            textFieldSearch.text,
-                            newEntry.traditional
-                        )
+                UndoManager.execute(
+                    SearchCommand(
+                        this@MainController,
+                        listViewEntries.selectionModel.selectedIndex,
+                        textFieldSearch.text,
+                        newEntry.traditional
                     )
-                    textFieldSearch.text = newEntry.traditional
-                }
+                )
+                textFieldSearch.text = newEntry.traditional
+            }
         }
 
         listViewCharacters.apply {
             cellFactory = EntryCellFactory()
-            items = FXCollections.observableArrayList()
-            selectionModel.selectedItemProperty().addListener { _, oldEntry, newEntry ->
+            selectionModel.selectedItemProperty().addListener { _, _, newEntry ->
                 if (newEntry == null) return@addListener
 
                 tabPaneEntryView.selectionModel.selectFirst()
@@ -174,7 +166,6 @@ class MainController {
 
         listViewSentences.apply {
             cellFactory = SentenceCellFactory(this@MainController)
-            items = FXCollections.observableArrayList()
         }
 
         labelNoCharactersFound.visibleProperty().bind(Bindings.isEmpty(listViewCharacters.items))
@@ -200,24 +191,15 @@ class MainController {
 
             when (selectedTab.id) {
                 "tabPaneCharacters" -> AsyncDictionary.findCharactersOf(selectedEntryProperty.value!!) {
-                    listViewCharacters.apply {
-                        items.clear()
-                        items.addAll(it)
-                    }
+                    listViewCharacters.items.setAll(it)
                 }
 
                 "tabPaneWords" -> AsyncDictionary.findEntriesContaining(selectedEntryProperty.value!!) {
-                    listViewWordsContainingEntries.apply {
-                        items.clear()
-                        items.addAll(it)
-                    }
+                    listViewWordsContainingEntries.items.setAll(it)
                 }
 
                 "tabPaneSentences" -> AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
-                    listViewSentences.apply {
-                        items.clear()
-                        items.addAll(it)
-                    }
+                    listViewSentences.items.setAll(it)
                 }
 
                 else -> {}
@@ -232,10 +214,7 @@ class MainController {
             setStatus("New sentence added to dictionary.")
             if (selectedEntryProperty.value != null) {
                 AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
-                    listViewSentences.apply {
-                        items.clear()
-                        items.addAll(it)
-                    }
+                    listViewSentences.items.setAll(it)
                 }
             }
         }
@@ -345,8 +324,7 @@ class MainController {
 
         AsyncDictionary.search(query) {
             with(listViewEntries) {
-                items.clear()
-                items.addAll(it)
+                items.setAll(it)
                 selectionModel.select(selectionIndex)
             }
             setStatus("Found ${it.size} matching entries.")
