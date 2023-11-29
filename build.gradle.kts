@@ -36,8 +36,6 @@ dependencies {
     implementation(libs.ikonli.javafx)
     implementation(libs.ikonli.material2)
 
-    implementation(libs.jieba)
-
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.java)
     implementation(libs.ktor.client.content.negotiation)
