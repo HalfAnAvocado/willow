@@ -139,13 +139,13 @@
             </FlowPane>
             <TabPane fx:id="tabPaneEntryView" prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE"
                      VBox.vgrow="ALWAYS">
-                <Tab closable="false" text="Definition">
+                <Tab id="tabPaneDefinition" closable="false" text="Definition">
                     <VBox>
                         <WebView fx:id="webViewDefinitions" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0"
                                  prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
                     </VBox>
                 </Tab>
-                <Tab closable="false" disable="false" text="Sentences">
+                <Tab id="tabPaneSentences" closable="false" disable="false" text="Sentences">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
@@ -159,7 +159,7 @@
                         </Label>
                     </StackPane>
                 </Tab>
-                <Tab closable="false" text="Words">
+                <Tab id="tabPaneWords" closable="false" text="Words">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewWordsContainingEntries" prefHeight="200.0" prefWidth="200.0"/>
@@ -172,7 +172,7 @@
                         </Label>
                     </StackPane>
                 </Tab>
-                <Tab closable="false" text="Characters">
+                <Tab id="tabPaneCharacters" closable="false" text="Characters">
                     <StackPane alignment="TOP_CENTER">
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>

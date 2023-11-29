@@ -194,6 +194,35 @@ class MainController {
 
         buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
         buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
+
+        tabPaneEntryView.selectionModel.selectedItemProperty().addListener { _, _, selectedTab ->
+            if (selectedEntryProperty.value == null) return@addListener
+
+            when (selectedTab.id) {
+                "tabPaneCharacters" -> AsyncDictionary.findCharactersOf(selectedEntryProperty.value!!) {
+                    listViewCharacters.apply {
+                        items.clear()
+                        items.addAll(it)
+                    }
+                }
+
+                "tabPaneWords" -> AsyncDictionary.findEntriesContaining(selectedEntryProperty.value!!) {
+                    listViewWordsContainingEntries.apply {
+                        items.clear()
+                        items.addAll(it)
+                    }
+                }
+
+                "tabPaneSentences" -> AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
+                    listViewSentences.apply {
+                        items.clear()
+                        items.addAll(it)
+                    }
+                }
+
+                else -> {}
+            }
+        }
     }
 
     fun onMenuItemNewEntryAction() {}
@@ -272,27 +301,6 @@ class MainController {
         webViewDefinitions.engine.loadContent(
             listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
         )
-
-        AsyncDictionary.findCharactersOf(entry) {
-            listViewCharacters.apply {
-                items.clear()
-                items.addAll(it)
-            }
-        }
-
-        AsyncDictionary.findEntriesContaining(entry) {
-            listViewWordsContainingEntries.apply {
-                items.clear()
-                items.addAll(it)
-            }
-        }
-
-        AsyncDictionary.findSentencesFor(entry) {
-            listViewSentences.apply {
-                items.clear()
-                items.addAll(it)
-            }
-        }
     }
 
     private fun setStatus(status: String) {
