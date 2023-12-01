@@ -4,7 +4,7 @@ import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.anki.Anki
 import com.marvinelsen.willow.config.AnkiConfig
 import com.marvinelsen.willow.config.FieldMapping
-import com.marvinelsen.willow.dictionary.AsyncDictionary
+import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
@@ -12,19 +12,23 @@ import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
 import com.marvinelsen.willow.ui.dialogs.AddSentenceDialog
 import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
+import com.marvinelsen.willow.ui.services.FindCharactersService
+import com.marvinelsen.willow.ui.services.FindEntriesContainingService
+import com.marvinelsen.willow.ui.services.FindSentencesService
+import com.marvinelsen.willow.ui.services.SearchService
 import com.marvinelsen.willow.ui.undo.SearchCommand
 import com.marvinelsen.willow.ui.undo.UndoManager
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleObjectProperty
-import javafx.collections.FXCollections
-import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
+import javafx.scene.control.ProgressIndicator
+import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import javafx.scene.input.Clipboard
@@ -51,24 +55,34 @@ class MainController {
     lateinit var buttonNext: Button
     lateinit var buttonBack: Button
     lateinit var textFieldSearch: TextField
+    lateinit var buttonSearch: Button
 
     lateinit var listViewEntries: ListView<Entry>
     lateinit var listViewCharacters: ListView<Entry>
     lateinit var listViewWordsContainingEntries: ListView<Entry>
     lateinit var listViewSentences: ListView<Sentence>
 
+    lateinit var progressIndicatorCharacters: ProgressIndicator
+    lateinit var progressIndicatorWordsContaining: ProgressIndicator
+    lateinit var progressIndicatorSentences: ProgressIndicator
+    lateinit var progressIndicatorEntries: ProgressIndicator
+
     lateinit var labelNoEntriesFound: Label
     lateinit var labelNoCharactersFound: Label
     lateinit var labelNoWordsContainingFound: Label
     lateinit var labelNoSentencesFound: Label
 
-    lateinit var webViewDefinitions: WebView
-    lateinit var labelStatus: Label
-
     lateinit var textFlowHeadWord: TextFlow
     lateinit var labelHeadwordPronunciation: Label
+    lateinit var webViewDefinitions: WebView
 
     lateinit var tabPaneEntryView: TabPane
+    lateinit var tabPaneDefinition: Tab
+    lateinit var tabPaneSentences: Tab
+    lateinit var tabPaneWords: Tab
+    lateinit var tabPaneCharacters: Tab
+
+    lateinit var labelStatus: Label
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
@@ -76,8 +90,6 @@ class MainController {
     private val isEntrySelectedBinding = selectedEntryProperty.isNotNull
 
     private var previousSearch: String = ""
-
-    lateinit var buttonSearch: Button
 
     private val ankiConfig = AnkiConfig(
         ankiConnectUrl = "http://127.0.0.1:8765",
@@ -119,6 +131,68 @@ class MainController {
         selectedEntryProperty.addListener { _, _, newValue ->
             displayEntry(newValue)
         }
+
+        labelNoCharactersFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewCharacters.items).and(FindCharactersService.runningProperty().not()))
+        labelNoEntriesFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewEntries.items).and(SearchService.runningProperty().not()))
+        labelNoWordsContainingFound
+            .visibleProperty()
+            .bind(
+                Bindings
+                    .isEmpty(listViewWordsContainingEntries.items)
+                    .and(FindEntriesContainingService.runningProperty().not())
+            )
+        labelNoSentencesFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewSentences.items).and(FindSentencesService.runningProperty().not()))
+
+        progressIndicatorEntries.visibleProperty().bind(SearchService.runningProperty())
+        progressIndicatorCharacters.visibleProperty().bind(FindCharactersService.runningProperty())
+        progressIndicatorWordsContaining.visibleProperty().bind(FindEntriesContainingService.runningProperty())
+        progressIndicatorSentences.visibleProperty().bind(FindSentencesService.runningProperty())
+
+        SearchService.onSucceeded = EventHandler {
+            val (selectionIndex, entries) = SearchService.value
+            listViewEntries.items.setAll(entries)
+            listViewEntries.selectionModel.select(selectionIndex)
+            setStatus("Found ${entries.size} matching entries.")
+        }
+
+        FindCharactersService.onSucceeded = EventHandler {
+            listViewCharacters.items.setAll(FindCharactersService.value)
+        }
+
+        FindEntriesContainingService.onSucceeded = EventHandler {
+            listViewWordsContainingEntries.items.setAll(FindEntriesContainingService.value)
+        }
+
+        FindSentencesService.onSucceeded = EventHandler {
+            listViewSentences.items.setAll(FindSentencesService.value)
+        }
+
+        menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
+
+        buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
+        buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
+        buttonSearch.disableProperty().bind(textFieldSearch.textProperty().isEmpty)
+
+        listViewEntries.disableProperty()
+            .bind(Bindings.isEmpty(listViewEntries.items).or(SearchService.runningProperty()))
+        listViewSentences.disableProperty()
+            .bind(Bindings.isEmpty(listViewSentences.items).or(FindSentencesService.runningProperty()))
+        listViewWordsContainingEntries.disableProperty()
+            .bind(
+                Bindings
+                    .isEmpty(listViewWordsContainingEntries.items)
+                    .or(FindEntriesContainingService.runningProperty())
+            )
+        listViewCharacters.disableProperty()
+            .bind(Bindings.isEmpty(listViewCharacters.items).or(FindCharactersService.runningProperty()))
 
         listViewEntries.apply {
             cellFactory = EntryCellFactory()
@@ -168,14 +242,40 @@ class MainController {
             cellFactory = SentenceCellFactory(this@MainController)
         }
 
-        labelNoCharactersFound.visibleProperty().bind(Bindings.isEmpty(listViewCharacters.items))
-        labelNoEntriesFound.visibleProperty().bind(Bindings.isEmpty(listViewEntries.items))
-        labelNoWordsContainingFound.visibleProperty().bind(Bindings.isEmpty(listViewWordsContainingEntries.items))
-        labelNoSentencesFound.visibleProperty().bind(Bindings.isEmpty(listViewSentences.items))
+        tabPaneEntryView.disableProperty().bind(isEntrySelectedBinding.not())
+        tabPaneDefinition.disableProperty().bind(isEntrySelectedBinding.not())
+        tabPaneSentences.disableProperty().bind(isEntrySelectedBinding.not())
+        tabPaneWords.disableProperty().bind(isEntrySelectedBinding.not())
+        tabPaneCharacters.disableProperty().bind(isEntrySelectedBinding.not())
 
-        menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
+        tabPaneEntryView.selectionModel.selectedItemProperty().addListener { _, _, selectedTab ->
+            if (selectedEntryProperty.value == null) return@addListener
+
+            when (selectedTab.id) {
+                "tabPaneCharacters" -> {
+                    if (FindCharactersService.selectedEntry != selectedEntryProperty.value!!) {
+                        FindCharactersService.selectedEntry = selectedEntryProperty.value!!
+                        FindCharactersService.restart()
+                    }
+                }
+
+                "tabPaneWords" -> {
+                    if (FindEntriesContainingService.selectedEntry != selectedEntryProperty.value!!) {
+                        FindEntriesContainingService.selectedEntry = selectedEntryProperty.value!!
+                        FindEntriesContainingService.restart()
+                    }
+                }
+
+                "tabPaneSentences" -> {
+                    if (FindSentencesService.selectedEntry != selectedEntryProperty.value!!) {
+                        FindSentencesService.selectedEntry = selectedEntryProperty.value!!
+                        FindSentencesService.restart()
+                    }
+                }
+
+                else -> {}
+            }
+        }
 
         webViewDefinitions.apply {
             isContextMenuEnabled = false
@@ -183,39 +283,19 @@ class MainController {
                 WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
         }
 
-        buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
-        buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
-
-        tabPaneEntryView.selectionModel.selectedItemProperty().addListener { _, _, selectedTab ->
-            if (selectedEntryProperty.value == null) return@addListener
-
-            when (selectedTab.id) {
-                "tabPaneCharacters" -> AsyncDictionary.findCharactersOf(selectedEntryProperty.value!!) {
-                    listViewCharacters.items.setAll(it)
-                }
-
-                "tabPaneWords" -> AsyncDictionary.findEntriesContaining(selectedEntryProperty.value!!) {
-                    listViewWordsContainingEntries.items.setAll(it)
-                }
-
-                "tabPaneSentences" -> AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
-                    listViewSentences.items.setAll(it)
-                }
-
-                else -> {}
-            }
-        }
+        textFieldSearch.text = "柳"
+        previousSearch = "柳"
+        search("柳")
     }
 
     fun onMenuItemNewEntryAction() {}
     fun onMenuItemNewSentenceAction() {
         AddSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
-            AsyncDictionary.addUserSentence(it.sentence)
+            Dictionary.addUserSentence(it.sentence)
             setStatus("New sentence added to dictionary.")
             if (selectedEntryProperty.value != null) {
-                AsyncDictionary.findSentencesFor(selectedEntryProperty.value!!) {
-                    listViewSentences.items.setAll(it)
-                }
+                FindSentencesService.selectedEntry = selectedEntryProperty.value!!
+                FindSentencesService.restart()
             }
         }
     }
@@ -290,8 +370,7 @@ class MainController {
         selectedEntryProperty.value = entry
     }
 
-
-    fun onMenuItemCreateAnkiNote(actionEvent: ActionEvent) {
+    fun onMenuItemCreateAnkiNote() {
         if (!isEntrySelectedBinding.value) return
 
         CreateAnkiNoteDialog(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
@@ -306,32 +385,29 @@ class MainController {
         }
     }
 
-    fun onButtonBackAction(actionEvent: ActionEvent) {
+    fun onButtonBackAction() {
         UndoManager.undo()
     }
 
-    fun onButtonNextAction(actionEvent: ActionEvent) {
+    fun onButtonNextAction() {
         UndoManager.redo()
     }
 
-    fun search(query: String, selectionIndex: Int = 0) {
-        previousSearch = query
+    fun search(searchQuery: String, selectionIndex: Int = 0) {
+        require(searchQuery.isNotBlank()) { "Expected searchQuery to not be blank, but was blank" }
+        require(selectionIndex >= 0) { "Expected selectionIndex to be greater than or equal to zero, but was $selectionIndex" }
 
-        if (query.isBlank()) {
-            listViewEntries.items.clear()
-            return
-        }
+        previousSearch = searchQuery
 
-        AsyncDictionary.search(query) {
-            with(listViewEntries) {
-                items.setAll(it)
-                selectionModel.select(selectionIndex)
-            }
-            setStatus("Found ${it.size} matching entries.")
-        }
+        SearchService.searchQuery = searchQuery
+        SearchService.selectionIndex = selectionIndex
+        SearchService.restart()
     }
 
     fun textFieldSearchOnAction() {
+        if (textFieldSearch.text.isBlank()) return
+        if (textFieldSearch.text == previousSearch) return
+
         UndoManager.execute(
             SearchCommand(
                 this@MainController,
@@ -343,6 +419,9 @@ class MainController {
     }
 
     fun onButtonSearchAction() {
+        if (textFieldSearch.text.isBlank()) return
+        if (textFieldSearch.text == previousSearch) return
+
         UndoManager.execute(
             SearchCommand(
                 this@MainController,
@@ -355,12 +434,14 @@ class MainController {
 
     fun setupKeyboardShortcuts(scene: Scene) {
         scene.accelerators.apply {
-            put(KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN), Runnable { textFieldSearch.requestFocus() })
+            put(
+                KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN),
+                Runnable { textFieldSearch.requestFocus() })
             put(KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), Runnable { buttonBack.fire() })
             put(KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), Runnable { buttonNext.fire() })
         }
 
-        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, EventHandler {
+        scene.addEventFilter(MouseEvent.MOUSE_PRESSED) {
             when (it.button) {
                 MouseButton.FORWARD -> {
                     buttonNext.fire()
@@ -374,6 +455,6 @@ class MainController {
 
                 else -> {}
             }
-        })
+        }
     }
 }

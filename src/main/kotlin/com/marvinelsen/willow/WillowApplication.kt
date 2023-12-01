@@ -1,6 +1,5 @@
 package com.marvinelsen.willow
 
-import com.marvinelsen.willow.dictionary.AsyncDictionary
 import com.marvinelsen.willow.dictionary.database.DatabaseManager
 import com.marvinelsen.willow.sources.cedict.CedictParser
 import com.marvinelsen.willow.sources.lac.LacParser
@@ -59,10 +58,6 @@ class WillowApplication : Application() {
 
         stage.scene = scene
         stage.show()
-    }
-
-    override fun stop() {
-        AsyncDictionary.shutdownExecutor()
     }
 
     companion object {

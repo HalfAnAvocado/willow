@@ -2,6 +2,12 @@ package com.marvinelsen.willow.ui.undo
 
 import com.marvinelsen.willow.ui.controllers.MainController
 
+interface Command {
+    fun execute()
+    fun undo()
+    fun redo() = execute()
+}
+
 class SearchCommand(
     private val mainController: MainController,
     private val oldSelectionIndex: Int,

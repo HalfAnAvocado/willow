@@ -45,13 +45,15 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem fx:id="menuItemCreateAnkiNote" onAction="#onMenuItemCreateAnkiNote" text="Create _Anki Note...">
+            <MenuItem fx:id="menuItemCreateAnkiNote" disable="true" onAction="#onMenuItemCreateAnkiNote"
+                      text="Create _Anki Note...">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem fx:id="menuItemCopyHeadword" onAction="#onMenuItemCopyHeadwordAction" text="Copy _Headword">
+            <MenuItem fx:id="menuItemCopyHeadword" disable="true" onAction="#onMenuItemCopyHeadwordAction"
+                      text="Copy _Headword">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -59,7 +61,8 @@
                     <FontIcon iconLiteral="mdal-content_copy"/>
                 </graphic>
             </MenuItem>
-            <MenuItem fx:id="menuItemCopyZhuyin" onAction="#onMenuItemCopyZhuyinAction" text="Copy _Zhuyin">
+            <MenuItem fx:id="menuItemCopyZhuyin" disable="true" onAction="#onMenuItemCopyZhuyinAction"
+                      text="Copy _Zhuyin">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -80,8 +83,8 @@
         <padding>
             <Insets bottom="8.0" left="12.0" right="12.0" top="8.0"/>
         </padding>
-        <Button fx:id="buttonBack" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                onAction="#onButtonBackAction">
+        <Button fx:id="buttonBack" contentDisplay="GRAPHIC_ONLY" disable="true" graphicTextGap="0.0"
+                mnemonicParsing="false" onAction="#onButtonBackAction">
             <graphic>
                 <FontIcon iconLiteral="mdal-arrow_back" iconSize="16"/>
             </graphic>
@@ -89,8 +92,8 @@
                 <Tooltip text="Go back one search (Alt+Left Arrow)"/>
             </tooltip>
         </Button>
-        <Button fx:id="buttonNext" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                onAction="#onButtonNextAction">
+        <Button fx:id="buttonNext" contentDisplay="GRAPHIC_ONLY" disable="true" graphicTextGap="0.0"
+                mnemonicParsing="false" onAction="#onButtonNextAction">
             <graphic>
                 <FontIcon iconLiteral="mdal-arrow_forward" iconSize="16"/>
             </graphic>
@@ -104,8 +107,8 @@
                 <Tooltip text="Search dictionary for Chinese word (Ctrl+F)"/>
             </tooltip>
         </TextField>
-        <Button fx:id="buttonSearch" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                onAction="#onButtonSearchAction">
+        <Button fx:id="buttonSearch" contentDisplay="GRAPHIC_ONLY" disable="true" graphicTextGap="0.0"
+                mnemonicParsing="false" onAction="#onButtonSearchAction">
             <graphic>
                 <FontIcon iconLiteral="mdmz-search" iconSize="16"/>
             </graphic>
@@ -115,14 +118,16 @@
         </Button>
     </HBox>
     <SplitPane dividerPositions="0.25585284280936454" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <StackPane alignment="TOP_CENTER">
-            <ListView fx:id="listViewEntries" minHeight="300.0" minWidth="150.0">
+        <StackPane>
+            <ListView fx:id="listViewEntries" disable="true" minHeight="300.0" minWidth="150.0">
             </ListView>
-            <Label fx:id="labelNoEntriesFound" text="No entries found" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="labelNoEntriesFound" text="No entries found" textAlignment="CENTER" visible="false"
+                   wrapText="true">
                 <padding>
                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                 </padding>
             </Label>
+            <ProgressIndicator fx:id="progressIndicatorEntries" visible="false"/>
         </StackPane>
         <VBox>
             <FlowPane fx:id="flowPaneSelectedWord" hgap="8.0" onContextMenuRequested="#showSelectedWordContextMenu"
@@ -139,50 +144,54 @@
             </FlowPane>
             <TabPane fx:id="tabPaneEntryView" prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE"
                      VBox.vgrow="ALWAYS">
-                <Tab id="tabPaneDefinition" closable="false" text="Definition">
+                <Tab fx:id="tabPaneDefinition" id="tabPaneDefinition" closable="false" disable="true" text="Definition">
                     <VBox>
                         <WebView fx:id="webViewDefinitions" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0"
                                  prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
                     </VBox>
                 </Tab>
-                <Tab id="tabPaneSentences" closable="false" disable="false" text="Sentences">
-                    <StackPane alignment="TOP_CENTER">
+                <Tab fx:id="tabPaneSentences" id="tabPaneSentences" closable="false" disable="true" text="Sentences">
+                    <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
-                            <ListView fx:id="listViewSentences" prefHeight="200.0" prefWidth="200.0">
+                            <ListView fx:id="listViewSentences" disable="true" prefHeight="200.0" prefWidth="200.0">
                             </ListView>
                         </ScrollPane>
                         <Label fx:id="labelNoSentencesFound" text="No sentences found" textAlignment="CENTER"
-                               wrapText="true">
+                               visible="false" wrapText="true">
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                             </padding>
                         </Label>
+                        <ProgressIndicator fx:id="progressIndicatorSentences" visible="false"/>
                     </StackPane>
                 </Tab>
-                <Tab id="tabPaneWords" closable="false" text="Words">
-                    <StackPane alignment="TOP_CENTER">
+                <Tab fx:id="tabPaneWords" id="tabPaneWords" closable="false" disable="true" text="Words">
+                    <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
-                            <ListView fx:id="listViewWordsContainingEntries" prefHeight="200.0" prefWidth="200.0"/>
+                            <ListView fx:id="listViewWordsContainingEntries" disable="true" prefHeight="200.0"
+                                      prefWidth="200.0"/>
                         </ScrollPane>
                         <Label fx:id="labelNoWordsContainingFound" text="No words containing found"
-                               textAlignment="CENTER" wrapText="true">
+                               textAlignment="CENTER" visible="false" wrapText="true">
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                             </padding>
                         </Label>
+                        <ProgressIndicator fx:id="progressIndicatorWordsContaining" visible="false"/>
                     </StackPane>
                 </Tab>
-                <Tab id="tabPaneCharacters" closable="false" text="Characters">
-                    <StackPane alignment="TOP_CENTER">
+                <Tab fx:id="tabPaneCharacters" id="tabPaneCharacters" closable="false" disable="true" text="Characters">
+                    <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
-                            <ListView fx:id="listViewCharacters" prefHeight="200.0" prefWidth="200.0"/>
+                            <ListView fx:id="listViewCharacters" disable="true" prefHeight="200.0" prefWidth="200.0"/>
                         </ScrollPane>
                         <Label fx:id="labelNoCharactersFound" text="No characters found" textAlignment="CENTER"
-                               wrapText="true">
+                               visible="false" wrapText="true">
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                             </padding>
                         </Label>
+                        <ProgressIndicator fx:id="progressIndicatorCharacters" visible="false"/>
                     </StackPane>
                 </Tab>
                 <Tab closable="false" disable="true" text="Stroke"/>
