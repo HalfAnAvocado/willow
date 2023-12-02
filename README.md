@@ -10,7 +10,7 @@
 
 ## 🤔 What is Willow?
 
-Willow is a Traditional Chinese to English dictionary software. Willow is designed specifically for advanced learners who are focused on mastering Traditional Chinese as it is used in Taiwan. This tool is ideal for those who prefer a monolingual approach to language learning.
+Willow is a Traditional Chinese dictionary software. Willow is designed specifically for advanced learners who are focused on mastering Traditional Chinese as it is used in Taiwan. This tool is ideal for those who prefer a monolingual approach to language learning.
 
 ## Desktop-Optimized and Offline Access
 
@@ -37,31 +37,30 @@ Willow is optimized for desktop use, providing a seamless and efficient user exp
 
 ## 💡 Feature requests
 
-TODO
+If you have a feature request, please [create an issue on GitHub using the Feature request template](https://github.com/HalfAnAvocado/willow/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=%5BFeature%5D+).
 
 ## 🪲 Bug reports
 
-TODO
+If you encounter a bug, please [create an issue on GitHub using the Bug report template](https://github.com/HalfAnAvocado/willow/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=%5BBug%5D+).
 
 ## 🌟 Contributing
 
-TODO
+Please refer to [CONTRIBUTING](CONTRIBUTING.md).
 
 ## 🗒️ Code of Conduct
 
-TODO
+Please refer to [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md).
 
 ## 🛠️ Building
 
-### Dependencies
+### Arch Linux
 
-- JDK 21
-
-### Building from source (all platforms) - Gradle
-
-The project is built with Gradle. Run Gradle to build the project and to run the tests using the following command on Unix/macOS:
+Willow is built with OpenJDK 21 and Gradle. Run Gradle to build the project using the following commands on Arch Linux:
 
 ```sh
+sudo pacman -Syu jdk-openjdk
+git clone git@github.com:HalfAnAvocado/willow.git
+cd willow
 ./gradlew build
 ```
 
