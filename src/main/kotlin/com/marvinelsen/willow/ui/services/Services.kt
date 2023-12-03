@@ -10,13 +10,12 @@ object SearchService : Service<SearchResult>() {
     var selectionIndex = 0
     var searchQuery = ""
 
-    override fun createTask() =
-        task {
-            SearchResult(
-                selectionIndex = selectionIndex,
-                entries = Dictionary.search(searchQuery)
-            )
-        }
+    override fun createTask() = task {
+        SearchResult(
+            selectionIndex = selectionIndex,
+            entries = Dictionary.search(searchQuery)
+        )
+    }
 }
 
 data class SearchResult(
@@ -27,32 +26,49 @@ data class SearchResult(
 object FindCharactersService : Service<List<Entry>>() {
     var selectedEntry: Entry? = null
 
-    override fun createTask() =
-        task {
-            if (selectedEntry == null) return@task emptyList()
+    override fun createTask() = task {
+        if (selectedEntry == null) return@task emptyList()
 
-            Dictionary.findCharactersOf(selectedEntry!!)
-        }
+        Dictionary.findCharactersOf(selectedEntry!!)
+    }
 }
 
 object FindEntriesContainingService : Service<List<Entry>>() {
     var selectedEntry: Entry? = null
 
-    override fun createTask() =
-        task {
-            if (selectedEntry == null) return@task emptyList()
+    override fun createTask() = task {
+        if (selectedEntry == null) return@task emptyList()
 
-            Dictionary.findEntriesContaining(selectedEntry!!)
-        }
+        Dictionary.findEntriesContaining(selectedEntry!!)
+    }
 }
 
 object FindSentencesService : Service<List<Sentence>>() {
     var selectedEntry: Entry? = null
 
-    override fun createTask() =
-        task {
-            if (selectedEntry == null) return@task emptyList()
+    override fun createTask() = task {
+        if (selectedEntry == null) return@task emptyList()
 
-            Dictionary.findSentencesFor(selectedEntry!!)
-        }
+        Dictionary.findSentencesFor(selectedEntry!!)
+    }
+}
+
+object AddUserSentenceService : Service<Unit>() {
+    var userSentence: Sentence? = null
+
+    override fun createTask() = task {
+        if (userSentence == null) return@task
+
+        Dictionary.addUserSentence(userSentence!!)
+    }
+}
+
+object AddUserEntryService : Service<Unit>() {
+    var userEntry: Entry? = null
+
+    override fun createTask() = task {
+        if (userEntry == null) return@task
+
+        Dictionary.addUserEntry(userEntry!!)
+    }
 }
