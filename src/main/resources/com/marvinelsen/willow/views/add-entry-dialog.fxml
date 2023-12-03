@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane hgap="12.0" vgap="8.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="140.0" prefWidth="140.0"/>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+        <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+    </padding>
+    <Label text="Traditional Chinese:"/>
+    <Label text="Pronunciation:" GridPane.rowIndex="1"/>
+    <Label text="Definition:" GridPane.rowIndex="2"/>
+    <TextField fx:id="textFieldTraditionalChinese" styleClass="chinese" promptText="中文" GridPane.columnIndex="1"/>
+    <TextField fx:id="textFieldPronunciation" promptText="zhong1 wen2" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <TextArea fx:id="textAreaDefinition" styleClass="chinese" prefHeight="20.0" promptText="Chinese language"
+              wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+</GridPane>

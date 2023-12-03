@@ -1,5 +1,6 @@
 package com.marvinelsen.willow.dictionary
 
+import com.marvinelsen.willow.dictionary.database.DatabaseManager
 import com.marvinelsen.willow.dictionary.database.DefinitionEntity
 import com.marvinelsen.willow.dictionary.database.EntryEntity
 import com.marvinelsen.willow.dictionary.database.EntryTable
@@ -26,7 +27,8 @@ object Dictionary {
 
     fun findCharactersOf(entry: Entry): List<Entry> {
         val characterToEntryMap = transaction {
-            EntryEntity.find { (EntryTable.traditional inList entry.characters) and (EntryTable.zhuyin inList entry.zhuyinSyllables) }
+            EntryEntity
+                .find { (EntryTable.traditional inList entry.characters) and (EntryTable.zhuyin inList entry.zhuyinSyllables) }
                 .with(EntryEntity::definitions)
                 .map { it.toEntry() }
                 .associateBy { it.traditional }
@@ -45,6 +47,18 @@ object Dictionary {
             traditional = sentence.traditional
             characterCount = sentence.traditional.length
             sentenceSource = SentenceSource.USER
+        }
+    }
+
+    fun addUserEntry(userEntry: Entry) = transaction {
+        val entryEntity = DatabaseManager.findOrCreateEntryEntity(userEntry.traditional, userEntry.zhuyin)
+        val definition = userEntry.definitions[SourceDictionary.USER]!!.first()
+
+        DefinitionEntity.new {
+            entry = entryEntity
+            shortDefinition = definition.shortDefinition
+            htmlDefinition = definition.htmlDefinition
+            dictionary = SourceDictionary.USER
         }
     }
 }
