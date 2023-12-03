@@ -9,17 +9,17 @@
         <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints valignment="TOP" vgrow="ALWAYS"/>
-        <RowConstraints valignment="TOP" vgrow="ALWAYS"/>
-        <RowConstraints valignment="TOP" vgrow="ALWAYS"/>
-        <RowConstraints valignment="TOP" vgrow="ALWAYS"/>
+        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+        <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
     </rowConstraints>
     <padding>
         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
     </padding>
     <Label text="Headword:"/>
     <Label text="Example Sentence:" GridPane.rowIndex="3"/>
-    <TextArea fx:id="textAreaExampleSentence" wrapText="true" styleClass="chinese" GridPane.columnIndex="1"
+    <TextArea fx:id="textAreaExampleSentence" styleClass="chinese" wrapText="true" GridPane.columnIndex="1"
               GridPane.rowIndex="3"/>
     <Label text="Zhuyin:" GridPane.rowIndex="1"/>
     <TextField fx:id="textFieldZhuyin" editable="false" styleClass="chinese" GridPane.columnIndex="1"
