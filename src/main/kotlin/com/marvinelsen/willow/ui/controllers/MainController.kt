@@ -298,7 +298,7 @@ class MainController {
 
     fun onMenuItemNewSentenceAction() {
         AddSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
-            Dictionary.addUserSentence(it.sentence)
+            Dictionary.addUserSentence(it)
             setStatus("New sentence added to dictionary.")
             if (selectedEntryProperty.value != null) {
                 FindSentencesService.selectedEntry = selectedEntryProperty.value!!

@@ -13,7 +13,7 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddSentenceDialog(owner: Window?, exampleSentence: String?) : Dialog<AddSentenceDialogResult?>() {
+class AddSentenceDialog(owner: Window?, exampleSentence: String?) : Dialog<Sentence?>() {
     lateinit var textAreaChineseSentence: TextArea
 
     private val systemClipboard = Clipboard.getSystemClipboard()
@@ -44,9 +44,5 @@ class AddSentenceDialog(owner: Window?, exampleSentence: String?) : Dialog<AddSe
     }
 
     private fun returnResult(buttonType: ButtonType) =
-        if (ButtonType.OK == buttonType) AddSentenceDialogResult(
-            sentence = Sentence(textAreaChineseSentence.text)
-        ) else null
+        if (ButtonType.OK == buttonType) Sentence(textAreaChineseSentence.text) else null
 }
-
-data class AddSentenceDialogResult(val sentence: Sentence)
