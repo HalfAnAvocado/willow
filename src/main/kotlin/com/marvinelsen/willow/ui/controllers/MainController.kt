@@ -4,15 +4,18 @@ import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.anki.Anki
 import com.marvinelsen.willow.config.AnkiConfig
 import com.marvinelsen.willow.config.FieldMapping
-import com.marvinelsen.willow.dictionary.Dictionary
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
+import com.marvinelsen.willow.ui.alerts.addedUserEntryAlert
+import com.marvinelsen.willow.ui.alerts.addedUserSentenceAlert
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
 import com.marvinelsen.willow.ui.dialogs.AddEntryDialog
 import com.marvinelsen.willow.ui.dialogs.AddSentenceDialog
 import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
+import com.marvinelsen.willow.ui.services.AddUserEntryService
+import com.marvinelsen.willow.ui.services.AddUserSentenceService
 import com.marvinelsen.willow.ui.services.FindCharactersService
 import com.marvinelsen.willow.ui.services.FindEntriesContainingService
 import com.marvinelsen.willow.ui.services.FindSentencesService
@@ -174,6 +177,20 @@ class MainController {
             listViewSentences.items.setAll(FindSentencesService.value)
         }
 
+        AddUserSentenceService.onSucceeded = EventHandler {
+            setStatus("New sentence added to dictionary.")
+            if (selectedEntryProperty.value != null) {
+                FindSentencesService.selectedEntry = selectedEntryProperty.value!!
+                FindSentencesService.restart()
+            }
+            addedUserSentenceAlert.showAndWait()
+        }
+
+        AddUserEntryService.onSucceeded = EventHandler {
+            setStatus("New entry added to dictionary.")
+            addedUserEntryAlert.showAndWait()
+        }
+
         menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
         menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
         menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
@@ -291,19 +308,15 @@ class MainController {
 
     fun onMenuItemNewEntryAction() {
         AddEntryDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
-            Dictionary.addUserEntry(it)
-            setStatus("New entry added to dictionary.")
+            AddUserEntryService.userEntry = it
+            AddUserEntryService.restart()
         }
     }
 
     fun onMenuItemNewSentenceAction() {
         AddSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
-            Dictionary.addUserSentence(it)
-            setStatus("New sentence added to dictionary.")
-            if (selectedEntryProperty.value != null) {
-                FindSentencesService.selectedEntry = selectedEntryProperty.value!!
-                FindSentencesService.restart()
-            }
+            AddUserSentenceService.userSentence = it
+            AddUserSentenceService.restart()
         }
     }
 
