@@ -10,6 +10,7 @@ import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.dictionary.SourceDictionary
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
+import com.marvinelsen.willow.ui.dialogs.AddEntryDialog
 import com.marvinelsen.willow.ui.dialogs.AddSentenceDialog
 import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
 import com.marvinelsen.willow.ui.services.FindCharactersService
@@ -288,7 +289,13 @@ class MainController {
         search("柳")
     }
 
-    fun onMenuItemNewEntryAction() {}
+    fun onMenuItemNewEntryAction() {
+        AddEntryDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
+            Dictionary.addUserEntry(it)
+            setStatus("New entry added to dictionary.")
+        }
+    }
+
     fun onMenuItemNewSentenceAction() {
         AddSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
             Dictionary.addUserSentence(it.sentence)
@@ -344,12 +351,15 @@ class MainController {
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
+        val userDefinitions = entry.definitions[SourceDictionary.USER]
         val cedictDefinitions = entry.definitions[SourceDictionary.CEDICT]
         val moeDefinitions = entry.definitions[SourceDictionary.MOE]
         val lacDefinitions = entry.definitions[SourceDictionary.LAC]
 
         labelHeadwordPronunciation.text = entry.zhuyin
 
+        val userContent: String? =
+            userDefinitions?.joinToString(prefix = "<h1>USER</h1>", separator = "<hr>") { it.htmlDefinition }
         val cedictContent: String? =
             cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
         val moeContent: String? =
@@ -358,7 +368,7 @@ class MainController {
             lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<hr>") { it.htmlDefinition }
 
         webViewDefinitions.engine.loadContent(
-            listOfNotNull(lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
+            listOfNotNull(userContent, lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
         )
     }
 
@@ -456,5 +466,9 @@ class MainController {
                 else -> {}
             }
         }
+    }
+
+    fun onMenuItemNewDefinitionAction() {
+
     }
 }

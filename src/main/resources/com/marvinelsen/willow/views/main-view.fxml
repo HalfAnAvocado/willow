@@ -28,7 +28,7 @@
             </MenuItem>
         </Menu>
         <Menu text="_Entry">
-            <MenuItem disable="true" onAction="#onMenuItemNewEntryAction" text="_New Entry...">
+            <MenuItem onAction="#onMenuItemNewEntryAction" text="_New Entry…">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -36,7 +36,15 @@
                     <FontIcon iconLiteral="mdomz-note_add"/>
                 </graphic>
             </MenuItem>
-            <MenuItem onAction="#onMenuItemNewSentenceAction" text="_New Sentence...">
+            <MenuItem disable="true" onAction="#onMenuItemNewDefinitionAction" text="New _Definition…">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                </accelerator>
+                <graphic>
+                    <FontIcon iconLiteral="mdomz-note_add"/>
+                </graphic>
+            </MenuItem>
+            <MenuItem onAction="#onMenuItemNewSentenceAction" text="New _Sentence…">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                 </accelerator>
@@ -46,7 +54,7 @@
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem fx:id="menuItemCreateAnkiNote" disable="true" onAction="#onMenuItemCreateAnkiNote"
-                      text="Create _Anki Note...">
+                      text="Create _Anki Note…">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
                 </accelerator>
@@ -72,7 +80,7 @@
             </MenuItem>
         </Menu>
         <Menu text="_Help">
-            <MenuItem disable="true" onAction="#onMenuItemAboutAction" text="_About">
+            <MenuItem disable="true" onAction="#onMenuItemAboutAction" text="_About…">
                 <graphic>
                     <FontIcon iconLiteral="mdoal-info"/>
                 </graphic>
@@ -144,13 +152,13 @@
             </FlowPane>
             <TabPane fx:id="tabPaneEntryView" prefHeight="198.0" prefWidth="412.0" tabClosingPolicy="UNAVAILABLE"
                      VBox.vgrow="ALWAYS">
-                <Tab fx:id="tabPaneDefinition" id="tabPaneDefinition" closable="false" disable="true" text="Definition">
+                <Tab id="tabPaneDefinition" fx:id="tabPaneDefinition" closable="false" disable="true" text="Definition">
                     <VBox>
                         <WebView fx:id="webViewDefinitions" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0"
                                  prefWidth="-1.0" VBox.vgrow="ALWAYS"/>
                     </VBox>
                 </Tab>
-                <Tab fx:id="tabPaneSentences" id="tabPaneSentences" closable="false" disable="true" text="Sentences">
+                <Tab id="tabPaneSentences" fx:id="tabPaneSentences" closable="false" disable="true" text="Sentences">
                     <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewSentences" disable="true" prefHeight="200.0" prefWidth="200.0">
@@ -165,7 +173,7 @@
                         <ProgressIndicator fx:id="progressIndicatorSentences" visible="false"/>
                     </StackPane>
                 </Tab>
-                <Tab fx:id="tabPaneWords" id="tabPaneWords" closable="false" disable="true" text="Words">
+                <Tab id="tabPaneWords" fx:id="tabPaneWords" closable="false" disable="true" text="Words">
                     <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewWordsContainingEntries" disable="true" prefHeight="200.0"
@@ -180,7 +188,7 @@
                         <ProgressIndicator fx:id="progressIndicatorWordsContaining" visible="false"/>
                     </StackPane>
                 </Tab>
-                <Tab fx:id="tabPaneCharacters" id="tabPaneCharacters" closable="false" disable="true" text="Characters">
+                <Tab id="tabPaneCharacters" fx:id="tabPaneCharacters" closable="false" disable="true" text="Characters">
                     <StackPane>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                             <ListView fx:id="listViewCharacters" disable="true" prefHeight="200.0" prefWidth="200.0"/>
