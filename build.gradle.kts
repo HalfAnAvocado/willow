@@ -22,8 +22,11 @@ repositories {
 
 dependencies {
     implementation(libs.kaml)
-    implementation(libs.json)
     implementation(libs.apache.commons.csv)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.kotlinx.html.common)
+    implementation(libs.kotlinx.html.jvm)
 
     implementation(libs.slf4j.api)
     implementation(libs.slf4j.nop)
