@@ -15,17 +15,21 @@ h1 {
     font-size: 1.25em;
 }
 
+ol li:only-child {
+    list-style: none;
+}
+
 li {
     margin-bottom: 0.5em;
 }
 
-.headword {
-    color: red;
-    font-style: bold;
-}
-
 span.type {
-    display: block;
+    color: #fff;
+    background-color: rgb(107, 0, 0);
+
+    border-radius: 4px;
+
+    padding: 2px;
 }
 
 span.definition {
