@@ -1,41 +1,56 @@
 package com.marvinelsen.willow.sources.moe
 
+import kotlinx.html.div
+import kotlinx.html.li
+import kotlinx.html.ol
+import kotlinx.html.span
+import kotlinx.html.stream.createHTML
+
 // TODO: Make this inherit DefinitionFormatter
 object MoeDefinitionFormatter {
-    fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = buildString {
+    fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = createHTML().div {
         moeDefinitions.groupBy { it.type ?: "" }.entries.forEach { (type, definitions) ->
             if (type != "") {
-                append("<span class=\"type\">$type</span>")
-            }
-            if (definitions.size == 1) {
-                append(formatDefinition(definitions.first()))
-            } else {
-                append("<ol>")
-                definitions.forEach { definition ->
-                    append("<li>")
-                    append(formatDefinition(definition))
-                    append("</li>")
+                span(classes = "type") {
+                    +type
                 }
-                append("</ol>")
+            }
+
+            ol {
+                definitions.forEach { definition ->
+                    li {
+                        span(classes = "definition") {
+                            +definition.content
+                        }
+
+                        definition.examples.forEach { example ->
+                            span(classes = "example") {
+                                +example
+                            }
+                        }
+
+                        definition.quotes.forEach { quote ->
+                            span(classes = "quote") {
+                                +quote
+                            }
+                        }
+
+                        definition.synonyms?.let {
+                            span(classes = "synonyms") {
+                                +"似：${it.replace(",", "、")}"
+                            }
+                        }
+
+                        definition.antonyms?.let {
+                            span(classes = "antonyms") {
+                                +"反：${it.replace(",", "、")}"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     fun formatShortDefinition(moeDefinition: MoeDefinition) = moeDefinition.content
-
-    private fun formatDefinition(moeDefinition: MoeDefinition) = buildString {
-        append("<span class=\"definition\">${moeDefinition.content}</span>")
-        moeDefinition.examples.forEach { example ->
-            append("<span class=\"example\">$example</span>")
-        }
-        moeDefinition.quotes.forEach { quote ->
-            append("<span class=\"quote\">$quote</span>")
-        }
-        if (moeDefinition.synonyms != null) {
-            append("<span class=\"synonyms\">似：${moeDefinition.synonyms.replace(",", "、")}</span>")
-        }
-        if (moeDefinition.antonyms != null) {
-            append("<span class=\"antonyms\">反：${moeDefinition.antonyms.replace(",", "、")}</span>")
-        }
-    }
 }
