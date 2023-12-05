@@ -19,6 +19,11 @@ ol li:only-child {
     list-style: none;
 }
 
+hr.in-definition {
+    width: 50%;
+    margin-left: 0;
+}
+
 li {
     margin-bottom: 0.5em;
 }
