@@ -372,13 +372,25 @@ class MainController {
         labelHeadwordPronunciation.text = entry.zhuyin
 
         val userContent: String? =
-            userDefinitions?.joinToString(prefix = "<h1>USER</h1>", separator = "<hr>") { it.htmlDefinition }
+            userDefinitions?.joinToString(
+                prefix = "<h1>USER</h1>",
+                separator = "<hr class=\"in-definition\">"
+            ) { it.htmlDefinition }
         val cedictContent: String? =
-            cedictDefinitions?.joinToString(prefix = "<h1>CC-CEDICT</h1>", separator = "<br>") { it.htmlDefinition }
+            cedictDefinitions?.joinToString(
+                prefix = "<h1>CC-CEDICT</h1>",
+                separator = "<hr class=\"in-definition\">"
+            ) { it.htmlDefinition }
         val moeContent: String? =
-            moeDefinitions?.joinToString(prefix = "<h1>MoE</h1>", separator = "<hr>") { it.htmlDefinition }
+            moeDefinitions?.joinToString(
+                prefix = "<h1>MoE</h1>",
+                separator = "<hr class=\"in-definition\">"
+            ) { it.htmlDefinition }
         val lacContent: String? =
-            lacDefinitions?.joinToString(prefix = "<h1>LAC</h1>", separator = "<hr>") { it.htmlDefinition }
+            lacDefinitions?.joinToString(
+                prefix = "<h1>LAC</h1>",
+                separator = "<hr class=\"in-definition\">"
+            ) { it.htmlDefinition }
 
         webViewDefinitions.engine.loadContent(
             listOfNotNull(userContent, lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
