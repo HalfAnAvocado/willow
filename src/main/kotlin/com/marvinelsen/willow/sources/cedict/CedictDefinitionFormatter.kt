@@ -1,23 +1,22 @@
 package com.marvinelsen.willow.sources.cedict
 
 import com.marvinelsen.willow.sources.common.DefinitionFormatter
+import kotlinx.html.div
+import kotlinx.html.li
+import kotlinx.html.ol
+import kotlinx.html.stream.createHTML
 
 object CedictDefinitionFormatter : DefinitionFormatter<CedictEntry> {
-    override fun formatHtmlDefinition(entry: CedictEntry) = buildString {
-        val definitions = entry.definition
-            .split("/")
-            .filterNot { it.contains("Taiwan pr. ") }
-
-        if (definitions.size == 1) {
-            append(definitions.first())
-        } else {
-            append("<ol>")
-            definitions.forEach { definition ->
-                append("<li>")
-                append(definition)
-                append("</li>")
-            }
-            append("</ol>")
+    override fun formatHtmlDefinition(entry: CedictEntry) = createHTML().div {
+        ol {
+            entry.definition
+                .split("/")
+                .filterNot { "Taiwan pr. " in it }
+                .forEach {
+                    li {
+                        +it
+                    }
+                }
         }
     }
 
