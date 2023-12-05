@@ -470,7 +470,7 @@ class MainController {
     fun setupKeyboardShortcuts(scene: Scene) {
         scene.accelerators.apply {
             put(
-                KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN),
+                KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN),
                 Runnable { textFieldSearch.requestFocus() })
             put(KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), Runnable { buttonBack.fire() })
             put(KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), Runnable { buttonNext.fire() })

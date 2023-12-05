@@ -15,7 +15,7 @@
         <Menu text="_File">
             <MenuItem disable="true" onAction="#onMenuItemSettingsAction" text="_Settings">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdmz-settings"/>
@@ -23,14 +23,14 @@
             </MenuItem>
             <MenuItem onAction="#onMenuItemQuitAction" text="_Quit">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
             </MenuItem>
         </Menu>
         <Menu text="_Entry">
             <MenuItem onAction="#onMenuItemNewEntryAction" text="_New Entry…">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdomz-note_add"/>
@@ -38,7 +38,7 @@
             </MenuItem>
             <MenuItem disable="true" onAction="#onMenuItemNewDefinitionAction" text="New _Definition…">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdomz-note_add"/>
@@ -46,7 +46,7 @@
             </MenuItem>
             <MenuItem onAction="#onMenuItemNewSentenceAction" text="New _Sentence…">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdomz-post_add"/>
@@ -56,14 +56,14 @@
             <MenuItem fx:id="menuItemCreateAnkiNote" disable="true" onAction="#onMenuItemCreateAnkiNote"
                       text="Create _Anki Note…">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="DOWN" shortcut="DOWN"/>
                 </accelerator>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem fx:id="menuItemCopyHeadword" disable="true" onAction="#onMenuItemCopyHeadwordAction"
                       text="Copy _Headword">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="H" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdal-content_copy"/>
@@ -72,7 +72,7 @@
             <MenuItem fx:id="menuItemCopyZhuyin" disable="true" onAction="#onMenuItemCopyZhuyinAction"
                       text="Copy _Zhuyin">
                 <accelerator>
-                    <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    <KeyCodeCombination alt="UP" code="B" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
                 <graphic>
                     <FontIcon iconLiteral="mdal-content_copy"/>
