@@ -6,7 +6,7 @@ import com.marvinelsen.willow.config.AnkiConfig
 import com.marvinelsen.willow.config.FieldMapping
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.Sentence
-import com.marvinelsen.willow.dictionary.SourceDictionary
+import com.marvinelsen.willow.ui.DefinitionFormatter
 import com.marvinelsen.willow.ui.alerts.addedUserEntryAlert
 import com.marvinelsen.willow.ui.alerts.addedUserSentenceAlert
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
@@ -364,37 +364,9 @@ class MainController {
             characterText.styleClass.add("headword")
             textFlowHeadWord.children.add(characterText)
         }
-        val userDefinitions = entry.definitions[SourceDictionary.USER]
-        val cedictDefinitions = entry.definitions[SourceDictionary.CEDICT]
-        val moeDefinitions = entry.definitions[SourceDictionary.MOE]
-        val lacDefinitions = entry.definitions[SourceDictionary.LAC]
 
         labelHeadwordPronunciation.text = entry.zhuyin
-
-        val userContent: String? =
-            userDefinitions?.joinToString(
-                prefix = "<h1>USER</h1>",
-                separator = "<hr class=\"in-definition\">"
-            ) { it.htmlDefinition }
-        val cedictContent: String? =
-            cedictDefinitions?.joinToString(
-                prefix = "<h1>CC-CEDICT</h1>",
-                separator = "<hr class=\"in-definition\">"
-            ) { it.htmlDefinition }
-        val moeContent: String? =
-            moeDefinitions?.joinToString(
-                prefix = "<h1>MoE</h1>",
-                separator = "<hr class=\"in-definition\">"
-            ) { it.htmlDefinition }
-        val lacContent: String? =
-            lacDefinitions?.joinToString(
-                prefix = "<h1>LAC</h1>",
-                separator = "<hr class=\"in-definition\">"
-            ) { it.htmlDefinition }
-
-        webViewDefinitions.engine.loadContent(
-            listOfNotNull(userContent, lacContent, moeContent, cedictContent).joinToString(separator = "<hr>")
-        )
+        webViewDefinitions.engine.loadContent(DefinitionFormatter.format(entry))
     }
 
     private fun setStatus(status: String) {

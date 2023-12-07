@@ -48,7 +48,7 @@ internal class EntryCell : ListCell<Entry?>() {
         } else {
             labelHeadword.text = entry.traditional
 
-            val definition = entry.preferredDefinitions.first()
+            val definition = entry.definitions.entries.minByOrNull { it.key }!!.value.first()
             labelPronunciation.text = entry.zhuyin
             labelDefinition.text = definition.shortDefinition
 

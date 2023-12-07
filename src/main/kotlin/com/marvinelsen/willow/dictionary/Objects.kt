@@ -9,11 +9,7 @@ data class Entry(
 ) {
     val characters: List<String> by lazy { traditional.split("") }
     val zhuyinSyllables: List<String> by lazy { zhuyin.split(PronunciationConverter.ZHUYIN_SEPARATOR) }
-    val preferredDefinitions: List<Definition> by lazy {
-        definitions[SourceDictionary.USER] ?: definitions[SourceDictionary.LAC] ?: definitions[SourceDictionary.MOE]
-        ?: definitions[SourceDictionary.CEDICT]!!
-    }
-    val availableDefinitionSources = definitions.keys
+    val availableDefinitionSources = definitions.keys.sorted()
 }
 
 data class Definition(
