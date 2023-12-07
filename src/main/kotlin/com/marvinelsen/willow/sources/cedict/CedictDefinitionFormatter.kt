@@ -7,7 +7,7 @@ import kotlinx.html.ol
 import kotlinx.html.stream.createHTML
 
 object CedictDefinitionFormatter : DefinitionFormatter<CedictEntry> {
-    override fun formatHtmlDefinition(entry: CedictEntry) = createHTML().div {
+    override fun formatHtmlDefinition(entry: CedictEntry) = createHTML(prettyPrint = false).div {
         ol {
             entry.definition
                 .split("/")
