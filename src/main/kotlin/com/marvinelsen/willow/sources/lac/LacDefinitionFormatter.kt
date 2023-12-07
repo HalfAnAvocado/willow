@@ -8,31 +8,32 @@ import kotlinx.html.span
 import kotlinx.html.stream.createHTML
 
 object LacDefinitionFormatter : DefinitionFormatter<LacEntry> {
-    override fun formatHtmlDefinition(entry: LacEntry) = createHTML(prettyPrint = false).div {
-        ol {
-            entry.definitions.forEach { definition ->
-                li {
-                    span(classes = "definition") {
-                        +definition.sanitizeDefinition()
-                    }
-                    if ("[例]" in definition) {
-                        val examples = definition
-                            .substringAfter("[例]")
-                            .sanitizeExamplesFor(entry.traditional)
-                            .split("｜")
+    override fun formatHtmlDefinition(entry: LacEntry) =
+        createHTML(prettyPrint = false).div(classes = "lac-definition") {
+            ol {
+                entry.definitions.forEach { definition ->
+                    li {
+                        span(classes = "definition") {
+                            +definition.sanitizeDefinition()
+                        }
+                        if ("[例]" in definition) {
+                            val examples = definition
+                                .substringAfter("[例]")
+                                .sanitizeExamplesFor(entry.traditional)
+                                .split("｜")
 
-                        span(classes = "example") {
-                            +examples.joinToString(
-                                prefix = "如：",
-                                separator = "、",
-                                postfix = "。"
-                            ) { "「$it」" }
+                            span(classes = "example") {
+                                +examples.joinToString(
+                                    prefix = "如：",
+                                    separator = "、",
+                                    postfix = "。"
+                                ) { "「$it」" }
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
     override fun formatShortDefinition(entry: LacEntry) = entry.definitions.first().sanitizeDefinition()
 

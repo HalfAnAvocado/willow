@@ -7,18 +7,19 @@ import kotlinx.html.ol
 import kotlinx.html.stream.createHTML
 
 object CedictDefinitionFormatter : DefinitionFormatter<CedictEntry> {
-    override fun formatHtmlDefinition(entry: CedictEntry) = createHTML(prettyPrint = false).div {
-        ol {
-            entry.definition
-                .split("/")
-                .filterNot { "Taiwan pr. " in it }
-                .forEach {
-                    li {
-                        +it
+    override fun formatHtmlDefinition(entry: CedictEntry) =
+        createHTML(prettyPrint = false).div(classes = "cedict-definition") {
+            ol {
+                entry.definition
+                    .split("/")
+                    .filterNot { "Taiwan pr. " in it }
+                    .forEach {
+                        li {
+                            +it
+                        }
                     }
-                }
+            }
         }
-    }
 
     override fun formatShortDefinition(entry: CedictEntry) = entry.definition.replace("/", " / ")
 }
