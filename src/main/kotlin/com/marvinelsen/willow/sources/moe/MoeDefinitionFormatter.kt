@@ -8,7 +8,7 @@ import kotlinx.html.stream.createHTML
 
 // TODO: Make this inherit DefinitionFormatter
 object MoeDefinitionFormatter {
-    fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = createHTML().div {
+    fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) = createHTML(prettyPrint = false).div {
         moeDefinitions.groupBy { it.type ?: "" }.entries.forEach { (type, definitions) ->
             if (type != "") {
                 span(classes = "type") {

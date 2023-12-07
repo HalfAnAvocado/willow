@@ -8,7 +8,7 @@ import kotlinx.html.span
 import kotlinx.html.stream.createHTML
 
 object LacDefinitionFormatter : DefinitionFormatter<LacEntry> {
-    override fun formatHtmlDefinition(entry: LacEntry) = createHTML().div {
+    override fun formatHtmlDefinition(entry: LacEntry) = createHTML(prettyPrint = false).div {
         ol {
             entry.definitions.forEach { definition ->
                 li {
