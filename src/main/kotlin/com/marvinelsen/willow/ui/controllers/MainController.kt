@@ -11,9 +11,9 @@ import com.marvinelsen.willow.ui.alerts.addedUserEntryAlert
 import com.marvinelsen.willow.ui.alerts.addedUserSentenceAlert
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
+import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
 import com.marvinelsen.willow.ui.dialogs.NewEntryDialog
 import com.marvinelsen.willow.ui.dialogs.NewSentenceDialog
-import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
 import com.marvinelsen.willow.ui.services.AddUserEntryService
 import com.marvinelsen.willow.ui.services.AddUserSentenceService
 import com.marvinelsen.willow.ui.services.FindCharactersService
@@ -314,7 +314,7 @@ class MainController {
     }
 
     fun onMenuItemNewSentenceAction() {
-        NewSentenceDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
+        NewSentenceDialog(root.scene.window).showAndWait().ifPresent {
             AddUserSentenceService.userSentence = it
             AddUserSentenceService.restart()
         }

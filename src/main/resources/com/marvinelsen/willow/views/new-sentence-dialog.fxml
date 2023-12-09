@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane hgap="12.0" vgap="8.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="140.0" prefWidth="140.0"/>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
-    </rowConstraints>
-    <padding>
-        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
-    </padding>
-    <Label text="Chinese Sentence:"/>
-    <TextArea fx:id="textAreaChineseSentence" prefHeight="20.0" promptText="我覺得Willow是最好的詞典！"
-              styleClass="chinese" wrapText="true" GridPane.columnIndex="1"/>
-</GridPane>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<DialogPane xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <GridPane hgap="12.0" vgap="8.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="NEVER"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
+                <ColumnConstraints halignment="LEFT" hgrow="NEVER"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
+            </rowConstraints>
+            <Label text="Chinese Sentence:"/>
+            <TextArea fx:id="textAreaChineseSentence" prefHeight="20.0" promptText="我覺得Willow是最好的詞典！"
+                      styleClass="chinese" wrapText="true" GridPane.columnIndex="1">
+                <tooltip>
+                    <Tooltip text="The sentence in Traditional Chinese that's supposed to be added to the dictionary"/>
+                </tooltip>
+            </TextArea>
+            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                    onAction="#onButtonPasteIntoChineseSentenceAction" GridPane.columnIndex="2">
+                <graphic>
+                    <FontIcon iconLiteral="mdal-content_paste" iconSize="16"/>
+                </graphic>
+                <tooltip>
+                    <Tooltip text="Paste the content of your clipboard into the Chinese sentence field"/>
+                </tooltip>
+            </Button>
+        </GridPane>
+    </content>
+    <ButtonType fx:id="buttonTypeOk" fx:constant="OK"/>
+    <ButtonType fx:constant="CANCEL"/>
+</DialogPane>
