@@ -18,8 +18,8 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class CreateAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: String = "") :
-    Dialog<CreateAnkiNoteDialogResult?>() {
+class NewAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: String = "") :
+    Dialog<NewAnkiNoteDialogResult?>() {
     @Suppress("MemberVisibilityCanBePrivate")
     lateinit var textFieldHeadword: TextField
 
@@ -38,7 +38,7 @@ class CreateAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: St
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/create-anki-note-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-anki-note-dialog.fxml"))
         loader.setController(this)
         val root: DialogPane = loader.load()
 
@@ -72,7 +72,7 @@ class CreateAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: St
 
     private fun convertToResult(buttonType: ButtonType) =
         when (buttonType) {
-            ButtonType.OK -> CreateAnkiNoteDialogResult(
+            ButtonType.OK -> NewAnkiNoteDialogResult(
                 definitionSourceDictionary = comboBoxDefinitionSourceDictionary.selectionModel.selectedItem,
                 exampleSentence = textAreaExampleSentence.text
             )
@@ -86,7 +86,7 @@ class CreateAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: St
     }
 }
 
-data class CreateAnkiNoteDialogResult(
+data class NewAnkiNoteDialogResult(
     val definitionSourceDictionary: SourceDictionary,
     val exampleSentence: String,
 )
