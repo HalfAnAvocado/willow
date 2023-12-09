@@ -4,70 +4,118 @@ import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.Definition
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.SourceDictionary
+import com.marvinelsen.willow.ui.alerts.alert
 import com.marvinelsen.willow.util.PronunciationConverter
+import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
+import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
+import javafx.scene.control.DialogPane
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.input.Clipboard
-import javafx.scene.layout.GridPane
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
 class AddEntryDialog(owner: Window?) : Dialog<Entry?>() {
+    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var textFieldHeadword: TextField
+
+    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var textFieldPronunciation: TextField
+
+    @Suppress("MemberVisibilityCanBePrivate")
     lateinit var textAreaDefinition: TextArea
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    lateinit var buttonTypeOk: ButtonType
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
         val loader = FXMLLoader(WillowApplication::class.java.getResource("views/add-entry-dialog.fxml"))
         loader.setController(this)
+        val root: DialogPane = loader.load()
 
-        val root: GridPane = loader.load()
+        dialogPane = root
+        title = "New Entry"
+        isResizable = true
 
         initOwner(owner)
         initModality(Modality.APPLICATION_MODAL)
 
-        title = "Add Entry"
-        headerText = "Add a new entry to the dictionary..."
-        isResizable = true
+        (dialogPane.scene.window as Stage).apply {
+            minWidth = 380.0
+            minHeight = 250.0
+        }
 
-        dialogPane.content = root
-        dialogPane.buttonTypes.addAll(ButtonType.CLOSE, ButtonType.OK)
+        root.lookupButton(buttonTypeOk).addEventFilter(ActionEvent.ACTION, ::validateUserInput)
 
-        val dialogStage = dialogPane.scene.window as Stage
-        dialogStage.minWidth = 380.0
-        dialogStage.minHeight = 250.0
-
-        resultConverter = Callback { buttonType: ButtonType -> returnResult(buttonType) }
+        resultConverter = Callback(::convertToResult)
     }
 
-    private fun returnResult(buttonType: ButtonType) =
-        if (ButtonType.OK == buttonType) Entry(
-            traditional = textFieldHeadword.text,
-            zhuyin = PronunciationConverter.convertToZhuyin(textFieldPronunciation.text),
-            definitions = mapOf(
-                SourceDictionary.USER to listOf(
-                    Definition(
-                        shortDefinition = textAreaDefinition.text,
-                        htmlDefinition = textAreaDefinition.text,
-                        sourceDictionary = SourceDictionary.USER
+    private fun validateUserInput(event: ActionEvent) {
+        when {
+            textFieldHeadword.text.isBlank() -> alert(Alert.AlertType.ERROR) {
+                title = "Invalid Input"
+                headerText = "Headword was blank"
+                contentText = "Headword was left blank, but should contain at least one Traditional Chinese character."
+            }.show()
+
+            textFieldPronunciation.text.isBlank() -> alert(Alert.AlertType.ERROR) {
+                title = "Invalid Input"
+                headerText = "Pronunciation was blank"
+                contentText = "Pronunciation was left blank, but should contain numbered pinyin."
+            }.show()
+
+            textAreaDefinition.text.isBlank() -> alert(Alert.AlertType.ERROR) {
+                title = "Invalid Input"
+                headerText = "Definition was blank"
+                contentText =
+                    "Definition was left blank, but should contain the Chinese or English definition of the entry."
+            }.show()
+
+            else -> return
+        }
+        event.consume()
+    }
+
+    private fun convertToResult(buttonType: ButtonType) =
+        when (buttonType) {
+            ButtonType.OK -> {
+                Entry(
+                    traditional = textFieldHeadword.text,
+                    zhuyin = PronunciationConverter.convertToZhuyin(textFieldPronunciation.text),
+                    definitions = mapOf(
+                        SourceDictionary.USER to listOf(
+                            Definition(
+                                shortDefinition = textAreaDefinition.text,
+                                htmlDefinition = textAreaDefinition.text,
+                                sourceDictionary = SourceDictionary.USER
+                            )
+                        )
                     )
                 )
-            )
-        ) else null
+            }
 
+            else -> null
+        }
+
+    @Suppress("Unused")
     fun onButtonPasteIntoHeadwordAction() {
+        textFieldHeadword.text = systemClipboard.string
     }
 
+    @Suppress("Unused")
     fun onButtonPasteIntoPronunciationAction() {
+        textFieldPronunciation.text = systemClipboard.string
     }
 
+    @Suppress("Unused")
     fun onButtonPasteIntoDefinitionAction() {
+        textAreaDefinition.text = systemClipboard.string
     }
 }
