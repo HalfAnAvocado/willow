@@ -13,13 +13,13 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddSentenceDialog(owner: Window?, exampleSentence: String?) : Dialog<Sentence?>() {
+class NewSentenceDialog(owner: Window?, exampleSentence: String?) : Dialog<Sentence?>() {
     lateinit var textAreaChineseSentence: TextArea
 
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/add-sentence-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-sentence-dialog.fxml"))
         loader.setController(this)
 
         val root: GridPane = loader.load()
