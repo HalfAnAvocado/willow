@@ -34,7 +34,7 @@ internal class SentenceCell(controller: MainController) : ListCell<Sentence?>() 
             }
 
             val menuItemCreateAnkiNoteWithSentence = MenuItem("New Anki Note with Sentence...").apply {
-                onAction = EventHandler { controller.onMenuItemCreateAnkiNoteWithSentence(item) }
+                onAction = EventHandler { controller.onMenuItemNewAnkiNoteWithSentence(item) }
             }
 
             items.addAll(menuItemCopySentence, menuItemCreateAnkiNoteWithSentence)
