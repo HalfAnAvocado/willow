@@ -1,31 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane hgap="12.0" vgap="8.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="140.0" prefWidth="140.0"/>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
-        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
-        <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
-        <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
-    </rowConstraints>
-    <padding>
-        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
-    </padding>
-    <Label text="Headword:"/>
-    <Label text="Example Sentence:" GridPane.rowIndex="3"/>
-    <TextArea fx:id="textAreaExampleSentence" styleClass="chinese" wrapText="true" GridPane.columnIndex="1"
-              GridPane.rowIndex="3"/>
-    <Label text="Zhuyin:" GridPane.rowIndex="1"/>
-    <TextField fx:id="textFieldZhuyin" editable="false" styleClass="chinese" GridPane.columnIndex="1"
-               GridPane.rowIndex="1"/>
-    <Label text="Definition:" GridPane.rowIndex="2"/>
-    <TextField fx:id="textFieldHeadword" editable="false" styleClass="chinese" GridPane.columnIndex="1"/>
-    <ComboBox fx:id="comboBoxDefinitionSourceDictionary" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-              GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"/>
-</GridPane>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<DialogPane xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <GridPane hgap="12.0" vgap="8.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="NEVER"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
+                <ColumnConstraints halignment="LEFT" hgrow="NEVER"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+                <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+                <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
+                <RowConstraints valignment="BASELINE" vgrow="ALWAYS"/>
+            </rowConstraints>
+            <Label text="Headword:"/>
+            <Label text="Example Sentence:" GridPane.rowIndex="3"/>
+            <TextArea fx:id="textAreaExampleSentence" styleClass="chinese" wrapText="true" GridPane.columnIndex="1"
+                      GridPane.rowIndex="3">
+                <tooltip>
+                    <Tooltip text="The example sentence that should be used for the Anki note"/>
+                </tooltip>
+            </TextArea>
+            <Label text="Pronunciation:" GridPane.rowIndex="1"/>
+            <TextField fx:id="textFieldPronunciation" editable="false" styleClass="chinese" GridPane.columnIndex="1"
+                       GridPane.rowIndex="1">
+                <tooltip>
+                    <Tooltip text="The pronunciation that will be used in the Anki note"/>
+                </tooltip>
+            </TextField>
+            <Label text="Definition Source:" GridPane.rowIndex="2"/>
+            <TextField fx:id="textFieldHeadword" editable="false" styleClass="chinese" GridPane.columnIndex="1">
+                <tooltip>
+                    <Tooltip text="The headword that will be used in the Anki note"/>
+                </tooltip>
+            </TextField>
+            <ComboBox fx:id="comboBoxDefinitionSourceDictionary" maxWidth="1.7976931348623157E308"
+                      GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <tooltip>
+                    <Tooltip text="The source dictionary whose definition will be used in the Anki note"/>
+                </tooltip>
+            </ComboBox>
+            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                    onAction="#onButtonPasteIntoExampleSentenceAction" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                <graphic>
+                    <FontIcon iconLiteral="mdal-content_paste" iconSize="16"/>
+                </graphic>
+                <tooltip>
+                    <Tooltip text="Paste the content of your clipboard into the example sentence field"/>
+                </tooltip>
+            </Button>
+        </GridPane>
+    </content>
+    <ButtonType fx:id="buttonTypeOk" fx:constant="OK"/>
+    <ButtonType fx:constant="CANCEL"/>
+</DialogPane>
