@@ -7,8 +7,6 @@ import com.marvinelsen.willow.config.FieldMapping
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.Sentence
 import com.marvinelsen.willow.ui.DefinitionFormatter
-import com.marvinelsen.willow.ui.alerts.addedUserEntryAlert
-import com.marvinelsen.willow.ui.alerts.addedUserSentenceAlert
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
 import com.marvinelsen.willow.ui.dialogs.NewAnkiNoteDialog
@@ -183,12 +181,10 @@ class MainController {
                 FindSentencesService.selectedEntry = selectedEntryProperty.value!!
                 FindSentencesService.restart()
             }
-            addedUserSentenceAlert.showAndWait()
         }
 
         AddUserEntryService.onSucceeded = EventHandler {
             setStatus("New entry added to dictionary.")
-            addedUserEntryAlert.showAndWait()
         }
 
         menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
