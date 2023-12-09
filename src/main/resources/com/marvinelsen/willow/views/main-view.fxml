@@ -53,7 +53,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem fx:id="menuItemCreateAnkiNote" disable="true" onAction="#onMenuItemNewAnkiNoteAction"
+            <MenuItem fx:id="menuItemNewAnkiNote" disable="true" onAction="#onMenuItemNewAnkiNoteAction"
                       text="New _Anki Note…">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="DOWN" shortcut="DOWN"/>

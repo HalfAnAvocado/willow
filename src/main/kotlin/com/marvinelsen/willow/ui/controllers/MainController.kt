@@ -51,7 +51,7 @@ class MainController {
     lateinit var root: VBox
 
     lateinit var menuItemCopyPronunciation: MenuItem
-    lateinit var menuItemCreateAnkiNote: MenuItem
+    lateinit var menuItemNewAnkiNote: MenuItem
     lateinit var menuItemCopyHeadword: MenuItem
 
     lateinit var buttonNext: Button
@@ -114,7 +114,7 @@ class MainController {
         setStatus("Copied sentence to clipboard.")
     }
 
-    fun onMenuItemCreateAnkiNoteWithSentence(sentence: Sentence?) {
+    fun onMenuItemNewAnkiNoteWithSentence(sentence: Sentence?) {
         if (sentence == null) return
 
         NewAnkiNoteDialog(
@@ -189,7 +189,7 @@ class MainController {
 
         menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
         menuItemCopyPronunciation.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemNewAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
 
         buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
         buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
