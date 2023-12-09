@@ -28,7 +28,6 @@ class NewSentenceDialog(owner: Window?) : Dialog<Sentence?>() {
     init {
         val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-sentence-dialog.fxml"))
         loader.setController(this)
-
         val root: DialogPane = loader.load()
 
         dialogPane = root
