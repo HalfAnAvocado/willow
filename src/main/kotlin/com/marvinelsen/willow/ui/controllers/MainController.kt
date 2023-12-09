@@ -307,7 +307,7 @@ class MainController {
     }
 
     fun onMenuItemNewEntryAction() {
-        AddEntryDialog(root.scene.window, systemClipboard.string).showAndWait().ifPresent {
+        AddEntryDialog(root.scene.window).showAndWait().ifPresent {
             AddUserEntryService.userEntry = it
             AddUserEntryService.restart()
         }

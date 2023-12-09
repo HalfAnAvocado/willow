@@ -17,8 +17,8 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddEntryDialog(owner: Window?, traditionalHeadword: String = "") : Dialog<Entry?>() {
-    lateinit var textFieldTraditionalChinese: TextField
+class AddEntryDialog(owner: Window?) : Dialog<Entry?>() {
+    lateinit var textFieldHeadword: TextField
     lateinit var textFieldPronunciation: TextField
     lateinit var textAreaDefinition: TextArea
 
@@ -44,14 +44,12 @@ class AddEntryDialog(owner: Window?, traditionalHeadword: String = "") : Dialog<
         dialogStage.minWidth = 380.0
         dialogStage.minHeight = 250.0
 
-        textFieldTraditionalChinese.text = traditionalHeadword
-
         resultConverter = Callback { buttonType: ButtonType -> returnResult(buttonType) }
     }
 
     private fun returnResult(buttonType: ButtonType) =
         if (ButtonType.OK == buttonType) Entry(
-            traditional = textFieldTraditionalChinese.text,
+            traditional = textFieldHeadword.text,
             zhuyin = PronunciationConverter.convertToZhuyin(textFieldPronunciation.text),
             definitions = mapOf(
                 SourceDictionary.USER to listOf(
@@ -63,4 +61,13 @@ class AddEntryDialog(owner: Window?, traditionalHeadword: String = "") : Dialog<
                 )
             )
         ) else null
+
+    fun onButtonPasteIntoHeadwordAction() {
+    }
+
+    fun onButtonPasteIntoPronunciationAction() {
+    }
+
+    fun onButtonPasteIntoDefinitionAction() {
+    }
 }
