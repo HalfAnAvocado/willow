@@ -69,8 +69,8 @@
                     <FontIcon iconLiteral="mdal-content_copy"/>
                 </graphic>
             </MenuItem>
-            <MenuItem fx:id="menuItemCopyZhuyin" disable="true" onAction="#onMenuItemCopyZhuyinAction"
-                      text="Copy _Zhuyin">
+            <MenuItem fx:id="menuItemCopyPronunciation" disable="true" onAction="#onMenuItemCopyPronunciationAction"
+                      text="Copy _Pronunciation">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="B" control="UP" meta="UP" shift="UP" shortcut="DOWN"/>
                 </accelerator>
