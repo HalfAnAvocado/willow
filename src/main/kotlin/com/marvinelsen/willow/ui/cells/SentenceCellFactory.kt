@@ -8,7 +8,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
-import javafx.scene.input.Clipboard
 import javafx.scene.layout.VBox
 import javafx.util.Callback
 
@@ -21,8 +20,6 @@ class SentenceCellFactory(private val controller: MainController) : Callback<Lis
 }
 
 internal class SentenceCell(controller: MainController) : ListCell<Sentence?>() {
-    private val systemClipboard = Clipboard.getSystemClipboard()
-
     private val labelTraditional = Label().apply {
         styleClass.add("chinese")
         styleClass.add("list-view-sentence-cell")
@@ -54,5 +51,4 @@ internal class SentenceCell(controller: MainController) : ListCell<Sentence?>() 
             graphic = root
         }
     }
-
 }
