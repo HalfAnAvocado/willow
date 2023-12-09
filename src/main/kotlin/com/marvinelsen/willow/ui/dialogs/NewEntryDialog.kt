@@ -20,7 +20,7 @@ import javafx.stage.Stage
 import javafx.stage.Window
 import javafx.util.Callback
 
-class AddEntryDialog(owner: Window?) : Dialog<Entry?>() {
+class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
     @Suppress("MemberVisibilityCanBePrivate")
     lateinit var textFieldHeadword: TextField
 
@@ -36,7 +36,7 @@ class AddEntryDialog(owner: Window?) : Dialog<Entry?>() {
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/add-entry-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-entry-dialog.fxml"))
         loader.setController(this)
         val root: DialogPane = loader.load()
 
