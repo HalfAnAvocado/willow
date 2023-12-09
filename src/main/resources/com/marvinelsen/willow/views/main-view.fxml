@@ -138,7 +138,7 @@
             <ProgressIndicator fx:id="progressIndicatorEntries" visible="false"/>
         </StackPane>
         <VBox>
-            <FlowPane fx:id="flowPaneSelectedWord" hgap="8.0" onContextMenuRequested="#showSelectedWordContextMenu"
+            <FlowPane fx:id="flowPaneSelectedEntry" hgap="8.0" onContextMenuRequested="#showSelectedEntryContextMenu"
                       prefHeight="38.0" prefWidth="412.0" rowValignment="BASELINE" vgap="8.0" VBox.vgrow="NEVER">
                 <padding>
                     <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>

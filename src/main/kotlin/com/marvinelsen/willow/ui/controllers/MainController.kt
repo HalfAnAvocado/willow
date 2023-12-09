@@ -23,23 +23,28 @@ import com.marvinelsen.willow.ui.undo.UndoManager
 import javafx.application.Platform
 import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleObjectProperty
+import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.ContextMenu
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.ProgressIndicator
+import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
+import javafx.scene.input.ContextMenuEvent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.FlowPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Text
@@ -74,6 +79,7 @@ class MainController {
     lateinit var labelNoWordsContainingFound: Label
     lateinit var labelNoSentencesFound: Label
 
+    lateinit var flowPaneSelectedEntry: FlowPane
     lateinit var textFlowHeadWord: TextFlow
     lateinit var labelHeadwordPronunciation: Label
     lateinit var webViewDefinitions: WebView
@@ -92,6 +98,22 @@ class MainController {
     private val isEntrySelectedBinding = selectedEntryProperty.isNotNull
 
     private var previousSearch: String = ""
+
+    private val selectedEntryContextMenu = ContextMenu().apply {
+        val menuItemCopyHeadword = MenuItem("Copy Headword").apply {
+            onAction = EventHandler(::onMenuItemCopyHeadwordAction)
+        }
+
+        val menuItemCopyPronunciation = MenuItem("Copy Pronunciation").apply {
+            onAction = EventHandler(::onMenuItemCopyPronunciationAction)
+        }
+
+        val menuItemNewAnkiNote = MenuItem("New Anki Note...").apply {
+            onAction = EventHandler(::onMenuItemNewAnkiNoteAction)
+        }
+
+        items.addAll(menuItemCopyHeadword, menuItemCopyPronunciation, SeparatorMenuItem(), menuItemNewAnkiNote)
+    }
 
     private val ankiConfig = AnkiConfig(
         ankiConnectUrl = "http://127.0.0.1:8765",
@@ -322,7 +344,8 @@ class MainController {
         Platform.exit()
     }
 
-    fun onMenuItemCopyHeadwordAction() {
+    @Suppress("UNUSED_PARAMETER")
+    fun onMenuItemCopyHeadwordAction(event: ActionEvent) {
         if (!isEntrySelectedBinding.value) return
         copyHeadword(selectedEntryProperty.value!!)
     }
@@ -337,7 +360,8 @@ class MainController {
         setStatus("Copied headword to clipboard.")
     }
 
-    fun onMenuItemCopyPronunciationAction() {
+    @Suppress("UNUSED_PARAMETER")
+    fun onMenuItemCopyPronunciationAction(event: ActionEvent) {
         if (!isEntrySelectedBinding.value) return
         copyPronunciation(selectedEntryProperty.value!!)
     }
@@ -353,7 +377,6 @@ class MainController {
     }
 
     fun onMenuItemAboutAction() {}
-    fun showSelectedWordContextMenu() {}
 
     private fun displayEntry(entry: Entry?) {
         textFlowHeadWord.children.clear()
@@ -383,7 +406,8 @@ class MainController {
         selectedEntryProperty.value = entry
     }
 
-    fun onMenuItemNewAnkiNoteAction() {
+    @Suppress("UNUSED_PARAMETER")
+    fun onMenuItemNewAnkiNoteAction(event: ActionEvent) {
         if (!isEntrySelectedBinding.value) return
 
         showNewAnkiNoteDialog(selectedEntryProperty.value!!)
@@ -479,5 +503,13 @@ class MainController {
 
     fun onMenuItemNewDefinitionAction() {
 
+    }
+
+    fun showSelectedEntryContextMenu(contextMenuEvent: ContextMenuEvent) {
+        selectedEntryContextMenu.show(
+            flowPaneSelectedEntry.scene.window,
+            contextMenuEvent.screenX,
+            contextMenuEvent.screenY
+        )
     }
 }
