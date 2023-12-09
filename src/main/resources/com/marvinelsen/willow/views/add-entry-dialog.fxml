@@ -3,10 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <GridPane hgap="12.0" vgap="8.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="140.0" prefWidth="140.0"/>
+        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="100.0" prefWidth="100.0"/>
         <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="200.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints valignment="BASELINE" vgrow="NEVER"/>
@@ -16,11 +18,53 @@
     <padding>
         <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
     </padding>
-    <Label text="Traditional Chinese:"/>
+    <Label text="Headword:"/>
     <Label text="Pronunciation:" GridPane.rowIndex="1"/>
     <Label text="Definition:" GridPane.rowIndex="2"/>
-    <TextField fx:id="textFieldTraditionalChinese" styleClass="chinese" promptText="中文" GridPane.columnIndex="1"/>
-    <TextField fx:id="textFieldPronunciation" promptText="zhong1 wen2" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <TextArea fx:id="textAreaDefinition" styleClass="chinese" prefHeight="20.0" promptText="Chinese language"
-              wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <TextField fx:id="textFieldHeadword" promptText="紅色" styleClass="chinese" GridPane.columnIndex="1">
+        <tooltip>
+            <Tooltip text="The headword of the new entry in Tradtional Chinese (e.g. 紅色)"/>
+        </tooltip>
+    </TextField>
+    <TextField fx:id="textFieldPronunciation" promptText="hong2 se4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <tooltip>
+            <Tooltip text="The pronunciation of the new entry in numbered pinyin (e.g. hong2 se4)"/>
+        </tooltip>
+    </TextField>
+    <TextArea fx:id="textAreaDefinition" prefHeight="20.0" promptText="red (color)" styleClass="chinese" wrapText="true"
+              GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <tooltip>
+            <Tooltip
+                    text="The definition of the new entry in either Chinese or English (e.g. 像鮮血的顏色。, red (color))"/>
+        </tooltip>
+    </TextArea>
+    <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+            onAction="#onButtonPasteIntoHeadwordAction" GridPane.columnIndex="2" GridPane.valignment="BASELINE">
+        <graphic>
+            <FontIcon iconLiteral="mdal-content_paste" iconSize="16"/>
+        </graphic>
+        <tooltip>
+            <Tooltip text="Paste the content of your clipboard into the headword field"/>
+        </tooltip>
+    </Button>
+    <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+            onAction="#onButtonPasteIntoPronunciationAction" GridPane.columnIndex="2" GridPane.rowIndex="1"
+            GridPane.valignment="BASELINE">
+        <graphic>
+            <FontIcon iconLiteral="mdal-content_paste" iconSize="16"/>
+        </graphic>
+        <tooltip>
+            <Tooltip text="Paste the content of your clipboard into the pronunciation field"/>
+        </tooltip>
+    </Button>
+    <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+            onAction="#onButtonPasteIntoDefinitionAction" GridPane.columnIndex="2" GridPane.rowIndex="2"
+            GridPane.valignment="BASELINE">
+        <graphic>
+            <FontIcon iconLiteral="mdal-content_paste" iconSize="16"/>
+        </graphic>
+        <tooltip>
+            <Tooltip text="Paste the content of your clipboard into the definition field"/>
+        </tooltip>
+    </Button>
 </GridPane>
