@@ -50,7 +50,7 @@ import kotlinx.coroutines.runBlocking
 class MainController {
     lateinit var root: VBox
 
-    lateinit var menuItemCopyZhuyin: MenuItem
+    lateinit var menuItemCopyPronunciation: MenuItem
     lateinit var menuItemCreateAnkiNote: MenuItem
     lateinit var menuItemCopyHeadword: MenuItem
 
@@ -188,7 +188,7 @@ class MainController {
         }
 
         menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemCopyZhuyin.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCopyPronunciation.disableProperty().bind(isEntrySelectedBinding.not())
         menuItemCreateAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
 
         buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
@@ -209,13 +209,13 @@ class MainController {
             .bind(Bindings.isEmpty(listViewCharacters.items).or(FindCharactersService.runningProperty()))
 
         listViewEntries.apply {
-            cellFactory = EntryCellFactory()
+            cellFactory = EntryCellFactory(this@MainController)
             selectionModel.selectedItemProperty()
                 .addListener { _, _, newEntry -> tabPaneEntryView.selectionModel.selectFirst(); selectEntry(newEntry) }
         }
 
         listViewWordsContainingEntries.apply {
-            cellFactory = EntryCellFactory()
+            cellFactory = EntryCellFactory(this@MainController)
             selectionModel.selectedItemProperty().addListener { _, _, newEntry ->
                 if (newEntry == null) return@addListener
 
@@ -234,7 +234,7 @@ class MainController {
         }
 
         listViewCharacters.apply {
-            cellFactory = EntryCellFactory()
+            cellFactory = EntryCellFactory(this@MainController)
             selectionModel.selectedItemProperty().addListener { _, _, newEntry ->
                 if (newEntry == null) return@addListener
 
@@ -324,19 +324,29 @@ class MainController {
 
     fun onMenuItemCopyHeadwordAction() {
         if (!isEntrySelectedBinding.value) return
+        copyHeadword(selectedEntryProperty.value!!)
+    }
+
+    fun copyHeadword(entry: Entry?) {
+        if (entry == null) return
 
         val clipboardContent = ClipboardContent()
-        clipboardContent.putString(selectedEntryProperty.value!!.traditional)
+        clipboardContent.putString(entry.traditional)
         systemClipboard.setContent(clipboardContent)
 
         setStatus("Copied headword to clipboard.")
     }
 
-    fun onMenuItemCopyZhuyinAction() {
+    fun onMenuItemCopyPronunciationAction() {
         if (!isEntrySelectedBinding.value) return
+        copyPronunciation(selectedEntryProperty.value!!)
+    }
+
+    fun copyPronunciation(entry: Entry?) {
+        if (entry == null) return
 
         val clipboardContent = ClipboardContent()
-        clipboardContent.putString(selectedEntryProperty.value!!.zhuyin)
+        clipboardContent.putString(entry.zhuyin)
         systemClipboard.setContent(clipboardContent)
 
         setStatus("Copied pronunciation to clipboard.")
@@ -376,11 +386,17 @@ class MainController {
     fun onMenuItemNewAnkiNoteAction() {
         if (!isEntrySelectedBinding.value) return
 
-        NewAnkiNoteDialog(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
+        showNewAnkiNoteDialog(selectedEntryProperty.value!!)
+    }
+
+    fun showNewAnkiNoteDialog(entry: Entry?) {
+        if (entry == null) return
+
+        NewAnkiNoteDialog(root.scene.window, entry).showAndWait().ifPresent {
             runBlocking {
                 val anki = Anki(ankiConfig)
                 anki.createNote(
-                    entry = selectedEntryProperty.value!!,
+                    entry = entry,
                     definitionSource = it.definitionSourceDictionary,
                     exampleSentence = it.exampleSentence
                 )
