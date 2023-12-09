@@ -52,7 +52,15 @@ class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
             minHeight = 250.0
         }
 
-        root.lookupButton(buttonTypeOk).addEventFilter(ActionEvent.ACTION, ::validateUserInput)
+        val buttonOk = root.lookupButton(buttonTypeOk)
+        buttonOk.addEventFilter(ActionEvent.ACTION, ::validateUserInput)
+        buttonOk
+            .disableProperty()
+            .bind(
+                textFieldHeadword.textProperty().isEmpty
+                    .or(textFieldPronunciation.textProperty().isEmpty)
+                    .or(textAreaDefinition.textProperty().isEmpty)
+            )
 
         resultConverter = Callback(::convertToResult)
     }
