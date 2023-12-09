@@ -11,7 +11,7 @@ import com.marvinelsen.willow.ui.alerts.addedUserEntryAlert
 import com.marvinelsen.willow.ui.alerts.addedUserSentenceAlert
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
-import com.marvinelsen.willow.ui.dialogs.CreateAnkiNoteDialog
+import com.marvinelsen.willow.ui.dialogs.NewAnkiNoteDialog
 import com.marvinelsen.willow.ui.dialogs.NewEntryDialog
 import com.marvinelsen.willow.ui.dialogs.NewSentenceDialog
 import com.marvinelsen.willow.ui.services.AddUserEntryService
@@ -119,7 +119,7 @@ class MainController {
     fun onMenuItemCreateAnkiNoteWithSentence(sentence: Sentence?) {
         if (sentence == null) return
 
-        CreateAnkiNoteDialog(
+        NewAnkiNoteDialog(
             owner = root.scene.window,
             entry = selectedEntryProperty.value!!,
             exampleSentence = sentence.traditional
@@ -377,10 +377,10 @@ class MainController {
         selectedEntryProperty.value = entry
     }
 
-    fun onMenuItemCreateAnkiNote() {
+    fun onMenuItemNewAnkiNoteAction() {
         if (!isEntrySelectedBinding.value) return
 
-        CreateAnkiNoteDialog(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
+        NewAnkiNoteDialog(root.scene.window, selectedEntryProperty.value!!).showAndWait().ifPresent {
             runBlocking {
                 val anki = Anki(ankiConfig)
                 anki.createNote(
