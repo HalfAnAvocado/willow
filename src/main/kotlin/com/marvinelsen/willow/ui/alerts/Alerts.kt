@@ -15,3 +15,13 @@ val addedUserEntryAlert = Alert(Alert.AlertType.INFORMATION).apply {
     contentText = ""
     isResizable = false
 }
+
+@AlertDsl
+fun alert(type: Alert.AlertType, init: Alert.() -> Unit): Alert {
+    val alert = Alert(type)
+    alert.init()
+    return alert
+}
+
+@DslMarker
+annotation class AlertDsl
