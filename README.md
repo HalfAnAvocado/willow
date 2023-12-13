@@ -3,14 +3,14 @@
 </h1>
 
 <h4 align="center">
-    Offline Traditional Chinese dictionary software for the desktop.
+    An offline dictionary software tailored for learners focused on Traditional Chinese (Taiwanese Standard) with a specific emphasis on Taiwanese pronunciation.
 </h4>
 
 <img src="https://github.com/HalfAnAvocado/willow/blob/9bfb0346b97d23d17fe210d88df442f2bb14ae3f/assets/screenshot.png" alt="Screenshot">
 
 ## 🤔 What is Willow?
 
-Willow is a Traditional Chinese dictionary software. Willow is designed specifically for advanced learners who are focused on mastering Traditional Chinese as it is used in Taiwan. This tool is ideal for those who prefer a monolingual approach to language learning.
+Willow is a Traditional Chinese (Taiwanese Standard) dictionary software. Willow is designed specifically for intermediate/advanced learners who are focused on mastering Traditional Chinese as it is used in Taiwan. This tool is ideal for those who prefer a monolingual approach to language learning.
 
 ## Desktop-Optimized and Offline Access
 
@@ -18,9 +18,8 @@ Willow is optimized for desktop use, providing a seamless and efficient user exp
 
 ## ✨ Features
 
-- **Traditional Chinese Support:** Willow exclusively supports [Traditional Chinese characters](https://en.wikipedia.org/wiki/Traditional_Chinese_characters), making it ideal for learners focused on this script.
-- **Taiwanese Mandarin Focus:** The dictionary emphasizes [Taiwanese Mandarin](https://en.wikipedia.org/wiki/Taiwanese_Mandarin), including pronunciation, meaning, and usage based on the Taiwanese standard.
-- **Zhuyin (Bopomofo) Transliteration:** Instead of [Hanyu Pinyin](https://en.wikipedia.org/wiki/Hanyu_pinyin), Willow utilizes [Zhuyin](https://en.wikipedia.org/wiki/Zhuyin), the phonetic system used in Taiwan, to aid in accurate pronunciation learning.
+- **Traditional Chinese (Taiwanese Standard) Only:** Willow exclusively supports [Traditional Chinese characters](https://en.wikipedia.org/wiki/Traditional_Chinese_characters) as they are used in Taiwan, making it ideal for learners focused solely on this script.
+- **Taiwanese Mandarin Pronunciation Emphasis**: Willow exclusively concentrates on the pronunciation aspects of [Taiwanese Mandarin](https://en.wikipedia.org/wiki/Taiwanese_Mandarin), ensuring accuracy and alignment with the Taiwanese standard.
 - **Authentic Fonts:** Uses [Noto Sans Traditional Chinese](https://fonts.google.com/noto/specimen/Noto+Sans+TC) and the official standard [regular script](https://en.wikipedia.org/wiki/Regular_script) [font from the Taiwanese government](https://data.gov.tw/dataset/5961), ensuring characters are displayed in their correct [Taiwanese Mandarin](https://en.wikipedia.org/wiki/Taiwanese_Mandarin) form.
 - **Rich Dictionary Sources:**
     - MoE (Ministry of Education) - Monolingual
@@ -31,7 +30,7 @@ Willow is optimized for desktop use, providing a seamless and efficient user exp
 - **Comprehensive Word Search:** Search for words containing or related to a particular entry, not just words that start with it.
 - **Contextual Learning:** Access example sentences from [Tatoeba](https://tatoeba.org/en/) to see words used in real-life contexts.
 - **High-Performance Lookup:** Blazingly fast word lookup capabilities powered by [SQLite](https://www.sqlite.org/).
-- **User-Generated Content:** Add your own example sentences to enrich the dictionary.
+- **User-Generated Content:** Add your own example sentences and word entries to enrich the dictionary.
 - **Anki Integration:** Seamlessly create [Anki](https://apps.ankiweb.net/) notes from dictionary data, including example sentences, via [Anki Connect](https://foosoft.net/projects/anki-connect/).
 - **Efficient Navigation:** Temporary search history and shortcuts for search, navigation, copying Zhuyin, and copying headwords enhance user experience.
 
