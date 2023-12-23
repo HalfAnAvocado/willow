@@ -52,6 +52,7 @@ import javafx.scene.text.TextFlow
 import javafx.scene.web.WebView
 import kotlinx.coroutines.runBlocking
 
+@Suppress("TooManyFunctions")
 class MainController {
     lateinit var root: VBox
 
@@ -156,67 +157,17 @@ class MainController {
             displayEntry(newValue)
         }
 
-        labelNoCharactersFound
-            .visibleProperty()
-            .bind(Bindings.isEmpty(listViewCharacters.items).and(FindCharactersService.runningProperty().not()))
-        labelNoEntriesFound
-            .visibleProperty()
-            .bind(Bindings.isEmpty(listViewEntries.items).and(SearchService.runningProperty().not()))
-        labelNoWordsContainingFound
-            .visibleProperty()
-            .bind(
-                Bindings
-                    .isEmpty(listViewWordsContainingEntries.items)
-                    .and(FindEntriesContainingService.runningProperty().not())
-            )
-        labelNoSentencesFound
-            .visibleProperty()
-            .bind(Bindings.isEmpty(listViewSentences.items).and(FindSentencesService.runningProperty().not()))
+        initializeNoDataFoundLabels()
+        initializeProgressIndicators()
+        initializeServices()
+        initializeMenuItems()
+        initializeSearch()
+        initializeListViews()
+        initializeTabPane()
+        initializeDefinitionWebView()
+    }
 
-        progressIndicatorEntries.visibleProperty().bind(SearchService.runningProperty())
-        progressIndicatorCharacters.visibleProperty().bind(FindCharactersService.runningProperty())
-        progressIndicatorWordsContaining.visibleProperty().bind(FindEntriesContainingService.runningProperty())
-        progressIndicatorSentences.visibleProperty().bind(FindSentencesService.runningProperty())
-
-        SearchService.onSucceeded = EventHandler {
-            val (selectionIndex, entries) = SearchService.value
-            listViewEntries.items.setAll(entries)
-            listViewEntries.selectionModel.select(selectionIndex)
-            setStatus("Found ${entries.size} matching entries.")
-        }
-
-        FindCharactersService.onSucceeded = EventHandler {
-            listViewCharacters.items.setAll(FindCharactersService.value)
-        }
-
-        FindEntriesContainingService.onSucceeded = EventHandler {
-            listViewWordsContainingEntries.items.setAll(FindEntriesContainingService.value)
-        }
-
-        FindSentencesService.onSucceeded = EventHandler {
-            listViewSentences.items.setAll(FindSentencesService.value)
-        }
-
-        AddUserSentenceService.onSucceeded = EventHandler {
-            setStatus("New sentence added to dictionary.")
-            if (selectedEntryProperty.value != null) {
-                FindSentencesService.selectedEntry = selectedEntryProperty.value!!
-                FindSentencesService.restart()
-            }
-        }
-
-        AddUserEntryService.onSucceeded = EventHandler {
-            setStatus("New entry added to dictionary.")
-        }
-
-        menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemCopyPronunciation.disableProperty().bind(isEntrySelectedBinding.not())
-        menuItemNewAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
-
-        buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
-        buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
-        buttonSearch.disableProperty().bind(textFieldSearch.textProperty().isEmpty)
-
+    private fun initializeListViews() {
         listViewEntries.disableProperty()
             .bind(Bindings.isEmpty(listViewEntries.items).or(SearchService.runningProperty()))
         listViewSentences.disableProperty()
@@ -233,7 +184,10 @@ class MainController {
         listViewEntries.apply {
             cellFactory = EntryCellFactory(this@MainController)
             selectionModel.selectedItemProperty()
-                .addListener { _, _, newEntry -> tabPaneEntryView.selectionModel.selectFirst(); selectEntry(newEntry) }
+                .addListener { _, _, newEntry ->
+                    tabPaneEntryView.selectionModel.selectFirst()
+                    selectEntry(newEntry)
+                }
         }
 
         listViewWordsContainingEntries.apply {
@@ -277,7 +231,92 @@ class MainController {
         listViewSentences.apply {
             cellFactory = SentenceCellFactory(this@MainController)
         }
+    }
 
+    private fun initializeServices() {
+        SearchService.onSucceeded = EventHandler {
+            val (selectionIndex, entries) = SearchService.value
+            listViewEntries.items.setAll(entries)
+            listViewEntries.selectionModel.select(selectionIndex)
+            setStatus("Found ${entries.size} matching entries.")
+        }
+
+        FindCharactersService.onSucceeded = EventHandler {
+            listViewCharacters.items.setAll(FindCharactersService.value)
+        }
+
+        FindEntriesContainingService.onSucceeded = EventHandler {
+            listViewWordsContainingEntries.items.setAll(FindEntriesContainingService.value)
+        }
+
+        FindSentencesService.onSucceeded = EventHandler {
+            listViewSentences.items.setAll(FindSentencesService.value)
+        }
+
+        AddUserSentenceService.onSucceeded = EventHandler {
+            setStatus("New sentence added to dictionary.")
+            if (selectedEntryProperty.value != null) {
+                FindSentencesService.selectedEntry = selectedEntryProperty.value!!
+                FindSentencesService.restart()
+            }
+        }
+
+        AddUserEntryService.onSucceeded = EventHandler {
+            setStatus("New entry added to dictionary.")
+        }
+    }
+
+    private fun initializeNoDataFoundLabels() {
+        labelNoCharactersFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewCharacters.items).and(FindCharactersService.runningProperty().not()))
+        labelNoEntriesFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewEntries.items).and(SearchService.runningProperty().not()))
+        labelNoWordsContainingFound
+            .visibleProperty()
+            .bind(
+                Bindings
+                    .isEmpty(listViewWordsContainingEntries.items)
+                    .and(FindEntriesContainingService.runningProperty().not())
+            )
+        labelNoSentencesFound
+            .visibleProperty()
+            .bind(Bindings.isEmpty(listViewSentences.items).and(FindSentencesService.runningProperty().not()))
+    }
+
+    private fun initializeProgressIndicators() {
+        progressIndicatorEntries.visibleProperty().bind(SearchService.runningProperty())
+        progressIndicatorCharacters.visibleProperty().bind(FindCharactersService.runningProperty())
+        progressIndicatorWordsContaining.visibleProperty().bind(FindEntriesContainingService.runningProperty())
+        progressIndicatorSentences.visibleProperty().bind(FindSentencesService.runningProperty())
+    }
+
+    private fun initializeDefinitionWebView() {
+        webViewDefinitions.apply {
+            isContextMenuEnabled = false
+            engine.userStyleSheetLocation =
+                WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
+        }
+    }
+
+    private fun initializeSearch() {
+        buttonBack.disableProperty().bind(UndoManager.canUndoProperty.not())
+        buttonNext.disableProperty().bind(UndoManager.canRedoProperty.not())
+        buttonSearch.disableProperty().bind(textFieldSearch.textProperty().isEmpty)
+
+        textFieldSearch.text = "柳"
+        previousSearch = "柳"
+        search("柳")
+    }
+
+    private fun initializeMenuItems() {
+        menuItemCopyHeadword.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemCopyPronunciation.disableProperty().bind(isEntrySelectedBinding.not())
+        menuItemNewAnkiNote.disableProperty().bind(isEntrySelectedBinding.not())
+    }
+
+    private fun initializeTabPane() {
         tabPaneEntryView.disableProperty().bind(isEntrySelectedBinding.not())
         tabPaneDefinition.disableProperty().bind(isEntrySelectedBinding.not())
         tabPaneSentences.disableProperty().bind(isEntrySelectedBinding.not())
@@ -312,16 +351,6 @@ class MainController {
                 else -> {}
             }
         }
-
-        webViewDefinitions.apply {
-            isContextMenuEnabled = false
-            engine.userStyleSheetLocation =
-                WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
-        }
-
-        textFieldSearch.text = "柳"
-        previousSearch = "柳"
-        search("柳")
     }
 
     fun onMenuItemNewEntryAction() {
@@ -338,7 +367,9 @@ class MainController {
         }
     }
 
-    fun onMenuItemSettingsAction() {}
+    fun onMenuItemSettingsAction() {
+        println("TODO")
+    }
 
     fun onMenuItemQuitAction() {
         Platform.exit()
@@ -376,7 +407,9 @@ class MainController {
         setStatus("Copied pronunciation to clipboard.")
     }
 
-    fun onMenuItemAboutAction() {}
+    fun onMenuItemAboutAction() {
+        println("TODO")
+    }
 
     private fun displayEntry(entry: Entry?) {
         textFlowHeadWord.children.clear()
@@ -438,7 +471,9 @@ class MainController {
 
     fun search(searchQuery: String, selectionIndex: Int = 0) {
         require(searchQuery.isNotBlank()) { "Expected searchQuery to not be blank, but was blank" }
-        require(selectionIndex >= 0) { "Expected selectionIndex to be greater than or equal to zero, but was $selectionIndex" }
+        require(
+            selectionIndex >= 0
+        ) { "Expected selectionIndex to be greater than or equal to zero, but was $selectionIndex" }
 
         previousSearch = searchQuery
 
@@ -479,7 +514,8 @@ class MainController {
         scene.accelerators.apply {
             put(
                 KeyCodeCombination(KeyCode.F, KeyCombination.SHORTCUT_DOWN),
-                Runnable { textFieldSearch.requestFocus() })
+                Runnable { textFieldSearch.requestFocus() }
+            )
             put(KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), Runnable { buttonBack.fire() })
             put(KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), Runnable { buttonNext.fire() })
         }
@@ -502,7 +538,7 @@ class MainController {
     }
 
     fun onMenuItemNewDefinitionAction() {
-
+        println("TODO")
     }
 
     fun showSelectedEntryContextMenu(contextMenuEvent: ContextMenuEvent) {

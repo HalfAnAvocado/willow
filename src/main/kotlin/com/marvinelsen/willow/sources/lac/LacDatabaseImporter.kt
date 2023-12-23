@@ -13,7 +13,8 @@ object LacDatabaseImporter : DatabaseImporter<LacEntry> {
                 DefinitionEntity.new {
                     entry = DatabaseManager.findOrCreateEntryEntity(
                         it.traditional,
-                        it.zhuyinTaiwan.ifBlank { it.zhuyinMainland })
+                        it.zhuyinTaiwan.ifBlank { it.zhuyinMainland }
+                    )
                     shortDefinition = LacDefinitionFormatter.formatShortDefinition(it)
                     htmlDefinition = LacDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.LAC

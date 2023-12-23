@@ -34,7 +34,10 @@ class Anki(private val config: AnkiConfig) {
                     fieldsContents = mapOf(
                         config.fields.traditional to entry.traditional,
                         config.fields.zhuyin to entry.zhuyin,
-                        config.fields.definition to entry.definitions[definitionSource]!!.joinToString(separator = "<br>") { it.htmlDefinition },
+                        config.fields.definition to
+                            entry.definitions[definitionSource]!!.joinToString(separator = "<br>") {
+                                it.htmlDefinition
+                            },
                         config.fields.exampleSentence to exampleSentence
                     )
                 )

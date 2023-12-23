@@ -1,7 +1,7 @@
 package com.marvinelsen.willow.ui.undo
 
-import java.util.Stack
 import javafx.beans.property.SimpleBooleanProperty
+import java.util.Stack
 
 object UndoManager {
     private val undoStack = Stack<Command>()

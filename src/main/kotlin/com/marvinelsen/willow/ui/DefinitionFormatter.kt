@@ -11,25 +11,29 @@ object DefinitionFormatter {
                     definitions.joinToString(
                         prefix = "<h1>USER</h1>",
                         separator = "<hr class=\"in-definition\">"
-                    ) { it.htmlDefinition })
+                    ) { it.htmlDefinition }
+                )
 
                 SourceDictionary.LAC -> add(
                     definitions.joinToString(
                         prefix = "<h1>LAC</h1>",
                         separator = "<hr class=\"in-definition\">"
-                    ) { it.htmlDefinition })
+                    ) { it.htmlDefinition }
+                )
 
                 SourceDictionary.MOE -> add(
                     definitions.joinToString(
                         prefix = "<h1>MoE</h1>",
                         separator = "<hr class=\"in-definition\">"
-                    ) { it.htmlDefinition })
+                    ) { it.htmlDefinition }
+                )
 
                 SourceDictionary.CEDICT -> add(
                     definitions.joinToString(
                         prefix = "<h1>CC-CEDICT</h1>",
                         separator = "<hr class=\"in-definition\">"
-                    ) { it.htmlDefinition })
+                    ) { it.htmlDefinition }
+                )
             }
         }
     }.joinToString(separator = "<hr>")

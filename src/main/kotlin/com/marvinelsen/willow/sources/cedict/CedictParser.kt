@@ -19,6 +19,7 @@ object CedictParser : Parser<CedictEntry> {
             .toList()
 }
 
+@Suppress("DestructuringDeclarationWithTooManyEntries")
 private fun String.toCedictEntry(): CedictEntry {
     val matchResult = cedictEntryRegex.matchEntire(this)!!
     val (traditional, simplified, numberedPinyin, definition) = matchResult.destructured
