@@ -50,8 +50,8 @@ class NewAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: Strin
         initModality(Modality.APPLICATION_MODAL)
 
         (dialogPane.scene.window as Stage).apply {
-            minWidth = 400.0
-            minHeight = 250.0
+            minWidth = DIALOG_MIN_WIDTH
+            minHeight = DIALOG_MIN_HEIGHT
         }
 
         val buttonOk = root.lookupButton(buttonTypeOk)
@@ -66,6 +66,7 @@ class NewAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: Strin
         resultConverter = Callback(::convertToResult)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun validateUserInput(event: ActionEvent) {
         return
     }
@@ -83,6 +84,11 @@ class NewAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: Strin
     @Suppress("Unused")
     fun onButtonPasteIntoExampleSentenceAction() {
         textAreaExampleSentence.text = systemClipboard.string
+    }
+
+    companion object {
+        private const val DIALOG_MIN_WIDTH = 400.0
+        private const val DIALOG_MIN_HEIGHT = 250.0
     }
 }
 

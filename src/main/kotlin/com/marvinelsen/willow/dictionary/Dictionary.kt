@@ -28,7 +28,10 @@ object Dictionary {
     fun findCharactersOf(entry: Entry): List<Entry> {
         val characterToEntryMap = transaction {
             EntryEntity
-                .find { (EntryTable.traditional inList entry.characters) and (EntryTable.zhuyin inList entry.zhuyinSyllables) }
+                .find {
+                    (EntryTable.traditional inList entry.characters) and
+                        (EntryTable.zhuyin inList entry.zhuyinSyllables)
+                }
                 .with(EntryEntity::definitions)
                 .map { it.toEntry() }
                 .associateBy { it.traditional }
@@ -66,7 +69,8 @@ object Dictionary {
 private fun EntryEntity.toEntry() = Entry(
     traditional = traditional,
     zhuyin = zhuyin,
-    definitions = definitions.map { it.toDefinition() }.groupBy { it.sourceDictionary })
+    definitions = definitions.map { it.toDefinition() }.groupBy { it.sourceDictionary }
+)
 
 private fun DefinitionEntity.toDefinition() = Definition(
     shortDefinition = shortDefinition,

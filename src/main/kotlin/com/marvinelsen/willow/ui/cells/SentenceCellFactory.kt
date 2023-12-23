@@ -12,10 +12,15 @@ import javafx.scene.layout.VBox
 import javafx.util.Callback
 
 class SentenceCellFactory(private val controller: MainController) : Callback<ListView<Sentence?>, ListCell<Sentence?>> {
+
     override fun call(listView: ListView<Sentence?>): ListCell<Sentence?> {
         val sentenceCell = SentenceCell(controller)
-        sentenceCell.prefWidthProperty().bind(listView.widthProperty().subtract(16))
+        sentenceCell.prefWidthProperty().bind(listView.widthProperty().subtract(CELL_PADDING))
         return sentenceCell
+    }
+
+    companion object {
+        private const val CELL_PADDING = 16
     }
 }
 

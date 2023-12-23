@@ -17,8 +17,12 @@ import javafx.util.Callback
 class EntryCellFactory(private val controller: MainController) : Callback<ListView<Entry?>, ListCell<Entry?>> {
     override fun call(listView: ListView<Entry?>): ListCell<Entry?> {
         val entryCell = EntryCell(controller)
-        entryCell.prefWidthProperty().bind(listView.widthProperty().subtract(16))
+        entryCell.prefWidthProperty().bind(listView.widthProperty().subtract(CELL_PADDING))
         return entryCell
+    }
+
+    companion object {
+        private const val CELL_PADDING = 16
     }
 }
 
@@ -36,7 +40,7 @@ internal class EntryCell(private val controller: MainController) : ListCell<Entr
     }
 
     private val flowPane = FlowPane(labelHeadword, labelPronunciation).apply {
-        hgap = 8.0
+        hgap = FLOW_PANE_HGAP
         rowValignment = VPos.BASELINE
     }
 
@@ -74,5 +78,9 @@ internal class EntryCell(private val controller: MainController) : ListCell<Entr
 
             graphic = root
         }
+    }
+
+    companion object {
+        private const val FLOW_PANE_HGAP = 8.0
     }
 }

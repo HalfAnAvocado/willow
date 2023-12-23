@@ -48,8 +48,8 @@ class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
         initModality(Modality.APPLICATION_MODAL)
 
         (dialogPane.scene.window as Stage).apply {
-            minWidth = 380.0
-            minHeight = 250.0
+            minWidth = DIALOG_MIN_WIDTH
+            minHeight = DIALOG_MIN_HEIGHT
         }
 
         val buttonOk = root.lookupButton(buttonTypeOk)
@@ -125,5 +125,10 @@ class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
     @Suppress("Unused")
     fun onButtonPasteIntoDefinitionAction() {
         textAreaDefinition.text = systemClipboard.string
+    }
+
+    companion object {
+        private const val DIALOG_MIN_HEIGHT = 250.0
+        private const val DIALOG_MIN_WIDTH = 380.0
     }
 }

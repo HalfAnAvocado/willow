@@ -38,8 +38,8 @@ class NewSentenceDialog(owner: Window?) : Dialog<Sentence?>() {
         initModality(Modality.APPLICATION_MODAL)
 
         (dialogPane.scene.window as Stage).apply {
-            minWidth = 400.0
-            minHeight = 250.0
+            minWidth = DIALOG_MIN_WIDTH
+            minHeight = DIALOG_MIN_HEIGHT
         }
 
         val buttonOk = root.lookupButton(buttonTypeOk)
@@ -73,5 +73,10 @@ class NewSentenceDialog(owner: Window?) : Dialog<Sentence?>() {
     @Suppress("Unused")
     fun onButtonPasteIntoChineseSentenceAction() {
         textAreaChineseSentence.text = systemClipboard.string
+    }
+
+    companion object {
+        private const val DIALOG_MIN_HEIGHT = 250.0
+        private const val DIALOG_MIN_WIDTH = 400.0
     }
 }

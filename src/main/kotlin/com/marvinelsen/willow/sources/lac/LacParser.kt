@@ -1,15 +1,17 @@
 package com.marvinelsen.willow.sources.lac
 
 import com.marvinelsen.willow.sources.common.Parser
-import java.io.InputStream
+import com.marvinelsen.willow.util.PronunciationConverter
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
-import com.marvinelsen.willow.util.PronunciationConverter
+import java.io.InputStream
 
 private const val TRADITIONAL_COLUMN_INDEX = 5
 private const val ZHUYIN_TAIWAN_COLUMN_INDEX = 10
 private const val ZHUYIN_MAINLAND_COLUMN_INDEX = 12
-private val DEFINITION_COLUMNS_INDICES = (14..43)
+private const val DEFINITION_START_COLUMN_INDEX = 14
+private const val DEFINITION_END_COLUMN_INDEX = 43
+private val DEFINITION_COLUMNS_INDICES = (DEFINITION_START_COLUMN_INDEX..DEFINITION_END_COLUMN_INDEX)
 
 object LacParser : Parser<LacEntry> {
     override fun parse(inputStream: InputStream) =
@@ -22,8 +24,14 @@ object LacParser : Parser<LacEntry> {
 private fun CSVRecord.toLacEntry(): LacEntry {
     val traditional = this[TRADITIONAL_COLUMN_INDEX]
 
-    val zhuyinTaiwan = this[ZHUYIN_TAIWAN_COLUMN_INDEX].replace("丨", "ㄧ").replace("，", PronunciationConverter.ZHUYIN_SEPARATOR)
-    val zhuyinMainland = this[ZHUYIN_MAINLAND_COLUMN_INDEX].replace("丨", "ㄧ").replace("，", PronunciationConverter.ZHUYIN_SEPARATOR)
+    val zhuyinTaiwan = this[ZHUYIN_TAIWAN_COLUMN_INDEX].replace(
+        "丨",
+        "ㄧ"
+    ).replace("，", PronunciationConverter.ZHUYIN_SEPARATOR)
+    val zhuyinMainland = this[ZHUYIN_MAINLAND_COLUMN_INDEX].replace(
+        "丨",
+        "ㄧ"
+    ).replace("，", PronunciationConverter.ZHUYIN_SEPARATOR)
 
     val definitions = DEFINITION_COLUMNS_INDICES
         .mapNotNull { this[it] }

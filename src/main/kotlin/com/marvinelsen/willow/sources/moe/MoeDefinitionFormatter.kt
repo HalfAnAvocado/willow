@@ -6,7 +6,6 @@ import kotlinx.html.ol
 import kotlinx.html.span
 import kotlinx.html.stream.createHTML
 
-// TODO: Make this inherit DefinitionFormatter
 object MoeDefinitionFormatter {
     fun formatHtmlDefinition(moeDefinitions: List<MoeDefinition>) =
         createHTML(prettyPrint = false).div(classes = "moe-definition") {

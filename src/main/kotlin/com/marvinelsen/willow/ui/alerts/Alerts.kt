@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.marvinelsen.willow.ui.alerts
 
 import javafx.scene.control.Alert
