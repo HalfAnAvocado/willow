@@ -48,8 +48,8 @@ object PronunciationConverter {
         .joinToString(separator = " ", transform = PronunciationConverter::convertSyllableToAccentedPinyin)
 
     private fun convertSyllableToAccentedPinyin(zhuyinSyllable: String): String {
-        val pinyinSyllable = zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()]
-            ?: throw IllegalArgumentException("Invalid zhuyin syllable $zhuyinSyllable")
+        if (zhuyinSyllable.isBlank()) return zhuyinSyllable
+        val pinyinSyllable = zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] ?: return zhuyinSyllable
 
         val characterToIndex = pinyinSyllable.withIndex().associate { it.value to it.index }
         val vowelIndex = when {
@@ -65,7 +65,7 @@ object PronunciationConverter {
 
             'u' in characterToIndex -> characterToIndex['u']!!
             'ü' in characterToIndex -> characterToIndex['ü']!!
-            else -> error("Missing vowel in pinyin syllable $pinyinSyllable from zhuyin $zhuyinSyllable")
+            else -> return pinyinSyllable
         }
 
         return buildString {
@@ -75,7 +75,10 @@ object PronunciationConverter {
     }
 
     private fun convertSyllableToNumberedPinyin(zhuyinSyllable: String) =
-        zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] + zhuyinSyllable.tone
+        when {
+            zhuyinSyllable.isBlank() -> zhuyinSyllable
+            else -> zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] + zhuyinSyllable.tone
+        }
 
     private fun convertSyllableToZhuyin(numberedPinyinSyllable: String): String {
         val lastCharacter = numberedPinyinSyllable.last()
