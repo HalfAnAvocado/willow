@@ -13,7 +13,11 @@ object CedictDatabaseImporter : DatabaseImporter<CedictEntry> {
             entries.forEach {
                 val zhuyin = PronunciationConverter.convertToZhuyin(it.numberedPinyinTaiwan ?: it.numberedPinyin)
                 DefinitionEntity.new {
-                    entry = DatabaseManager.findOrCreateEntryEntity(it.traditional, zhuyin)
+                    entry = DatabaseManager.findOrCreateEntryEntity(
+                        traditional = it.traditional,
+                        zhuyin = zhuyin,
+                        numberedPinyin = it.numberedPinyinTaiwan ?: it.numberedPinyin
+                    )
                     shortDefinition = CedictDefinitionFormatter.formatShortDefinition(it)
                     htmlDefinition = CedictDefinitionFormatter.formatHtmlDefinition(it)
                     dictionary = SourceDictionary.CEDICT

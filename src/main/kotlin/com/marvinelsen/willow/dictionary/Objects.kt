@@ -5,6 +5,8 @@ import com.marvinelsen.willow.util.PronunciationConverter
 data class Entry(
     val traditional: String,
     val zhuyin: String,
+    val accentedPinyin: String = PronunciationConverter.convertToAccentedPinyin(zhuyin),
+    val numberedPinyin: String = PronunciationConverter.convertToNumberedPinyin(zhuyin),
     val definitions: Map<SourceDictionary, List<Definition>>,
 ) {
     val characters: List<String> by lazy { traditional.split("") }
@@ -23,7 +25,7 @@ data class Sentence(
 )
 
 enum class SourceDictionary {
-    USER, LAC, MOE, CEDICT
+    USER, CEDICT, MOE, LAC
 }
 
 enum class SentenceSource {

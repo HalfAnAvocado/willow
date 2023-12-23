@@ -69,6 +69,8 @@ object Dictionary {
 private fun EntryEntity.toEntry() = Entry(
     traditional = traditional,
     zhuyin = zhuyin,
+    accentedPinyin = accentedPinyin,
+    numberedPinyin = numberedPinyin,
     definitions = definitions.map { it.toDefinition() }.groupBy { it.sourceDictionary }
 )
 
