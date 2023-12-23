@@ -47,6 +47,7 @@ object PronunciationConverter {
         .split(ZHUYIN_SEPARATOR)
         .joinToString(separator = " ", transform = PronunciationConverter::convertSyllableToAccentedPinyin)
 
+    @Suppress("ReturnCount")
     private fun convertSyllableToAccentedPinyin(zhuyinSyllable: String): String {
         if (zhuyinSyllable.isBlank()) return zhuyinSyllable
         val pinyinSyllable = zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] ?: return zhuyinSyllable
