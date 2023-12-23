@@ -22,7 +22,7 @@
 }
 
 .list-view-pronunciation {
-    -fx-font-size: 12;
+    -fx-font-size: 16;
 }
 
 .list-view-sentence-cell {
@@ -38,5 +38,5 @@
 }
 
 .pronunciation {
-    -fx-font: 18 TW-Kai;
+    -fx-font: 18 "Noto Sans CJK TC";
 }

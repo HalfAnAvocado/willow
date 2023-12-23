@@ -427,7 +427,7 @@ class MainController {
             textFlowHeadWord.children.add(characterText)
         }
 
-        labelHeadwordPronunciation.text = entry.zhuyin
+        labelHeadwordPronunciation.text = entry.accentedPinyin
         webViewDefinitions.engine.loadContent(DefinitionFormatter.format(entry))
     }
 
