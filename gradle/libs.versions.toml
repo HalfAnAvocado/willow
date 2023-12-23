@@ -11,11 +11,13 @@ commons-csv = "1.10.0"
 ktor = "2.3.6"
 
 # Plugin versions
-detekt = "1.23.3"
+detekt = "1.23.4"
 javafxplugin = "0.1.0"
 badassruntime = "1.13.0"
 
 [libraries]
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "json" }
 kotlinx-html-common = { group = "org.jetbrains.kotlinx", name = "kotlinx-html", version.ref = "html" }
 kotlinx-html-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-html-jvm", version.ref = "html" }
