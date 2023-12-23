@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     java
     application
-    kotlin("jvm") version "1.9.20"
-    kotlin("plugin.serialization") version "1.9.20"
-    // alias(libs.plugins.detekt)
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.22"
+    alias(libs.plugins.detekt)
     alias(libs.plugins.javafx)
     alias(libs.plugins.badassruntime)
 }
@@ -21,6 +21,8 @@ repositories {
 }
 
 dependencies {
+    detektPlugins(libs.detekt.formatting)
+
     implementation(libs.kaml)
     implementation(libs.apache.commons.csv)
     implementation(libs.kotlinx.serialization.json)
@@ -73,7 +75,8 @@ runtime {
     options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
 }
 
-//detekt {
-//    buildUponDefaultConfig = true
-//    allRules = true
-//}
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    autoCorrect = true
+}
