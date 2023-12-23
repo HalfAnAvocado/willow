@@ -9,17 +9,17 @@ import com.marvinelsen.willow.sources.moe.MoeEntry
 import com.marvinelsen.willow.sources.tatoeba.TatoebaDatabaseImporter
 import com.marvinelsen.willow.sources.tatoeba.TatoebaSentence
 import com.marvinelsen.willow.util.PronunciationConverter
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.Connection
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.div
 import kotlin.io.path.exists
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseManager {
     private val homeDirectory = Path(System.getProperty("user.home"))
