@@ -59,6 +59,7 @@ class PronunciationConverterTest : FunSpec({
             TestCase("ㄔㄨㄟˋ", "chui\u0300"),
             TestCase("ㄔㄨㄛˋ", "chuo\u0300"),
             TestCase("ㄌㄩㄝˋ", "lüe\u0300"),
+            TestCase("ㄦˋ", "e\u0300r"),
         ) { (zhuyin, accentedPinyin) ->
             PronunciationConverter.convertToAccentedPinyin(zhuyin) shouldBe accentedPinyin
         }
