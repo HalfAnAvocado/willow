@@ -1,4 +1,3 @@
-@file:OptIn(ExperimentalSerializationApi::class)
 
 package com.marvinelsen.willow.anki.requests
 
@@ -7,6 +6,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
 class AddNoteRequest(
     @EncodeDefault
     override val action: String = "addNote",

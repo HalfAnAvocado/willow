@@ -76,7 +76,7 @@ class WillowApplication : Application() {
 
         val controller = fxmlLoader.getController<MainController>()
 
-        val scene = Scene(root, Companion.WIDTH, Companion.HEIGHT)
+        val scene = Scene(root, WIDTH, HEIGHT)
         scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm())
 
         controller.setupKeyboardShortcuts(scene)
