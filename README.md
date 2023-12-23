@@ -6,7 +6,7 @@
     An offline dictionary software tailored for learners focused on Traditional Chinese (Taiwanese Standard) with a specific emphasis on Taiwanese pronunciation.
 </h4>
 
-<img src="https://github.com/HalfAnAvocado/willow/blob/9bfb0346b97d23d17fe210d88df442f2bb14ae3f/assets/screenshot.png" alt="Screenshot">
+<img src="https://github.com/HalfAnAvocado/willow/blob/main/assets/screenshot.png" alt="Screenshot">
 
 ## 🤔 What is Willow?
 
