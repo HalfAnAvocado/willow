@@ -15,6 +15,8 @@ detekt = "1.23.4"
 javafxplugin = "0.1.0"
 badassruntime = "1.13.0"
 
+# IntelliJ IDEA warning about dependency aliases not being used in build scripts is a known bug:
+# https://youtrack.jetbrains.com/issue/IDEA-316453
 [libraries]
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
