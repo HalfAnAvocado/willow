@@ -8,17 +8,18 @@ import com.marvinelsen.willow.sources.moe.MoeDatabaseImporter
 import com.marvinelsen.willow.sources.moe.MoeEntry
 import com.marvinelsen.willow.sources.tatoeba.TatoebaDatabaseImporter
 import com.marvinelsen.willow.sources.tatoeba.TatoebaSentence
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
+import com.marvinelsen.willow.util.PronunciationConverter
 import java.sql.Connection
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.div
 import kotlin.io.path.exists
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseManager {
     private val homeDirectory = Path(System.getProperty("user.home"))
@@ -53,11 +54,17 @@ object DatabaseManager {
         TatoebaDatabaseImporter.import(tatoebaSentences)
     }
 
-    fun findOrCreateEntryEntity(traditional: String, zhuyin: String) =
-        EntryEntity.find { (EntryTable.traditional eq traditional) and (EntryTable.zhuyin eq zhuyin) }.firstOrNull()
-            ?: EntryEntity.new {
-                this.traditional = traditional
-                this.zhuyin = zhuyin
-                this.characterCount = traditional.length
-            }
+    fun findOrCreateEntryEntity(
+        traditional: String,
+        zhuyin: String,
+        accentedPinyin: String = PronunciationConverter.convertToAccentedPinyin(zhuyin),
+        numberedPinyin: String = PronunciationConverter.convertToNumberedPinyin(zhuyin),
+    ) = EntryEntity.find { (EntryTable.traditional eq traditional) and (EntryTable.zhuyin eq zhuyin) }.firstOrNull()
+        ?: EntryEntity.new {
+            this.traditional = traditional
+            this.zhuyin = zhuyin
+            this.accentedPinyin = accentedPinyin
+            this.numberedPinyin = numberedPinyin
+            this.characterCount = traditional.length
+        }
 }
