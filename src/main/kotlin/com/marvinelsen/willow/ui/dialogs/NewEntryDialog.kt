@@ -97,13 +97,11 @@ class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
                 Entry(
                     traditional = textFieldHeadword.text,
                     zhuyin = PronunciationConverter.convertToZhuyin(textFieldPronunciation.text),
-                    definitions = mapOf(
-                        SourceDictionary.USER to listOf(
-                            Definition(
-                                shortDefinition = textAreaDefinition.text,
-                                htmlDefinition = textAreaDefinition.text,
-                                sourceDictionary = SourceDictionary.USER
-                            )
+                    definitions = listOf(
+                        Definition(
+                            shortDefinition = textAreaDefinition.text,
+                            htmlDefinition = textAreaDefinition.text,
+                            sourceDictionary = SourceDictionary.USER
                         )
                     )
                 )

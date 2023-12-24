@@ -35,7 +35,7 @@ class Anki(private val config: AnkiConfig) {
                         config.fields.traditional to entry.traditional,
                         config.fields.zhuyin to entry.zhuyin,
                         config.fields.definition to
-                            entry.definitions[definitionSource]!!.joinToString(separator = "<br>") {
+                            entry.definitionsByDictionary[definitionSource]!!.joinToString(separator = "<br>") {
                                 it.htmlDefinition
                             },
                         config.fields.exampleSentence to exampleSentence

@@ -72,7 +72,7 @@ internal class EntryCell(private val controller: MainController) : ListCell<Entr
         } else {
             labelHeadword.text = entry.traditional
 
-            val definition = entry.definitions.entries.minByOrNull { it.key }!!.value.first()
+            val definition = entry.definitionsByDictionary.entries.minByOrNull { it.key }!!.value.first()
             labelPronunciation.text = entry.accentedPinyin
             labelDefinition.text = definition.shortDefinition
 

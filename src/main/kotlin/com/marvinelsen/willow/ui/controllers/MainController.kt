@@ -6,7 +6,7 @@ import com.marvinelsen.willow.config.AnkiConfig
 import com.marvinelsen.willow.config.FieldMapping
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.Sentence
-import com.marvinelsen.willow.ui.DefinitionFormatter
+import com.marvinelsen.willow.ui.UIDefinitionFormatter
 import com.marvinelsen.willow.ui.cells.EntryCellFactory
 import com.marvinelsen.willow.ui.cells.SentenceCellFactory
 import com.marvinelsen.willow.ui.dialogs.NewAnkiNoteDialog
@@ -428,7 +428,7 @@ class MainController {
         }
 
         labelHeadwordPronunciation.text = entry.accentedPinyin
-        webViewDefinitions.engine.loadContent(DefinitionFormatter.format(entry))
+        webViewDefinitions.engine.loadContent(UIDefinitionFormatter.format(entry))
     }
 
     private fun setStatus(status: String) {

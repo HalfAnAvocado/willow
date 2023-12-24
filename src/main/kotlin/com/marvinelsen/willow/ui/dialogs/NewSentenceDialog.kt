@@ -2,6 +2,7 @@ package com.marvinelsen.willow.ui.dialogs
 
 import com.marvinelsen.willow.WillowApplication
 import com.marvinelsen.willow.dictionary.Sentence
+import com.marvinelsen.willow.dictionary.SentenceSource
 import com.marvinelsen.willow.ui.alerts.alert
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
@@ -65,7 +66,7 @@ class NewSentenceDialog(owner: Window?) : Dialog<Sentence?>() {
 
     private fun convertToResult(buttonType: ButtonType) =
         when (buttonType) {
-            ButtonType.OK -> Sentence(textAreaChineseSentence.text)
+            ButtonType.OK -> Sentence(textAreaChineseSentence.text, source = SentenceSource.USER)
 
             else -> null
         }
