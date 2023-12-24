@@ -3,9 +3,9 @@ package com.marvinelsen.willow.ui
 import com.marvinelsen.willow.dictionary.Entry
 import com.marvinelsen.willow.dictionary.SourceDictionary
 
-object DefinitionFormatter {
+object UIDefinitionFormatter {
     fun format(entry: Entry) = buildList {
-        for ((sourceDictionary, definitions) in entry.definitions.entries.sortedBy { it.key }) {
+        for ((sourceDictionary, definitions) in entry.definitionsByDictionary.entries.sortedBy { it.key }) {
             when (sourceDictionary) {
                 SourceDictionary.USER -> add(
                     definitions.joinToString(

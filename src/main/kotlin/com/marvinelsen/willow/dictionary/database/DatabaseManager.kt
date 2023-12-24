@@ -1,14 +1,8 @@
 package com.marvinelsen.willow.dictionary.database
 
-import com.marvinelsen.willow.sources.cedict.CedictDatabaseImporter
-import com.marvinelsen.willow.sources.cedict.CedictEntry
-import com.marvinelsen.willow.sources.lac.LacDatabaseImporter
-import com.marvinelsen.willow.sources.lac.LacEntry
-import com.marvinelsen.willow.sources.moe.MoeDatabaseImporter
-import com.marvinelsen.willow.sources.moe.MoeEntry
-import com.marvinelsen.willow.sources.tatoeba.TatoebaDatabaseImporter
-import com.marvinelsen.willow.sources.tatoeba.TatoebaSentence
-import com.marvinelsen.willow.util.PronunciationConverter
+import com.marvinelsen.willow.dictionary.Entry
+import com.marvinelsen.willow.dictionary.Sentence
+import com.marvinelsen.willow.dictionary.SentenceSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.and
@@ -38,33 +32,51 @@ object DatabaseManager {
 
     fun doesDatabaseExist() = databaseFile.exists()
 
-    fun createDatabase(
-        cedictEntries: List<CedictEntry>,
-        moeEntries: List<MoeEntry>,
-        lacEntries: List<LacEntry>,
-        tatoebaSentences: List<TatoebaSentence>,
-    ) {
+    fun createSchema() {
         transaction {
             SchemaUtils.create(EntryTable, DefinitionTable, SentenceTable)
         }
-
-        CedictDatabaseImporter.import(cedictEntries)
-        MoeDatabaseImporter.import(moeEntries)
-        LacDatabaseImporter.import(lacEntries)
-        TatoebaDatabaseImporter.import(tatoebaSentences)
     }
 
-    fun findOrCreateEntryEntity(
-        traditional: String,
-        zhuyin: String,
-        accentedPinyin: String = PronunciationConverter.convertToAccentedPinyin(zhuyin),
-        numberedPinyin: String = PronunciationConverter.convertToNumberedPinyin(zhuyin),
-    ) = EntryEntity.find { (EntryTable.traditional eq traditional) and (EntryTable.zhuyin eq zhuyin) }.firstOrNull()
-        ?: EntryEntity.new {
-            this.traditional = traditional
-            this.zhuyin = zhuyin
-            this.accentedPinyin = accentedPinyin
-            this.numberedPinyin = numberedPinyin
-            this.characterCount = traditional.length
+    fun insertEntries(entries: List<Entry>) {
+        transaction {
+            entries.forEach { entry ->
+                val entryEntity = findOrInsertNewEntryEntity(entry)
+
+                entry.definitions.forEach { definition ->
+                    DefinitionEntity.new {
+                        this.entry = entryEntity
+                        this.shortDefinition = definition.shortDefinition
+                        this.htmlDefinition = definition.htmlDefinition
+                        this.dictionary = definition.sourceDictionary
+                    }
+                }
+            }
         }
+    }
+
+    fun insertSentences(sentences: List<Sentence>) {
+        transaction {
+            sentences.forEach {
+                SentenceEntity.new {
+                    traditional = it.traditional
+                    characterCount = it.traditional.length
+                    sentenceSource = SentenceSource.TATOEBA
+                }
+            }
+        }
+    }
+}
+
+fun findOrInsertNewEntryEntity(entry: Entry) = EntryEntity
+    .find { (EntryTable.traditional eq entry.traditional) and (EntryTable.zhuyin eq entry.zhuyin) }
+    .firstOrNull()
+    ?: entry.toEntity()
+
+private fun Entry.toEntity() = EntryEntity.new {
+    traditional = this@toEntity.traditional
+    zhuyin = this@toEntity.zhuyin
+    accentedPinyin = this@toEntity.accentedPinyin
+    numberedPinyin = this@toEntity.numberedPinyin
+    characterCount = this@toEntity.traditional.length
 }

@@ -1,11 +1,11 @@
 package com.marvinelsen.willow.dictionary
 
-import com.marvinelsen.willow.dictionary.database.DatabaseManager
 import com.marvinelsen.willow.dictionary.database.DefinitionEntity
 import com.marvinelsen.willow.dictionary.database.EntryEntity
 import com.marvinelsen.willow.dictionary.database.EntryTable
 import com.marvinelsen.willow.dictionary.database.SentenceEntity
 import com.marvinelsen.willow.dictionary.database.SentenceTable
+import com.marvinelsen.willow.dictionary.database.findOrInsertNewEntryEntity
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -54,8 +54,8 @@ object Dictionary {
     }
 
     fun addUserEntry(userEntry: Entry) = transaction {
-        val entryEntity = DatabaseManager.findOrCreateEntryEntity(userEntry.traditional, userEntry.zhuyin)
-        val definition = userEntry.definitions[SourceDictionary.USER]!!.first()
+        val entryEntity = findOrInsertNewEntryEntity(userEntry)
+        val definition = userEntry.definitionsByDictionary[SourceDictionary.USER]!!.first()
 
         DefinitionEntity.new {
             entry = entryEntity
@@ -71,7 +71,7 @@ private fun EntryEntity.toEntry() = Entry(
     zhuyin = zhuyin,
     accentedPinyin = accentedPinyin,
     numberedPinyin = numberedPinyin,
-    definitions = definitions.map { it.toDefinition() }.groupBy { it.sourceDictionary }
+    definitions = definitions.map { it.toDefinition() }
 )
 
 private fun DefinitionEntity.toDefinition() = Definition(
@@ -80,4 +80,4 @@ private fun DefinitionEntity.toDefinition() = Definition(
     sourceDictionary = dictionary,
 )
 
-private fun SentenceEntity.toSentence() = Sentence(traditional = traditional)
+private fun SentenceEntity.toSentence() = Sentence(traditional = traditional, source = sentenceSource)
