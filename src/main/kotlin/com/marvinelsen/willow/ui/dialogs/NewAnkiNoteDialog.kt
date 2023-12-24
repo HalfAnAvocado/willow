@@ -38,7 +38,7 @@ class NewAnkiNoteDialog(owner: Window?, val entry: Entry, exampleSentence: Strin
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-anki-note-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("fxml/new-anki-note-dialog.fxml"))
         loader.setController(this)
         val root: DialogPane = loader.load()
 

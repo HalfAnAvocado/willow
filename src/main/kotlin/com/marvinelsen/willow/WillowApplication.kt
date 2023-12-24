@@ -18,7 +18,7 @@ class WillowApplication : Application() {
     @Suppress("unused")
     private val interFont =
         Font.loadFont(
-            WillowApplication::class.java.getResource("fonts/InterVariable.ttf")!!.toExternalForm(),
+            WillowApplication::class.java.getResource("fonts/inter.ttf")!!.toExternalForm(),
             FONT_SIZE
         )
 
@@ -32,7 +32,7 @@ class WillowApplication : Application() {
     @Suppress("unused")
     private val notoSansCjk =
         Font.loadFont(
-            WillowApplication::class.java.getResource("fonts/NotoSansTC-VF.ttf")!!.toExternalForm(),
+            WillowApplication::class.java.getResource("fonts/noto-sans-tc.ttf")!!.toExternalForm(),
             FONT_SIZE
         )
 
@@ -72,12 +72,12 @@ class WillowApplication : Application() {
         stage.minHeight = WINDOW_MIN_HEIGHT
 
         val fxmlLoader = FXMLLoader()
-        val root = fxmlLoader.load(WillowApplication::class.java.getResourceAsStream("views/main-view.fxml")) as VBox
+        val root = fxmlLoader.load(WillowApplication::class.java.getResourceAsStream("fxml/main-view.fxml")) as VBox
 
         val controller = fxmlLoader.getController<MainController>()
 
         val scene = Scene(root, WIDTH, HEIGHT)
-        scene.stylesheets.add(WillowApplication::class.java.getResource("stylesheets/main.css")!!.toExternalForm())
+        scene.stylesheets.add(WillowApplication::class.java.getResource("css/main.css")!!.toExternalForm())
 
         controller.setupKeyboardShortcuts(scene)
 

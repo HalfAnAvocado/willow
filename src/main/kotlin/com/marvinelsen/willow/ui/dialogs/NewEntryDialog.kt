@@ -36,7 +36,7 @@ class NewEntryDialog(owner: Window?) : Dialog<Entry?>() {
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-entry-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("fxml/new-entry-dialog.fxml"))
         loader.setController(this)
         val root: DialogPane = loader.load()
 

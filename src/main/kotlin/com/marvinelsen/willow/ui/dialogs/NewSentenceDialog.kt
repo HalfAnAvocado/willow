@@ -26,7 +26,7 @@ class NewSentenceDialog(owner: Window?) : Dialog<Sentence?>() {
     private val systemClipboard = Clipboard.getSystemClipboard()
 
     init {
-        val loader = FXMLLoader(WillowApplication::class.java.getResource("views/new-sentence-dialog.fxml"))
+        val loader = FXMLLoader(WillowApplication::class.java.getResource("fxml/new-sentence-dialog.fxml"))
         loader.setController(this)
         val root: DialogPane = loader.load()
 
