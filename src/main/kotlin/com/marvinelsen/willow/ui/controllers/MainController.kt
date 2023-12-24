@@ -296,7 +296,7 @@ class MainController {
         webViewDefinitions.apply {
             isContextMenuEnabled = false
             engine.userStyleSheetLocation =
-                WillowApplication::class.java.getResource("stylesheets/definitions.css")!!.toExternalForm()
+                WillowApplication::class.java.getResource("css/definitions.css")!!.toExternalForm()
         }
     }
 
