@@ -7,7 +7,7 @@ import java.io.InputStream
 object PronunciationConverter {
     const val ZHUYIN_SEPARATOR = "　"
 
-    private val numberToPinyinToneMarkMapping = mapOf(
+    private val numberToPinyinToneMark = mapOf(
         1 to "\u0304",
         2 to "\u0301",
         3 to "\u030C",
@@ -15,7 +15,7 @@ object PronunciationConverter {
         5 to ""
     )
 
-    private val numberToZhuyinToneMarkMapping = mapOf(
+    private val numberToZhuyinToneMark = mapOf(
         1 to "",
         2 to "ˊ",
         3 to "ˇ",
@@ -23,17 +23,17 @@ object PronunciationConverter {
         5 to "˙"
     )
 
-    private val zhuyinToneMarkToNumberMapping = mapOf(
+    private val zhuyinToneMarkToNumber = mapOf(
         'ˊ' to 2,
         'ˇ' to 3,
         'ˋ' to 4,
         '˙' to 5
     )
 
-    private val pinyinToZhuyinMapping = parseTranscriptions(
+    private val pinyinToZhuyin = parseTranscriptions(
         WillowApplication::class.java.getResourceAsStream("data/pinyin_zhuyin_transcriptions.tsv")!!
     )
-    private val zhuyinToPinyinMapping = pinyinToZhuyinMapping.entries.associate { it.value to it.key }
+    private val zhuyinToPinyin = pinyinToZhuyin.entries.associate { it.value to it.key }
 
     fun convertToZhuyin(numberedPinyin: String) = numberedPinyin
         .split(" ")
@@ -50,7 +50,7 @@ object PronunciationConverter {
     @Suppress("ReturnCount")
     private fun convertSyllableToAccentedPinyin(zhuyinSyllable: String): String {
         if (zhuyinSyllable.isBlank()) return zhuyinSyllable
-        val pinyinSyllable = zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] ?: return zhuyinSyllable
+        val pinyinSyllable = zhuyinToPinyin[zhuyinSyllable.stripToneMarks()] ?: return zhuyinSyllable
 
         val characterToIndex = pinyinSyllable.withIndex().associate { it.value to it.index }
         val vowelIndex = when {
@@ -71,14 +71,14 @@ object PronunciationConverter {
 
         return buildString {
             append(pinyinSyllable)
-            insert(vowelIndex + 1, numberToPinyinToneMarkMapping[zhuyinSyllable.tone])
+            insert(vowelIndex + 1, numberToPinyinToneMark[zhuyinSyllable.tone])
         }
     }
 
     private fun convertSyllableToNumberedPinyin(zhuyinSyllable: String) =
         when {
             zhuyinSyllable.isBlank() -> zhuyinSyllable
-            else -> zhuyinToPinyinMapping[zhuyinSyllable.stripToneMarks()] + zhuyinSyllable.tone
+            else -> zhuyinToPinyin[zhuyinSyllable.stripToneMarks()] + zhuyinSyllable.tone
         }
 
     private fun convertSyllableToZhuyin(numberedPinyinSyllable: String): String {
@@ -90,8 +90,8 @@ object PronunciationConverter {
             numberedPinyinSyllable
         }
 
-        val zhuyinSyllable = pinyinToZhuyinMapping[pinyinSyllable] ?: pinyinSyllable
-        val toneMark = numberToZhuyinToneMarkMapping[toneNumber] ?: ""
+        val zhuyinSyllable = pinyinToZhuyin[pinyinSyllable] ?: pinyinSyllable
+        val toneMark = numberToZhuyinToneMark[toneNumber] ?: ""
 
         return if (toneNumber == 5) toneMark + zhuyinSyllable else zhuyinSyllable + toneMark
     }
@@ -105,7 +105,7 @@ object PronunciationConverter {
     private val String.tone: Int
         get() = when {
             this.first() == '˙' -> 5
-            else -> zhuyinToneMarkToNumberMapping[this.last()] ?: 1
+            else -> zhuyinToneMarkToNumber[this.last()] ?: 1
         }
 
     private fun String.stripToneMarks() = when (this.tone) {
